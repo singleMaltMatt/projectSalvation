@@ -44,34 +44,33 @@ body::-webkit-scrollbar {
 
 /* Create a container element that has a max width of 1042px and is centered horizontally */
 .container {
-  max-width: 1042px;
+  max-width: 1024px;
   margin: 0 auto;
   position: relative;
+  background-position: center 85px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-color: #000;
 }
 
 #header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 5px;
 }
 
 /* Create a game container element that has a white background and some padding */
 .game-container {
-  background-color: white;
-  padding: 20px;
-  background-image: url(../img/00.jpg);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
   text-align: center;
-  box-shadow: inset 0px 0px 15px 10px #000;
+  box-shadow: inset 0px 92px 15px 10px #000;
   position: relative;
 }
 
 .inventory-overlay {
   display: none;
   position: absolute; /*positioned absolutely within the .game-container*/
-  top: 0;
+  top: -25px;
   left: 0;
   width: 100%; /* Full width of the container */
   height: 100%; /* Full height of the container */
@@ -88,19 +87,22 @@ body::-webkit-scrollbar {
 /* Create a text container element that takes up 80% of the viewport height and has a scrollable overflow */
 .text-container {
   position: relative;
-  height: 80vh;
+  height: 62.5vh;
+  max-height: 1408px;
   overflow-y: auto;
+  /* box-shadow: inset 0px -20px 15px 10px #000; */
 }
 
 /* Create a user controls container element that has some margin and padding */
 .user-controls-container {
-  margin-top: 20px;
-  padding: 10px;
+  margin-top: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 3px;
+  justify-content: flex-start;
+  gap: 5px;
+  position: absolute;
+  width: 100vw;
 }
 
 /*GLITCH*/

@@ -24,6 +24,7 @@ document.addEventListener('deviceready', onDeviceReady, false);
 let isUserInterrupted = false;
 let interruptionIndex = 0;
 let btnRecentlyClicked = false;
+let isTyping = false;
 
 /* COLOR: GREY */
 function applyGlassStylingGrey(element) {
@@ -31,7 +32,9 @@ function applyGlassStylingGrey(element) {
   element.style.boxShadow = "inset 0 0 10px 1px rgba(24, 24, 24, 0.37)";
   element.style.backdropFilter = "blur(2px)";
   element.style.borderRadius = "10px";
-  element.style.padding = "8px";
+  element.style.padding = "5px";
+  element.style.marginLeft = "5px";
+  element.style.marginRight = "5px";
   element.style.backgroundColor = "rgba(125, 125, 125, 0.5)";
   element.style.textAlign = "left";
 }
@@ -42,7 +45,9 @@ function applyGlassStylingRed(element) {
   element.style.boxShadow = "inset 0 0 10px 1px rgba(24, 24, 24, 0.37)";
   element.style.backdropFilter = "blur(2px)";
   element.style.borderRadius = "10px";
-  element.style.padding = "8px";
+  element.style.padding = "5px";
+  element.style.marginLeft = "5px";
+  element.style.marginRight = "5px";
   element.style.backgroundColor = "rgba(234, 108, 108, 0.2)";
   element.style.textAlign = "left";
 }
@@ -53,7 +58,9 @@ function applyGlassStylingGreen(element) {
   element.style.boxShadow = "inset 0 0 10px 1px rgba(24, 24, 24, 0.37)";
   element.style.backdropFilter = "blur(2px)";
   element.style.borderRadius = "10px";
-  element.style.padding = "8px";
+  element.style.padding = "5px";
+  element.style.marginLeft = "5px";
+  element.style.marginRight = "5px";
   element.style.backgroundColor = "rgba(117, 224, 108, 0.2)";
   element.style.textAlign = "left";
 }
@@ -64,7 +71,9 @@ function applyGlassStylingBlue(element) {
   element.style.boxShadow = "inset 0 0 10px 1px rgba(24, 24, 24, 0.37)";
   element.style.backdropFilter = "blur(2px)";
   element.style.borderRadius = "10px";
-  element.style.padding = "8px";
+  element.style.padding = "5px";
+  element.style.marginLeft = "5px";
+  element.style.marginRight = "5px";
   element.style.backgroundColor = "rgba(108, 149, 224, 0.2)";
   element.style.textAlign = "left";
 }
@@ -81,6 +90,7 @@ function applyGlassStylingGreyBtn(element) {
 }
 
 async function typeText(element, html, boxColor, delay = 30, isJitter = false) {
+  isTyping = true;
   const regex = /<[^>]*>|[^<]+/g;
   const parts = html.match(regex);
   element.style.fontStyle = "normal";
@@ -91,14 +101,19 @@ async function typeText(element, html, boxColor, delay = 30, isJitter = false) {
   for (let part of parts) {
     if (part.startsWith("<p")) {
       let p = document.createElement("p");
+      p.className = "text-box"; // add a class to the p element
       boxColor(p); // apply the color style to the paragraph
-            if (isJitter) {
-              let textContainer = document.querySelector(".text-container");
-              textContainer.classList.add("jitter-text");
-              textContainer.setAttribute("data-text", content);
-              console.log(content);
-            }
+      p.addEventListener("pointerdown", function (event) {
+        event.preventDefault();
+        isUserInterrupted = true
+      });
+      if (isJitter) {
+        let textContainer = document.querySelector(".text-container");
+        textContainer.classList.add("jitter-text");
+        textContainer.setAttribute("data-text", content);
+      }
       element.appendChild(p);
+      // Add pointerdown event listener to the text box element
     } else if (part.startsWith("<br")) {
       element.lastChild.innerHTML += "<br>"; // add a line break
     } else if (!part.startsWith("<")) {
@@ -114,16 +129,32 @@ async function typeText(element, html, boxColor, delay = 30, isJitter = false) {
     }
     isUserInterrupted = false;
   }
+  isTyping = false
 }
 
-async function typeTextItalic(element, html, boxColor, delay = 30) {
+async function typeTextItalic(element, html, boxColor, delay = 30, isJitter = false) {
+  isTyping = true;
   const regex = /<[^>]*>|[^<]+/g;
   const parts = html.match(regex);
+  let content;
+  if (isJitter) {
+    content = html.replace(/<[^>]*>/g, "");
+  }
   for (let part of parts) {
     if (part.startsWith("<p")) {
       let p = document.createElement("p");
+      p.className = "text-box"; // add a class to the p element
       boxColor(p); // apply the color style to the paragraph
       p.style.fontStyle = "italic";
+      p.addEventListener("pointerdown", function (event) {
+        event.preventDefault();
+        isUserInterrupted = true;
+      });
+      if (isJitter) {
+        let textContainer = document.querySelector(".text-container");
+        textContainer.classList.add("jitter-text");
+        textContainer.setAttribute("data-text", content);
+      }
       element.appendChild(p);
     } else if (part.startsWith("<br")) {
       element.lastChild.innerHTML += "<br>"; // add a line break
@@ -140,6 +171,7 @@ async function typeTextItalic(element, html, boxColor, delay = 30) {
     }
     isUserInterrupted = false;
   }
+  isTyping = false;
 }
 
 function applyTypingCss(element, isJitter = false) {
@@ -150,7 +182,7 @@ function applyTypingCss(element, isJitter = false) {
   }
   element.style.animation = typingAnimation;
   element.style.fontFamily = "monospace";
-  element.style.fontSize = "1.5em";
+  element.style.fontSize = "1em";
   element.style.color = "#fff";
 }
 
@@ -161,15 +193,15 @@ function onDeviceReady() {
     document.getElementById('deviceready').classList.add('ready');
 
   // START //
-  document.querySelector(".text-container").addEventListener("pointerdown", function () {
-      isUserInterrupted = true;
-  });
+  // document.querySelector(".text-box").addEventListener("pointerdown", function () {
+  //     isUserInterrupted = true;
+  // });
   
   sceneZero();
 }
 
 //|SCENE TITLE
-let currentSceneTitle = "Project: Salvation"
+let currentSceneTitle = "Project: Salvation";
 //| INVENTORY
 let INVENTORY = [];
 document.addEventListener("DOMContentLoaded", function () {
@@ -232,14 +264,15 @@ function sleep(ms) {
 //|SCENE ZERO
 
 function sceneZero() {
+    let gameContainer = document.querySelector(".container");
+    gameContainer.style.backgroundImage = "url(img/00.png)";
     let textContainer = document.querySelector(".text-container");
-    let userControlsContainer = document.querySelector(
-      ".user-controls-container"
-    );
+    let userControlsContainer = document.querySelector(".user-controls-container");
+   
     applyTypingCss(textContainer, true);
     typeText(
       textContainer,
-      '<p>Greetings... <br> Press "wake up" to begin.</p>',
+      '<p>Press "wake up" to begin.</p>',
       applyGlassStylingGrey,
       undefined,
       true
@@ -258,25 +291,30 @@ function sceneZero() {
     userControlsContainer.appendChild(wakeUpButton);
 
     // CLICK
-    wakeUpButton.addEventListener("pointerdown", function () {
-      // Clear text container
-      textContainer.innerHTML = "";
-      // remove button from user controls container
-      userControlsContainer.removeChild(wakeUpButton);
-      // start SceneOne
-      sceneOne();
-    });
+  wakeUpButton.addEventListener("pointerdown", function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+    // Clear text container
+    textContainer.innerHTML = "";
+    // remove button from user controls container
+    userControlsContainer.removeChild(wakeUpButton);
+    // start SceneOne
+    sceneOne();
+  });
 }
 
 //|SCENE ONE
 
 async function sceneOne() {
-  let gameContainer = document.querySelector(".game-container");
+  let gameContainer = document.querySelector(".container");
   gameContainer.style.backgroundImage = "url(img/01.jpg)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
-  let userControlsContainer = document.querySelector(
-    ".user-controls-container"
-  );
+  let userControlsContainer = document.querySelector(".user-controls-container");
+  
 
   let textContainer = document.querySelector(".text-container");
   applyTypingCss(textContainer);
@@ -299,17 +337,21 @@ async function sceneOne() {
   applyGlassStylingGreyBtn(lookBtn);
   applyGlassStylingGreyBtn(helpBtn);
 
+  // once offs
+  let LEG = false;
+  let LOOK = false;
+
   await typeTextItalic(
     textContainer,
     "<p>Cold... drops on my face... dew? Morning. It's morning.</p>",
-    applyGlassStylingGreen
+    applyGlassStylingGreen,
   );
 
   await sleep(1500);
   await typeText(
     textContainer,
     "<p>You open your eyes and stare up at the sky, you find yourself laying on your back in the forest. You push your hands against the damp earth and lift yourself into a sitting position.</p>",
-    applyGlassStylingRed
+    applyGlassStylingRed,
   );
 
   await sleep(2000);
@@ -320,7 +362,7 @@ async function sceneOne() {
   await typeTextItalic(
     textContainer,
     "<p>How did I get here? Last thing I remember...</p>",
-    applyGlassStylingGreen
+    applyGlassStylingGreen,
   );
 
   await sleep(1500);
@@ -328,7 +370,7 @@ async function sceneOne() {
   await typeTextItalic(
     textContainer,
     "<p>Bright lights...</p>",
-    applyGlassStylingGreen
+    applyGlassStylingGreen,
   )
 
   await sleep(1500);
@@ -336,7 +378,7 @@ async function sceneOne() {
   await typeTextItalic(
     textContainer,
     "<p>Someone... speaking to me...</p>",
-    applyGlassStylingGreen
+    applyGlassStylingGreen,
   )
 
   await sleep(2000);
@@ -344,7 +386,7 @@ async function sceneOne() {
   await typeText(
     textContainer,
     "<p>As you lift yourself to your feet you cry out as a sharp pain in your right leg causes you to fall over.</p>",
-    applyGlassStylingRed
+    applyGlassStylingRed,
   );
 
   // append button to user controls container
@@ -353,17 +395,20 @@ async function sceneOne() {
 
   inspectBtn.addEventListener("pointerdown", async function () {
     // Button click check
-    if (btnRecentlyClicked) return;
+    if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true
     setTimeout(() => {
       btnRecentlyClicked = false;
-    }, 500);
+    }, 1000);
 
     // Clear text container
     textContainer.innerHTML = "";
     // remove button from user controls container
     inspectBtn.remove();
     lookBtn.remove();
+
+    // leg once off
+    LEG = true;
     // write new text
     await typeText(
       textContainer,
@@ -378,23 +423,31 @@ async function sceneOne() {
       applyGlassStylingGreen
     );
     // append new button
-    userControlsContainer.appendChild(helpBtn);
-    userControlsContainer.appendChild(lookBtn);
+    if (LEG == true) {
+      userControlsContainer.appendChild(helpBtn);
+    }
+    if (LOOK == false) {
+          userControlsContainer.appendChild(lookBtn);
+    }
   });
 
   lookBtn.addEventListener("pointerdown", async function () {
     // Button click check
-    if (btnRecentlyClicked) return;
+    if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
     setTimeout(() => {
       btnRecentlyClicked = false;
-    }, 500);
+    }, 1000);
 
     // Clear text container
     textContainer.innerHTML = "";
     // remove button from user controls container
     inspectBtn.remove();
     lookBtn.remove();
+    helpBtn.remove();
+
+    // once off
+    LOOK = true;
     // write new text
     await typeText(
       textContainer,
@@ -402,16 +455,21 @@ async function sceneOne() {
       applyGlassStylingRed
     );
     // append new button
-    userControlsContainer.appendChild(inspectBtn);
+    if (LEG == false) {
+      userControlsContainer.appendChild(inspectBtn);
+    }
+    if (LEG == true) {
+      userControlsContainer.appendChild(helpBtn);
+    }
   });
 
   helpBtn.addEventListener("pointerdown", async function () {
     // Button click check
-    if (btnRecentlyClicked) return;
+    if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
     setTimeout(() => {
       btnRecentlyClicked = false;
-    }, 500);
+    }, 1000);
 
     // Clear text container
     textContainer.innerHTML = "";
@@ -433,7 +491,7 @@ async function sceneOne() {
 //|SCENE TWO
 
   async function sceneTwo() {
-    let gameContainer = document.querySelector(".game-container");
+    let gameContainer = document.querySelector(".container");
     gameContainer.style.backgroundImage = "url(img/03.jpg)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
 
@@ -483,7 +541,7 @@ async function sceneOne() {
 
     inspectBtn.addEventListener("pointerdown", async function () {
       // Button click check
-      if (btnRecentlyClicked) return;
+      if (isTyping || btnRecentlyClicked) return;
       btnRecentlyClicked = true;
       setTimeout(() => {
         btnRecentlyClicked = false;
@@ -508,7 +566,7 @@ async function sceneOne() {
 
     leftBtn.addEventListener("pointerdown", async function () {
       // Button click check
-      if (btnRecentlyClicked) return;
+      if (isTyping || btnRecentlyClicked) return;
       btnRecentlyClicked = true;
       setTimeout(() => {
         btnRecentlyClicked = false;
@@ -557,7 +615,7 @@ async function sceneOne() {
 
     investigateBtn.addEventListener("pointerdown", async function () {
       // Button click check
-      if (btnRecentlyClicked) return;
+      if (isTyping || btnRecentlyClicked) return;
       btnRecentlyClicked = true;
       setTimeout(() => {
         btnRecentlyClicked = false;
@@ -573,7 +631,7 @@ async function sceneOne() {
 
     townBtn.addEventListener("pointerdown", async function () {
       // Button click check
-      if (btnRecentlyClicked) return;
+      if (isTyping || btnRecentlyClicked) return;
       btnRecentlyClicked = true;
       setTimeout(() => {
         btnRecentlyClicked = false;
@@ -591,7 +649,7 @@ async function sceneOne() {
 //|SCENE COTTAGE
   
 async function sceneCottage() {
-  let gameContainer = document.querySelector(".game-container");
+  let gameContainer = document.querySelector(".container");
   gameContainer.style.backgroundImage = "url(img/05.jpg)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
   let userControlsContainer = document.querySelector(
@@ -645,11 +703,11 @@ async function sceneCottage() {
 
   enterBtn.addEventListener("pointerdown", async function () {
     //Button click check
-    if (btnRecentlyClicked) return;
+    if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
     setTimeout(() => {
       btnRecentlyClicked = false;
-    }, 500);
+    }, 1000);
 
     // change bg
     gameContainer.style.backgroundImage = "url(img/inside-cottage.jpg)";
@@ -692,11 +750,11 @@ async function sceneCottage() {
 
   readLetterBtn.addEventListener("pointerdown", async function () {
     //Button click check
-    if (btnRecentlyClicked) return;
+    if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
     setTimeout(() => {
       btnRecentlyClicked = false;
-    }, 500);
+    }, 1000);
 
     //clear text container
     textContainer.innerHTML = "";
@@ -727,11 +785,11 @@ async function sceneCottage() {
 
   takeLetterBtn.addEventListener("pointerdown", async function () {
     // Button click check
-    if (btnRecentlyClicked) return;
+    if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
     setTimeout(() => {
       btnRecentlyClicked = false;
-    }, 500);
+    }, 1000);
 
     // clear text container
     textContainer.innerHTML = "";
@@ -755,11 +813,11 @@ async function sceneCottage() {
 
   nextRoomBtn.addEventListener("pointerdown", async function () {
     // Button click check
-    if (btnRecentlyClicked) return;
+    if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
     setTimeout(() => {
       btnRecentlyClicked = false;
-    }, 500);
+    }, 1000);
 
     // change bg
     gameContainer.style.backgroundImage = "url(img/inside-cottage-bedroom.jpg)";
@@ -789,11 +847,11 @@ async function sceneCottage() {
 
   leaveRoomBtn.addEventListener("pointerdown", async function () {
     // Button click check
-    if (btnRecentlyClicked) return;
+    if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
     setTimeout(() => {
       btnRecentlyClicked = false;
-    }, 500);
+    }, 1000);
     // change bg
     gameContainer.style.backgroundImage = "url(img/inside-cottage.jpg)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
@@ -817,11 +875,11 @@ async function sceneCottage() {
 
   exitBtn.addEventListener("pointerdown", async function () {
     // Button click check
-    if (btnRecentlyClicked) return;
+    if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
     setTimeout(() => {
       btnRecentlyClicked = false;
-    }, 500);
+    }, 1000);
     // Clear text container
     textContainer.innerHTML = "";
     // remove button from user controls container
@@ -850,11 +908,11 @@ async function sceneCottage() {
 
   townBtn.addEventListener("pointerdown", async function () {
     // Button click check
-    if (btnRecentlyClicked) return;
+    if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
     setTimeout(() => {
       btnRecentlyClicked = false;
-    }, 500);
+    }, 1000);
 
     // Clear text container
     textContainer.innerHTML = "";
@@ -872,7 +930,7 @@ async function sceneCottage() {
 //|SCENE THREE
 
 async function sceneThree() {
-  let gameContainer = document.querySelector(".game-container");
+  let gameContainer = document.querySelector(".container");
   gameContainer.style.backgroundImage = "url(img/06.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
   let userControlsContainer = document.querySelector(
@@ -929,11 +987,11 @@ async function sceneThree() {
 
   lookBtn.addEventListener("pointerdown", async function () {
     // Button click check
-    if (btnRecentlyClicked) return;
+    if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
     setTimeout(() => {
       btnRecentlyClicked = false;
-    }, 500);
+    }, 1000);
 
     // Clear text container
     textContainer.innerHTML = "";
@@ -958,11 +1016,11 @@ async function sceneThree() {
 
   townSquareBtn.addEventListener("pointerdown", async function () {
     // Button click check
-    if (btnRecentlyClicked) return;
+    if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
     setTimeout(() => {
       btnRecentlyClicked = false;
-    }, 500);
+    }, 1000);
 
     // Clear text container
     textContainer.innerHTML = "";
@@ -979,11 +1037,11 @@ async function sceneThree() {
 
   marketBtn.addEventListener("pointerdown", async function () {
     // Button click check
-    if (btnRecentlyClicked) return;
+    if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
     setTimeout(() => {
       btnRecentlyClicked = false;
-    }, 500);
+    }, 1000);
 
     // Clear text container
     textContainer.innerHTML = "";
@@ -1012,11 +1070,11 @@ async function sceneThree() {
 
   leftBtn.addEventListener("pointerdown", async function () {
     // Button click check
-    if (btnRecentlyClicked) return;
+    if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
     setTimeout(() => {
       btnRecentlyClicked = false;
-    }, 500);
+    }, 1000);
 
     // Clear text container
     textContainer.innerHTML = "";
@@ -1045,11 +1103,11 @@ async function sceneThree() {
 
   walkBtn.addEventListener("pointerdown", async function () {
     // Button click check
-    if (btnRecentlyClicked) return;
+    if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
     setTimeout(() => {
       btnRecentlyClicked = false;
-    }, 500);
+    }, 1000);
 
     // Clear text container
     textContainer.innerHTML = "";
@@ -1079,7 +1137,7 @@ async function sceneThree() {
 //|SCENE TOWN SQUARE
 
 async function sceneTownSquare() {
-  let gameContainer = document.querySelector(".game-container");
+  let gameContainer = document.querySelector(".container");
   gameContainer.style.backgroundImage = "url(img/07.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
   let userControlsContainer = document.querySelector(
@@ -1142,11 +1200,11 @@ async function sceneTownSquare() {
 
   clinicBtn.addEventListener("pointerdown", async function () {
     // Button click check
-    if (btnRecentlyClicked) return;
+    if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
     setTimeout(() => {
       btnRecentlyClicked = false;
-    }, 500);
+    }, 1000);
 
     // header title
     document.getElementById("header-title").textContent = "Clinic";
