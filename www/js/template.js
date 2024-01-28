@@ -57,16 +57,16 @@ async function sceneName() {
   let gameContainer = document.querySelector(".game-container");
   gameContainer.style.backgroundImage = "url(img/)"; // Add BG image
   gameContainer.style.transition = "background-image 4s ease-in-out";
+
   let userControlsContainer = document.querySelector(
     ".user-controls-container"
   );
-
   let textContainer = document.querySelector(".text-container");
   applyTypingCss(textContainer);
 
   // header title
   currentSceneTitle = ""; // Add title
-  document.getElementById("header-title").textContent = currentSceneTitle; 
+  document.getElementById("header-title").textContent = currentSceneTitle;
 
   // create button
   let buttonNameBtn = document.createElement("button"); // create buttons for scene
@@ -77,10 +77,13 @@ async function sceneName() {
   // add styling for button
   applyGlassStylingGreyBtn(buttonNameBtn);
 
-  await typeTextItalic(
+  // once offs
+  let ONCEOFF = false;
+
+  await typeText(
     textContainer,
     "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-    applyGlassStylingGreen
+    applyGlassStylingRed
   );
 
   await sleep(1500); // normal wait time between texts
@@ -90,11 +93,11 @@ async function sceneName() {
 
   buttonNameBtn.addEventListener("pointerdown", async function () {
     // Button click check
-    if (btnRecentlyClicked) return;
+    if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
     setTimeout(() => {
       btnRecentlyClicked = false;
-    }, 500);
+    }, 1000);
 
     // Clear text container
     textContainer.innerHTML = "";
@@ -113,6 +116,5 @@ async function sceneName() {
 
     // append new button
     userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
-
   });
 }

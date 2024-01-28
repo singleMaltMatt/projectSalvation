@@ -21,83 +21,30 @@
 // See https://cordova.apache.org/docs/en/latest/cordova/events/events.html#deviceready
 document.addEventListener('deviceready', onDeviceReady, false);
 
+// IMPORTS
+// NORMAL
+import { applyGlassStylingGrey } from "./boxes.js";
+import { applyGlassStylingRed } from "./boxes.js";
+import { applyGlassStylingGreen } from "./boxes.js";
+import { applyGlassStylingBlue } from "./boxes.js";
+import { applyGlassStylingGreyBtn } from "./boxes.js";
+// EFFECTS
+import { applyGlassStylingGreyFlicker } from "./boxes.js";
+import { applyGlassStylingRedFlicker } from "./boxes.js";
+import { applyGlassStylingGreenFlicker } from "./boxes.js";
+import { applyGlassStylingBlueFlicker } from "./boxes.js";
+import { applyGlassStylingGreyBtnFlicker } from "./boxes.js";
+
 let isUserInterrupted = false;
 let interruptionIndex = 0;
 let btnRecentlyClicked = false;
 let isTyping = false;
 
-/* COLOR: GREY */
-function applyGlassStylingGrey(element) {
-  element.style.border = "1px solid rgba(125, 125, 125, 0.5)";
-  element.style.boxShadow = "inset 0 0 10px 1px rgba(24, 24, 24, 0.37)";
-  element.style.backdropFilter = "blur(2px)";
-  element.style.borderRadius = "10px";
-  element.style.padding = "5px";
-  element.style.marginLeft = "5px";
-  element.style.marginRight = "5px";
-  element.style.backgroundColor = "rgba(125, 125, 125, 0.5)";
-  element.style.textAlign = "left";
-}
-
-/* COLOR: RED */
-function applyGlassStylingRed(element) {
-  element.style.border = "1px solid rgba(234, 108, 108, 0.2)";
-  element.style.boxShadow = "inset 0 0 10px 1px rgba(24, 24, 24, 0.37)";
-  element.style.backdropFilter = "blur(2px)";
-  element.style.borderRadius = "10px";
-  element.style.padding = "5px";
-  element.style.marginLeft = "5px";
-  element.style.marginRight = "5px";
-  element.style.backgroundColor = "rgba(234, 108, 108, 0.2)";
-  element.style.textAlign = "left";
-}
-
-/* COLOR: GREEN */
-function applyGlassStylingGreen(element) {
-  element.style.border = "1px solid rgba(117, 224, 108, 0.2)";
-  element.style.boxShadow = "inset 0 0 10px 1px rgba(24, 24, 24, 0.37)";
-  element.style.backdropFilter = "blur(2px)";
-  element.style.borderRadius = "10px";
-  element.style.padding = "5px";
-  element.style.marginLeft = "5px";
-  element.style.marginRight = "5px";
-  element.style.backgroundColor = "rgba(117, 224, 108, 0.2)";
-  element.style.textAlign = "left";
-}
-
-/* COLOR: BLUE */
-function applyGlassStylingBlue(element) {
-  element.style.border = "1px solid rgba(108, 149, 224, 0.2)";
-  element.style.boxShadow = "inset 0 0 10px 1px rgba(24, 24, 24, 0.37)";
-  element.style.backdropFilter = "blur(2px)";
-  element.style.borderRadius = "10px";
-  element.style.padding = "5px";
-  element.style.marginLeft = "5px";
-  element.style.marginRight = "5px";
-  element.style.backgroundColor = "rgba(108, 149, 224, 0.2)";
-  element.style.textAlign = "left";
-}
-
-function applyGlassStylingGreyBtn(element) {
-  element.style.border = "1px solid rgba(125, 125, 125, 0.5)";
-  element.style.boxShadow = "inset 0 0 10px 1px rgba(24, 24, 24, 0.37)";
-  element.style.backdropFilter = "blur(2px)";
-  element.style.borderRadius = "10px";
-  element.style.padding = "15px";
-  element.style.backgroundColor = "rgba(125, 125, 125, 0.5)";
-  element.style.textAlign = "center";
-  element.style.width = "75%";
-}
-
-async function typeText(element, html, boxColor, delay = 30, isJitter = false) {
+async function typeText(element, html, boxColor, delay = 30) {
   isTyping = true;
   const regex = /<[^>]*>|[^<]+/g;
   const parts = html.match(regex);
   element.style.fontStyle = "normal";
-  let content;
-  if (isJitter) {
-    content = html.replace(/<[^>]*>/g, ""); // strips HTML tages from the entire HTML string
-  }
   for (let part of parts) {
     if (part.startsWith("<p")) {
       let p = document.createElement("p");
@@ -107,11 +54,6 @@ async function typeText(element, html, boxColor, delay = 30, isJitter = false) {
         event.preventDefault();
         isUserInterrupted = true
       });
-      if (isJitter) {
-        let textContainer = document.querySelector(".text-container");
-        textContainer.classList.add("jitter-text");
-        textContainer.setAttribute("data-text", content);
-      }
       element.appendChild(p);
       // Add pointerdown event listener to the text box element
     } else if (part.startsWith("<br")) {
@@ -132,14 +74,10 @@ async function typeText(element, html, boxColor, delay = 30, isJitter = false) {
   isTyping = false
 }
 
-async function typeTextItalic(element, html, boxColor, delay = 30, isJitter = false) {
+async function typeTextItalic(element, html, boxColor, delay = 30) {
   isTyping = true;
   const regex = /<[^>]*>|[^<]+/g;
   const parts = html.match(regex);
-  let content;
-  if (isJitter) {
-    content = html.replace(/<[^>]*>/g, "");
-  }
   for (let part of parts) {
     if (part.startsWith("<p")) {
       let p = document.createElement("p");
@@ -150,11 +88,6 @@ async function typeTextItalic(element, html, boxColor, delay = 30, isJitter = fa
         event.preventDefault();
         isUserInterrupted = true;
       });
-      if (isJitter) {
-        let textContainer = document.querySelector(".text-container");
-        textContainer.classList.add("jitter-text");
-        textContainer.setAttribute("data-text", content);
-      }
       element.appendChild(p);
     } else if (part.startsWith("<br")) {
       element.lastChild.innerHTML += "<br>"; // add a line break
@@ -174,12 +107,8 @@ async function typeTextItalic(element, html, boxColor, delay = 30, isJitter = fa
   isTyping = false;
 }
 
-function applyTypingCss(element, isJitter = false) {
+function applyTypingCss(element) {
   let typingAnimation = "typing 2s steps(22), blink .5s step-end infinite alternate";
-  let jitterAnimation = "jitter 0.1s infinite";
-  if (isJitter) {
-    typingAnimation += ", " + jitterAnimation;
-  }
   element.style.animation = typingAnimation;
   element.style.fontFamily = "monospace";
   element.style.fontSize = "1em";
@@ -269,13 +198,11 @@ function sceneZero() {
     let textContainer = document.querySelector(".text-container");
     let userControlsContainer = document.querySelector(".user-controls-container");
    
-    applyTypingCss(textContainer, true);
+    applyTypingCss(textContainer);
     typeText(
       textContainer,
       '<p>Press "wake up" to begin.</p>',
       applyGlassStylingGrey,
-      undefined,
-      true
     );
 
     // create button
@@ -313,9 +240,8 @@ async function sceneOne() {
   let gameContainer = document.querySelector(".container");
   gameContainer.style.backgroundImage = "url(img/01.jpg)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
-  let userControlsContainer = document.querySelector(".user-controls-container");
-  
 
+  let userControlsContainer = document.querySelector(".user-controls-container");
   let textContainer = document.querySelector(".text-container");
   applyTypingCss(textContainer);
 
@@ -774,10 +700,10 @@ async function sceneCottage() {
     typeTextItalic(
       textContainer,
       "<p>Astrid, My Love <br><br> Today was a long day, I am very tired. I just sat down to write you this letter while having my dinner, oh how I miss your cooking, and how excited I am for you to get back. It's only been a week now, so I have another while to wait, but hopefully by the time you receive this letter it will be a week closer. <br> How is your sister? I hope she has recovered from her fall by now. With you there I am sure she will heal much faster. <br> The strangest thing happened today. Cartloads of people started leaving Holmesburrow, some even running into the forest. I saw it as I was taking a walk by the old road. A young man even came shouting for me to 'leave if you are wise' mumbling something about the military and the end of the world or some nonsense. These town folk are getting too much city influence these days. <br> Send my regards to your sister and the children. I will take a walk into town tomorrow to post this letter, but for now I don't feel very well, think I will have a lie down. Missing you every day. <br><br> x x Filip</p>",
-      applyGlassStylingRed
+      applyGlassStylingRedFlicker
     );
     
-    await sleep(3000);
+    await sleep(4000);
     userControlsContainer.appendChild(takeLetterBtn);
     userControlsContainer.appendChild(nextRoomBtn);
     userControlsContainer.appendChild(exitBtn);
