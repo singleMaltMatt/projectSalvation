@@ -131,6 +131,12 @@ function onDeviceReady() {
 
 //|SCENE TITLE
 let currentSceneTitle = "Project: Salvation";
+function getCurrentSceneTitle() {
+  return currentSceneTitle;
+}
+function setCurrentSceneTitle(value) {
+currentSceneTitle = value
+}
 //| INVENTORY
 let INVENTORY = [];
 document.addEventListener("DOMContentLoaded", function () {
@@ -185,6 +191,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //| GLOBAL BOOLEANS
 let LETTER = false;
+let COORDINATES = false;
+let GIRL = false;
+let INFORMATION = false;
+let ADVICE = false;
+let STORY = false;
 
 //|SLEEPER
 function sleep(ms) {
@@ -207,15 +218,19 @@ function sceneZero() {
 
     // create button
     let wakeUpButton = document.createElement("button");
+    let townButton = document.createElement("button");
 
     // set button text
     wakeUpButton.textContent = "wake up";
+    townButton.textContent = "teleport to town";
 
     // add styling for button
     applyGlassStylingGreyBtn(wakeUpButton);
+    applyGlassStylingGreyBtn(townButton);
 
     // append button to user controls container
     userControlsContainer.appendChild(wakeUpButton);
+    userControlsContainer.appendChild(townButton);
 
     // CLICK
   wakeUpButton.addEventListener("pointerdown", function () {
@@ -229,8 +244,25 @@ function sceneZero() {
     textContainer.innerHTML = "";
     // remove button from user controls container
     userControlsContainer.removeChild(wakeUpButton);
+    userControlsContainer.removeChild(townButton);
     // start SceneOne
     sceneOne();
+  });
+
+  townButton.addEventListener("pointerdown", function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+    // Clear text container
+    textContainer.innerHTML = "";
+    // remove button from user controls container
+    userControlsContainer.removeChild(wakeUpButton);
+    userControlsContainer.removeChild(townButton);
+    // start SceneOne
+    sceneTownSquare();
   });
 }
 
@@ -246,8 +278,8 @@ async function sceneOne() {
   applyTypingCss(textContainer);
 
   // header title
-  currentSceneTitle = "Deep in the Forest";
-  document.getElementById("header-title").textContent = currentSceneTitle;
+  setCurrentSceneTitle("Deep in the Forest");
+  document.getElementById("header-title").textContent = getCurrentSceneTitle();
   // create button
   let inspectBtn = document.createElement("button");
   let lookBtn = document.createElement("button");
@@ -429,8 +461,8 @@ async function sceneOne() {
     applyTypingCss(textContainer);
 
     // header title
-    currentSceneTitle = "Fork in the Road";
-    document.getElementById("header-title").textContent = currentSceneTitle;
+    setCurrentSceneTitle("Fork in the Road");
+    document.getElementById("header-title").textContent = getCurrentSceneTitle();
 
     // create button
     let inspectBtn = document.createElement("button");
@@ -586,8 +618,8 @@ async function sceneCottage() {
   applyTypingCss(textContainer);
 
   //header title
-  currentSceneTitle = "The Cottage";
-  document.getElementById("header-title").textContent = currentSceneTitle;
+  setCurrentSceneTitle("The Cottage");
+  document.getElementById("header-title").textContent = getCurrentSceneTitle();
   //create button
   let enterBtn = document.createElement("button");
   let townBtn = document.createElement("button");
@@ -614,6 +646,8 @@ async function sceneCottage() {
   applyGlassStylingGreyBtn(nextRoomBtn);
   applyGlassStylingGreyBtn(takeLetterBtn);
   applyGlassStylingGreyBtn(leaveRoomBtn);
+
+  let ROOM = false;
 
   await typeText(
     textContainer,
@@ -666,7 +700,9 @@ async function sceneCottage() {
       );
     }
     
-    userControlsContainer.appendChild(nextRoomBtn);
+    if (ROOM == false) {
+      userControlsContainer.appendChild(nextRoomBtn);
+    }
     if (LETTER == false) {
       userControlsContainer.appendChild(readLetterBtn);
     };
@@ -705,7 +741,9 @@ async function sceneCottage() {
     
     await sleep(4000);
     userControlsContainer.appendChild(takeLetterBtn);
-    userControlsContainer.appendChild(nextRoomBtn);
+    if (ROOM == false) {
+      userControlsContainer.appendChild(nextRoomBtn);
+    }
     userControlsContainer.appendChild(exitBtn);
   });
 
@@ -732,9 +770,10 @@ async function sceneCottage() {
     LETTER = true;
     INVENTORY.push({ name: "Letter", description: "A letter you found at the cottage" });
     await sleep(1000);
-    userControlsContainer.appendChild(nextRoomBtn);
+    if (ROOM == false) {
+      userControlsContainer.appendChild(nextRoomBtn);
+    }
     userControlsContainer.appendChild(exitBtn);
-
   });
 
   nextRoomBtn.addEventListener("pointerdown", async function () {
@@ -754,6 +793,9 @@ async function sceneCottage() {
     nextRoomBtn.remove();
     takeLetterBtn.remove();
     exitBtn.remove();
+
+    // local conditional
+    ROOM = true;
     // write new text
     await typeText(
       textContainer,
@@ -795,7 +837,9 @@ async function sceneCottage() {
     if (LETTER == false) {
       userControlsContainer.appendChild(readLetterBtn);
     }
-    userControlsContainer.appendChild(nextRoomBtn);
+    if (ROOM == false) {
+      userControlsContainer.appendChild(nextRoomBtn);
+    }
     userControlsContainer.appendChild(exitBtn);
   });
 
@@ -806,6 +850,9 @@ async function sceneCottage() {
     setTimeout(() => {
       btnRecentlyClicked = false;
     }, 1000);
+    // change bg
+    gameContainer.style.backgroundImage = "url(img/05.jpg)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
     // Clear text container
     textContainer.innerHTML = "";
     // remove button from user controls container
@@ -857,7 +904,7 @@ async function sceneCottage() {
 
 async function sceneThree() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/06.png)";
+  gameContainer.style.backgroundImage = "url(img/town-in-the-distance.jpg)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
   let userControlsContainer = document.querySelector(
     ".user-controls-container"
@@ -867,8 +914,8 @@ async function sceneThree() {
   applyTypingCss(textContainer);
 
   // header title
-  currentSceneTitle = "Forest Path to Town";
-  document.getElementById("header-title").textContent = currentSceneTitle;
+  setCurrentSceneTitle("Forest Path to Town");
+  document.getElementById("header-title").textContent = getCurrentSceneTitle();
 
   // create button
   let lookBtn = document.createElement("button");
@@ -919,6 +966,8 @@ async function sceneThree() {
       btnRecentlyClicked = false;
     }, 1000);
 
+    gameContainer.style.backgroundImage = "url(img/town-square.jpg)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
     // Clear text container
     textContainer.innerHTML = "";
 
@@ -1035,6 +1084,8 @@ async function sceneThree() {
       btnRecentlyClicked = false;
     }, 1000);
 
+    gameContainer.style.backgroundImage = "url(img/forest-path-tyre-tracks.jpg)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
     // Clear text container
     textContainer.innerHTML = "";
 
@@ -1046,7 +1097,7 @@ async function sceneThree() {
     // write new text
     await typeTextItalic(
       textContainer,
-      "<p>Bad idea, I might get lost up there...</p>",
+      "<p>Bad idea, I might get lost up there... Maybe I should try to find out where this leads first.</p>",
       applyGlassStylingGreen
     );
 
@@ -1064,7 +1115,7 @@ async function sceneThree() {
 
 async function sceneTownSquare() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/07.png)";
+  gameContainer.style.backgroundImage = "url(img/town-square.jpg)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
   let userControlsContainer = document.querySelector(
     ".user-controls-container"
@@ -1074,8 +1125,8 @@ async function sceneTownSquare() {
   applyTypingCss(textContainer);
 
   // header title
-  currentSceneTitle = "Town Square";
-  document.getElementById("header-title").textContent = currentSceneTitle;
+  setCurrentSceneTitle("Town Square");
+  document.getElementById("header-title").textContent = getCurrentSceneTitle();
 
   // create button
   let clinicBtn = document.createElement("button");
@@ -1132,8 +1183,6 @@ async function sceneTownSquare() {
       btnRecentlyClicked = false;
     }, 1000);
 
-    // header title
-    document.getElementById("header-title").textContent = "Clinic";
     // Clear text container
     textContainer.innerHTML = "";
 
@@ -1148,18 +1197,981 @@ async function sceneTownSquare() {
     townSquareBtn.remove();
 
     // write new text
+    sceneClinic();
+    // if he has key, add new options here *****
+  });
+
+  poolBtn.addEventListener("pointerdown", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    clinicBtn.remove();
+    poolBtn.remove();
+    innBtn.remove();
+    hallBtn.remove();
+    residentialBtn.remove();
+    storeBtn.remove();
+    churchBtn.remove();
+    townSquareBtn.remove();
+
+    // write new text
+    scenePool();
+    // if he has key, add new options here *****
+  });
+
+  innBtn.addEventListener("pointerdown", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    clinicBtn.remove();
+    poolBtn.remove();
+    innBtn.remove();
+    hallBtn.remove();
+    residentialBtn.remove();
+    storeBtn.remove();
+    churchBtn.remove();
+    townSquareBtn.remove();
+
+    // write new text
+    sceneInn();
+    // if he has key, add new options here *****
+  });
+
+  hallBtn.addEventListener("pointerdown", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    clinicBtn.remove();
+    poolBtn.remove();
+    innBtn.remove();
+    hallBtn.remove();
+    residentialBtn.remove();
+    storeBtn.remove();
+    churchBtn.remove();
+    townSquareBtn.remove();
+
+    // write new text
+    sceneHall();
+    // if he has key, add new options here *****
+  });
+
+  residentialBtn.addEventListener("pointerdown", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    clinicBtn.remove();
+    poolBtn.remove();
+    innBtn.remove();
+    hallBtn.remove();
+    residentialBtn.remove();
+    storeBtn.remove();
+    churchBtn.remove();
+    townSquareBtn.remove();
+
+    // write new text
+    sceneResidential();
+    // if he has key, add new options here *****
+  });
+
+  storeBtn.addEventListener("pointerdown", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    clinicBtn.remove();
+    poolBtn.remove();
+    innBtn.remove();
+    hallBtn.remove();
+    residentialBtn.remove();
+    storeBtn.remove();
+    churchBtn.remove();
+    townSquareBtn.remove();
+
+    // write new text
+    sceneStore();
+    // if he has key, add new options here *****
+  });
+
+  churchBtn.addEventListener("pointerdown", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    clinicBtn.remove();
+    poolBtn.remove();
+    innBtn.remove();
+    hallBtn.remove();
+    residentialBtn.remove();
+    storeBtn.remove();
+    churchBtn.remove();
+    townSquareBtn.remove();
+
+    // write new text
+    sceneChurch();
+    // if he has key, add new options here *****
+  });
+
+}
+
+// ******************** |ZONES| *********************************
+//| SCENE CLINIC
+async function sceneClinic() {
+  let gameContainer = document.querySelector(".container");
+  gameContainer.style.backgroundImage = "url(img/000clinic.png)";
+  gameContainer.style.transition = "background-image 4s ease-in-out";
+
+  let userControlsContainer = document.querySelector(".user-controls-container");
+  let textContainer = document.querySelector(".text-container");
+  applyTypingCss(textContainer);
+
+  // header title
+
+  setCurrentSceneTitle("Clinic");
+  document.getElementById("header-title").textContent = getCurrentSceneTitle();
+
+  // create button
+  let townSquareBtn = document.createElement("button"); // create buttons for scene
+
+  // set button text
+  townSquareBtn.textContent = "go to town square";
+
+  // add styling for button
+  applyGlassStylingGreyBtn(townSquareBtn);
+
+  // local conditionals
+//   let ONCEOFF = false;
+
+  await typeText(
+    textContainer,
+    "<p>The doors to the clinic are chained shut, a heavy silver padlock glistens in the sunlight</p>",
+    applyGlassStylingRed
+  );
+
+  await sleep(1500);
+
+  // append button to user controls container
+  userControlsContainer.appendChild(townSquareBtn);
+
+  townSquareBtn.addEventListener("pointerdown", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    townSquareBtn.remove(); // remove relevant buttons
+
+    sceneTownSquare();
+
+  });
+}
+
+//| SCENE SWIMMING POOL
+async function scenePool() {
+  let gameContainer = document.querySelector(".container");
+  gameContainer.style.backgroundImage = "url(img/000pool.png)";
+  gameContainer.style.transition = "background-image 4s ease-in-out";
+
+  let userControlsContainer = document.querySelector(
+    ".user-controls-container"
+  );
+  let textContainer = document.querySelector(".text-container");
+  applyTypingCss(textContainer);
+
+  // header title
+  setCurrentSceneTitle("Swimming Pool");
+  document.getElementById("header-title").textContent = getCurrentSceneTitle();
+
+  // create button
+  let townSquareBtn = document.createElement("button"); // create buttons for scene
+
+  // set button text
+  townSquareBtn.textContent = "go to town square";
+
+  // add styling for button
+  applyGlassStylingGreyBtn(townSquareBtn);
+
+  // local conditionals
+  //   let ONCEOFF = false;
+
+  await typeText(
+    textContainer,
+    "<p>Before you lies a meticulously maintained swimming pool, enclosed by a white fence. The gate, creaking on its rusty hinges, stands ajar. Adjacent to the pool, a solitary little girl, her grip tender on a time-worn stuffed toy bear, amuses herself by playfully kicking a ball against the inn's weathered wall.</p>",
+    applyGlassStylingRed
+  );
+
+  await sleep(1500);
+
+  // append button to user controls container
+  userControlsContainer.appendChild(townSquareBtn);
+
+  townSquareBtn.addEventListener("pointerdown", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    townSquareBtn.remove(); // remove relevant buttons
+
+    sceneTownSquare();
+  });
+}
+
+//| SCENE INN
+async function sceneInn() {
+  let gameContainer = document.querySelector(".container");
+  gameContainer.style.backgroundImage = "url(img/000inn.png)";
+  gameContainer.style.transition = "background-image 4s ease-in-out";
+
+  let userControlsContainer = document.querySelector(
+    ".user-controls-container"
+  );
+  let textContainer = document.querySelector(".text-container");
+  applyTypingCss(textContainer);
+
+  // header title
+  setCurrentSceneTitle("Norrsund Inn");
+  document.getElementById("header-title").textContent = getCurrentSceneTitle();
+
+  // create button
+  let townSquareBtn = document.createElement("button");
+  let talkBtn = document.createElement("button");
+  let moneyBtn = document.createElement("button");
+  let rememberBtn = document.createElement("button");
+  let whereBtn = document.createElement("button");
+  let surviveBtn = document.createElement("button");
+  let resistanceBtn = document.createElement("button");
+  let leaveBtn = document.createElement("button");
+  let letterBtn = document.createElement("button");
+  let fatherBtn = document.createElement("button");
+  let filipBtn = document.createElement("button");
+  let spokeToBtn = document.createElement("button");
+  let spokeNotBtn = document.createElement("button");
+
+  // set button text
+  townSquareBtn.textContent = "go to town square";
+  talkBtn.textContent = "talk to matriarch";
+  moneyBtn.textContent = "i have no money";
+  rememberBtn.textContent = "i don't remember";
+  whereBtn.textContent = "where did they go?";
+  surviveBtn.textContent = "survived?";
+  resistanceBtn.textContent = "ask about the resistance";
+  leaveBtn.textContent = "leave"; //| remember this button has text and then executes sceneTownSquare();
+  letterBtn.textContent = "show her the letter";
+  fatherBtn.textContent = "your father is dead";
+  filipBtn.textContent = "tell her about filip";
+  spokeToBtn.textContent = "i spoke to father jakob";
+  spokeNotBtn.textContent = "i haven't spoken to father jacob";
+
+  // add styling for button
+  applyGlassStylingGreyBtn(townSquareBtn);
+  applyGlassStylingGreyBtn(talkBtn);
+  applyGlassStylingGreyBtn(moneyBtn);
+  applyGlassStylingGreyBtn(rememberBtn);
+  applyGlassStylingGreyBtn(whereBtn);
+  applyGlassStylingGreyBtn(surviveBtn);
+  applyGlassStylingGreyBtn(resistanceBtn);
+  applyGlassStylingGreyBtn(leaveBtn);
+  applyGlassStylingGreyBtn(letterBtn);
+  applyGlassStylingGreyBtn(fatherBtn);
+  applyGlassStylingGreyBtn(filipBtn);
+  applyGlassStylingGreyBtn(spokeToBtn);
+  applyGlassStylingGreyBtn(spokeNotBtn);
+
+  // local conditionals
+  let SAD = false;
+  let WHERE = false;
+  let SURVIVE = false;
+
+  await typeText(
+    textContainer,
+    "<p>The small inn exudes warmth and charm, with its polished wooden floors and cozy hearth crackling gently. Wooden chairs and tables, each bearing the mark of countless conversations and laughter, invite patrons to linger. In one corner, the inn's matriarch, an old, greying lady with a twinkle in her eye, tends to the hearth, her wisdom evident in the lines etched upon her face</p>",
+    applyGlassStylingRed
+  );
+
+  await sleep(1500);
+
+  // append button to user controls container
+  userControlsContainer.appendChild(talkBtn);
+  userControlsContainer.appendChild(townSquareBtn);
+
+  townSquareBtn.addEventListener("pointerdown", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    townSquareBtn.remove(); // remove relevant buttons
+
+    sceneTownSquare();
+  });
+
+  talkBtn.addEventListener("pointerdown", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    townSquareBtn.remove(); // remove relevant buttons
+    talkBtn.remove();
+
+    if (SAD == false) {
+      await typeText(
+        textContainer,
+        "<p>As you approach the Matriarch, she stands and wipes her soot covered hands on a cloth. She offers a wary smile.</p>",
+        applyGlassStylingRed
+      );
+  
+      await sleep(1500);
+  
+      await typeTextItalic(
+        textContainer,
+        "<p>You look a bit worse for wear...<br>May I offer you some Glogg?<br>Stew?</p>",
+        applyGlassStylingBlue
+      );
+  
+      await sleep(1500);
+  
+      userControlsContainer.appendChild(moneyBtn);
+    } else {
+      await typeTextItalic(
+        textContainer,
+        "<p>Ingrid:<br>Ah our handsome new face in town. What can I do for you deary?</p>",
+        applyGlassStylingBlue
+      );
+
+      await sleep(1500);
+      
+      if (STORY == true) {
+        userControlsContainer.appendChild(spokeToBtn);
+      }
+      if (STORY == false || ADVICE == true) {
+        userControlsContainer.appendChild(spokeNotBtn);
+      }
+      userControlsContainer.appendChild(townSquareBtn); //| just check this later
+    }
+
+  });
+
+  moneyBtn.addEventListener("pointerdown", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    townSquareBtn.remove();
+    moneyBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>Not to worry, this one's on the house.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
     await typeText(
       textContainer,
-      "<p>The doors to the clinic are chained shut, a heavy silver padlock glistens in the sunlight</p>",
+      "<p>She gestures for you to take a seat...</p>",
       applyGlassStylingRed
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You take a seat at the table closest to the the hearth while she disappears through a door behind the bar...<br><br>Moments later she returns with a steamy bowl of stew and places in on the table in front of you...</p>",
+      applyGlassStylingRed
+    );
+
+    await typeText(
+      textContainer,
+      "<p>Your nose catches a whiff of your delicious meal and you can't remember the last time you ate anything.<br>You immediately start slurping it down.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>The Matriarch smiles as she sits down at the opposite end of the table.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+    await typeTextItalic(
+      textContainer,
+      "<p>I haven't seen you around here before. You must be new.<br><br>I'm Ingrid, the proud owner of the Norrsund Inn. My family helped build this town many years ago. I was 4 years old when my father lit a fire in here for the very first time.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Ingrid smiles fondly at the crackling fire before turning her attention back to you...</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+    await typeTextItalic(
+      textContainer,
+      "<p>Now what brings you here?</p>",
+      applyGlassStylingBlue
     );
 
     await sleep(1500);
 
     // append new button
-    userControlsContainer.appendChild(townSquareBtn);
-    // if he has key, add new options here *****
+    userControlsContainer.appendChild(rememberBtn);
+    if (LETTER == true && GIRL == true) {
+      userControlsContainer.appendChild(letterBtn);
+    }
+    if (INFORMATION == true) {
+      userControlsContainer.appendChild(filipBtn);
+    }
   });
 
-  // ******************** REST OF BUTTONS HERE *********************************
+  rememberBtn.addEventListener("pointerdown", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    rememberBtn.remove();
+    letterBtn.remove();
+    filipBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>I... I can't remember how I got here, or even where I came from... I awoke in the forest this morning.<br>I managed to make my way to this town, hoping to find some answers...<br>But when I got here, the town looked deserted. Where are all the people?</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(2000);
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Ingrid lets out a low sigh and folds her hands on the table.</p>",
+      applyGlassStylingRed
+    );
+
+    await typeTextItalic(
+      textContainer,
+      "<p>They left. They all went running for the hills! God only knows how many of them made it, or even how many survived...</p>",
+      applyGlassStylingBlue
+    );
+
+    // append new button
+    if (WHERE == false) {
+      userControlsContainer.appendChild(whereBtn);
+    }
+    if (SURVIVE == false) {
+      userControlsContainer.appendChild(surviveBtn);
+    }
+    if (WHERE && SURVIVE == true) {
+    userControlsContainer.appendChild(townSquareBtn)
+    }
+  });
+
+  whereBtn.addEventListener("pointerdown", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    whereBtn.remove();
+    surviveBtn.remove();
+
+    // LC
+    WHERE = true;
+
+    // write new text
+    if (SURVIVE == false) {
+      await typeTextItalic(
+      textContainer,
+      "<p>Since you are not from around here; I think it would be wise to start from the beginning before I answer any more of your questions.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>While I am not as clued up about this entire situation as others that are left in the town might be, I can tell you that a little over a week ago the news started arriving from the City that our government is completely unhinged and that they plan to kill us all. No one is safe.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(2000);
+
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Now I am not one who blindly believes in these rumors, but the rest of the people in the town were clearly fearing for their lives.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>A while after that, another rumor spread like wildfire that a sort of 'resistance' has formed and any abled body willing to fight may join them.</p>",
+      applyGlassStylingBlue
+    );}
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Now, regarding where they went...</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+    
+    await typeTextItalic(
+      textContainer,
+      "<p>I assume they all ran to the Resistance with their tails tucked between their legs.<br><br>I have no doubt that they would pick up a weapon when the time comes. But, as you may have guessed from my tone...<br>I harbor some resentment that they did not even hesitate for a single moment before they fled this beautiful town of ours.</p>",
+      applyGlassStylingBlue
+    );
+
+    // append new button
+    if (WHERE == false) {
+      userControlsContainer.appendChild(whereBtn); // append relevant buttons
+    }
+    if (SURVIVE == false) {
+      userControlsContainer.appendChild(surviveBtn);
+    }
+    if (COORDINATES == true) {
+      userControlsContainer.appendChild(resistanceBtn);
+    }
+    userControlsContainer.appendChild(townSquareBtn);
+  });
+
+  surviveBtn.addEventListener("pointerdown", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    surviveBtn.remove();
+    whereBtn.remove();
+
+    // LC
+    SURVIVE = true;
+
+    // write new text
+    if (WHERE == false) {
+      await typeTextItalic(
+      textContainer,
+      "<p>Since you are not from around here; I think it would be wise to start from the beginning before I answer any more of your questions.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>While I am not as clued up about this entire situation as others that are left in the town might be, I can tell you that a little over a week ago the news started arriving from the City that our government is completely unhinged and that they plan to kill us all. No one is safe.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(2000);
+
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Now I am not one who blindly believes in these rumors, but the rest of the people in the town were clearly fearing for their lives.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>A while after that, another rumor spread like wildfire that a sort of 'resistance' has formed and any abled body willing to fight may join them.</p>",
+      applyGlassStylingBlue
+      );
+    }
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>To answer your question...</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Some say that it is not the government that wants to kill us, but this AI system that they have been working on. Rumor has it that the system has gone haywire and sent robots and drones to shoot any human they see on sight.<br><br>Some swear they have even seen these machines snooping through the trees around town.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>I have yet to see any, but if you see them, be sure to let me know?<br>My trigger finger is itching for action.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    // append new button
+    if (SURVIVE == false) {
+      userControlsContainer.appendChild(surviveBtn); // append relevant buttons
+    }
+    if (WHERE == false) {
+      userControlsContainer.appendChild(whereBtn);
+    }
+    if (COORDINATES == true) {
+      userControlsContainer.appendChild(resistanceBtn);
+    }
+    userControlsContainer.appendChild(townSquareBtn);
+  });
+  //more here
+}
+
+//| SCENE TOWN HALL
+async function sceneHall() {
+  let gameContainer = document.querySelector(".container");
+  gameContainer.style.backgroundImage = "url(img/000town-hall.png)";
+  gameContainer.style.transition = "background-image 4s ease-in-out";
+
+  let userControlsContainer = document.querySelector(
+    ".user-controls-container"
+  );
+  let textContainer = document.querySelector(".text-container");
+  applyTypingCss(textContainer);
+
+  // header title
+  setCurrentSceneTitle("Town Hall");
+  document.getElementById("header-title").textContent = getCurrentSceneTitle();
+
+  // create button
+  let townSquareBtn = document.createElement("button"); // create buttons for scene
+
+  // set button text
+  townSquareBtn.textContent = "go to town square";
+
+  // add styling for button
+  applyGlassStylingGreyBtn(townSquareBtn);
+
+  // local conditionals
+  //   let ONCEOFF = false;
+
+  await typeText(
+    textContainer,
+    "<p>The doors to the town hall are chained shut. There is a notice nailed to the door <br><br>'Closed until further notice' <br><br>There is a big old fashioned lock keeping the chains together.</p>",
+    applyGlassStylingRed
+  );
+
+  await sleep(1500);
+
+  // append button to user controls container
+  userControlsContainer.appendChild(townSquareBtn);
+
+  townSquareBtn.addEventListener("pointerdown", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    townSquareBtn.remove(); // remove relevant buttons
+
+    sceneTownSquare();
+  });
+}
+
+//| SCENE RESIDENTAIL AREA
+async function sceneResidential() {
+  let gameContainer = document.querySelector(".container");
+  gameContainer.style.backgroundImage = "url(img/000residential-area.png)";
+  gameContainer.style.transition = "background-image 4s ease-in-out";
+
+  let userControlsContainer = document.querySelector(
+    ".user-controls-container"
+  );
+  let textContainer = document.querySelector(".text-container");
+  applyTypingCss(textContainer);
+
+  // header title
+  setCurrentSceneTitle("Residential Area");
+  document.getElementById("header-title").textContent = getCurrentSceneTitle();
+
+  // create button
+  let townSquareBtn = document.createElement("button"); // create buttons for scene
+
+  // set button text
+  townSquareBtn.textContent = "go to town square";
+
+  // add styling for button
+  applyGlassStylingGreyBtn(townSquareBtn);
+
+  // local conditionals
+  //   let ONCEOFF = false;
+
+  await typeText(
+    textContainer,
+    "<p>You enter the residential area, a grassy park with a very large Wych Elm tree is growing at the center.<br>A few wooden benches have been placed underneath the tree.<br>As you look around you can see various houses, each radiating with its own personality.</p>",
+    applyGlassStylingRed
+  );
+
+  await sleep(1500);
+
+  // append button to user controls container
+  userControlsContainer.appendChild(townSquareBtn);
+
+  townSquareBtn.addEventListener("pointerdown", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    townSquareBtn.remove(); // remove relevant buttons
+
+    sceneTownSquare();
+  });
+}
+
+//| SCENE STORE
+async function sceneStore() {
+  let gameContainer = document.querySelector(".container");
+  gameContainer.style.backgroundImage = "url(img/000store.png)";
+  gameContainer.style.transition = "background-image 4s ease-in-out";
+
+  let userControlsContainer = document.querySelector(
+    ".user-controls-container"
+  );
+  let textContainer = document.querySelector(".text-container");
+  applyTypingCss(textContainer);
+
+  // header title
+  setCurrentSceneTitle("Store");
+  document.getElementById("header-title").textContent = getCurrentSceneTitle();
+
+  // create button
+  let townSquareBtn = document.createElement("button"); // create buttons for scene
+
+  // set button text
+  townSquareBtn.textContent = "go to town square";
+
+  // add styling for button
+  applyGlassStylingGreyBtn(townSquareBtn);
+
+  // local conditionals
+  //   let ONCEOFF = false;
+
+  await typeText(
+    textContainer,
+    "<p>As you enter, the bell chimes a whimsical tone. The shelves are sparse but there are still some items for sale here. Perhaps the store keeper is waiting for a delivery, or the town's people stocked up for the long winter...</p>",
+    applyGlassStylingRed
+  );
+
+  await sleep(1500);
+
+  // append button to user controls container
+  userControlsContainer.appendChild(townSquareBtn);
+
+  townSquareBtn.addEventListener("pointerdown", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    townSquareBtn.remove(); // remove relevant buttons
+
+    sceneTownSquare();
+  });
+}
+
+//| SCENE CHURCH
+async function sceneChurch() {
+  let gameContainer = document.querySelector(".container");
+  gameContainer.style.backgroundImage = "url(img/000church.png)";
+  gameContainer.style.transition = "background-image 4s ease-in-out";
+
+  let userControlsContainer = document.querySelector(
+    ".user-controls-container"
+  );
+  let textContainer = document.querySelector(".text-container");
+  applyTypingCss(textContainer);
+
+  // header title
+  setCurrentSceneTitle("Church");
+  document.getElementById("header-title").textContent = getCurrentSceneTitle();
+
+  // create button
+  let townSquareBtn = document.createElement("button"); // create buttons for scene
+
+  // set button text
+  townSquareBtn.textContent = "go to town square";
+
+  // add styling for button
+  applyGlassStylingGreyBtn(townSquareBtn);
+
+  // local conditionals
+  //   let ONCEOFF = false;
+
+  await typeText(
+    textContainer,
+    "<p>You follow the direction of the signpost that points towards the church, however when you reach the imposing structure, you almost think that you have reached the wrong building.</p>",
+    applyGlassStylingRed
+  );
+
+  await sleep(2000);
+
+  textContainer.innerHTML = "";
+
+  await typeText(
+    textContainer,
+    "<p>The church is unexpectedly tall, made completely of wood, and pitch black with very slanted rooves. It also looks like it could be hundreds of years old.<br>The high pointed roof tops are adorned with odd shapes that remind you of snakes or dragons.<br>There is also a small cemetery on the right side of the building.<br><br>The narrow door stands open, but you feel almost afraid to go inside...</p>",
+    applyGlassStylingRed
+  );
+
+  // append button to user controls container
+  userControlsContainer.appendChild(townSquareBtn);
+
+  townSquareBtn.addEventListener("pointerdown", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    townSquareBtn.remove(); // remove relevant buttons
+
+    sceneTownSquare();
+  });
 }

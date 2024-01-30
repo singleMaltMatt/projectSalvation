@@ -54,7 +54,7 @@ async function-name
 */
 
 async function sceneName() {
-  let gameContainer = document.querySelector(".game-container");
+  let gameContainer = document.querySelector(".container");
   gameContainer.style.backgroundImage = "url(img/)"; // Add BG image
   gameContainer.style.transition = "background-image 4s ease-in-out";
 
@@ -77,7 +77,7 @@ async function sceneName() {
   // add styling for button
   applyGlassStylingGreyBtn(buttonNameBtn);
 
-  // once offs
+  // local conditionals
   let ONCEOFF = false;
 
   await typeText(
