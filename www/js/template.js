@@ -91,7 +91,7 @@ async function sceneName() {
   // append button to user controls container
   userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
 
-  buttonNameBtn.addEventListener("pointerdown", async function () {
+  buttonNameBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;

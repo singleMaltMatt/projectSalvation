@@ -50,12 +50,12 @@ async function typeText(element, html, boxColor, delay = 30) {
       let p = document.createElement("p");
       p.className = "text-box"; // add a class to the p element
       boxColor(p); // apply the color style to the paragraph
-      p.addEventListener("pointerdown", function (event) {
+      p.addEventListener("pointerup", function (event) {
         event.preventDefault();
         isUserInterrupted = true
       });
       element.appendChild(p);
-      // Add pointerdown event listener to the text box element
+      // Add pointerup event listener to the text box element
     } else if (part.startsWith("<br")) {
       element.lastChild.innerHTML += "<br>"; // add a line break
     } else if (!part.startsWith("<")) {
@@ -84,7 +84,7 @@ async function typeTextItalic(element, html, boxColor, delay = 30) {
       p.className = "text-box"; // add a class to the p element
       boxColor(p); // apply the color style to the paragraph
       p.style.fontStyle = "italic";
-      p.addEventListener("pointerdown", function (event) {
+      p.addEventListener("pointerup", function (event) {
         event.preventDefault();
         isUserInterrupted = true;
       });
@@ -122,7 +122,7 @@ function onDeviceReady() {
     document.getElementById('deviceready').classList.add('ready');
 
   // START //
-  // document.querySelector(".text-box").addEventListener("pointerdown", function () {
+  // document.querySelector(".text-box").addEventListener("pointerup", function () {
   //     isUserInterrupted = true;
   // });
   
@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let inventoryBtn = document.getElementById("header-button");
   const headerTitle = document.getElementById("header-title");
 
-  inventoryBtn.addEventListener("pointerdown", function () {
+  inventoryBtn.addEventListener("pointerup", function () {
     const inventoryOverlay = document.getElementById("inventory-overlay");
 
     // toggle overlay visibility
@@ -196,6 +196,7 @@ let GIRL = false;
 let INFORMATION = false;
 let ADVICE = false;
 let STORY = false;
+let CLINIC_KEY = false; // check this when you get there
 
 //|SLEEPER
 function sleep(ms) {
@@ -233,7 +234,7 @@ function sceneZero() {
     userControlsContainer.appendChild(townButton);
 
     // CLICK
-  wakeUpButton.addEventListener("pointerdown", function () {
+  wakeUpButton.addEventListener("pointerup", function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -249,7 +250,7 @@ function sceneZero() {
     sceneOne();
   });
 
-  townButton.addEventListener("pointerdown", function () {
+  townButton.addEventListener("pointerup", function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -351,7 +352,7 @@ async function sceneOne() {
   userControlsContainer.appendChild(inspectBtn);
   userControlsContainer.appendChild(lookBtn);
 
-  inspectBtn.addEventListener("pointerdown", async function () {
+  inspectBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true
@@ -389,7 +390,7 @@ async function sceneOne() {
     }
   });
 
-  lookBtn.addEventListener("pointerdown", async function () {
+  lookBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -421,7 +422,7 @@ async function sceneOne() {
     }
   });
 
-  helpBtn.addEventListener("pointerdown", async function () {
+  helpBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -497,7 +498,7 @@ async function sceneOne() {
     userControlsContainer.appendChild(leftBtn);
     userControlsContainer.appendChild(rightBtn);
 
-    inspectBtn.addEventListener("pointerdown", async function () {
+    inspectBtn.addEventListener("pointerup", async function () {
       // Button click check
       if (isTyping || btnRecentlyClicked) return;
       btnRecentlyClicked = true;
@@ -522,7 +523,7 @@ async function sceneOne() {
       userControlsContainer.appendChild(rightBtn);
     });
 
-    leftBtn.addEventListener("pointerdown", async function () {
+    leftBtn.addEventListener("pointerup", async function () {
       // Button click check
       if (isTyping || btnRecentlyClicked) return;
       btnRecentlyClicked = true;
@@ -571,7 +572,7 @@ async function sceneOne() {
       userControlsContainer.appendChild(townBtn);
     });
 
-    investigateBtn.addEventListener("pointerdown", async function () {
+    investigateBtn.addEventListener("pointerup", async function () {
       // Button click check
       if (isTyping || btnRecentlyClicked) return;
       btnRecentlyClicked = true;
@@ -587,7 +588,7 @@ async function sceneOne() {
       sceneCottage();
     });
 
-    townBtn.addEventListener("pointerdown", async function () {
+    townBtn.addEventListener("pointerup", async function () {
       // Button click check
       if (isTyping || btnRecentlyClicked) return;
       btnRecentlyClicked = true;
@@ -661,7 +662,7 @@ async function sceneCottage() {
   userControlsContainer.appendChild(enterBtn);
   userControlsContainer.appendChild(townBtn);
 
-  enterBtn.addEventListener("pointerdown", async function () {
+  enterBtn.addEventListener("pointerup", async function () {
     //Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -710,7 +711,7 @@ async function sceneCottage() {
 
   })
 
-  readLetterBtn.addEventListener("pointerdown", async function () {
+  readLetterBtn.addEventListener("pointerup", async function () {
     //Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -747,7 +748,7 @@ async function sceneCottage() {
     userControlsContainer.appendChild(exitBtn);
   });
 
-  takeLetterBtn.addEventListener("pointerdown", async function () {
+  takeLetterBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -776,7 +777,7 @@ async function sceneCottage() {
     userControlsContainer.appendChild(exitBtn);
   });
 
-  nextRoomBtn.addEventListener("pointerdown", async function () {
+  nextRoomBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -813,7 +814,7 @@ async function sceneCottage() {
     userControlsContainer.appendChild(exitBtn);
   });
 
-  leaveRoomBtn.addEventListener("pointerdown", async function () {
+  leaveRoomBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -843,7 +844,7 @@ async function sceneCottage() {
     userControlsContainer.appendChild(exitBtn);
   });
 
-  exitBtn.addEventListener("pointerdown", async function () {
+  exitBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -879,7 +880,7 @@ async function sceneCottage() {
     sceneThree();
   });
 
-  townBtn.addEventListener("pointerdown", async function () {
+  townBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -958,7 +959,7 @@ async function sceneThree() {
   // append button to user controls container
   userControlsContainer.appendChild(lookBtn);
 
-  lookBtn.addEventListener("pointerdown", async function () {
+  lookBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -989,7 +990,7 @@ async function sceneThree() {
     userControlsContainer.appendChild(leftBtn);
   });
 
-  townSquareBtn.addEventListener("pointerdown", async function () {
+  townSquareBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1010,7 +1011,7 @@ async function sceneThree() {
     sceneTownSquare();
   });
 
-  marketBtn.addEventListener("pointerdown", async function () {
+  marketBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1043,7 +1044,7 @@ async function sceneThree() {
     userControlsContainer.appendChild(leftBtn);
   });
 
-  leftBtn.addEventListener("pointerdown", async function () {
+  leftBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1076,7 +1077,7 @@ async function sceneThree() {
     }
   });
 
-  walkBtn.addEventListener("pointerdown", async function () {
+  walkBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1175,7 +1176,7 @@ async function sceneTownSquare() {
   userControlsContainer.appendChild(storeBtn);
   userControlsContainer.appendChild(churchBtn);
 
-  clinicBtn.addEventListener("pointerdown", async function () {
+  clinicBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1201,7 +1202,7 @@ async function sceneTownSquare() {
     // if he has key, add new options here *****
   });
 
-  poolBtn.addEventListener("pointerdown", async function () {
+  poolBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1227,7 +1228,7 @@ async function sceneTownSquare() {
     // if he has key, add new options here *****
   });
 
-  innBtn.addEventListener("pointerdown", async function () {
+  innBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1253,7 +1254,7 @@ async function sceneTownSquare() {
     // if he has key, add new options here *****
   });
 
-  hallBtn.addEventListener("pointerdown", async function () {
+  hallBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1279,7 +1280,7 @@ async function sceneTownSquare() {
     // if he has key, add new options here *****
   });
 
-  residentialBtn.addEventListener("pointerdown", async function () {
+  residentialBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1305,7 +1306,7 @@ async function sceneTownSquare() {
     // if he has key, add new options here *****
   });
 
-  storeBtn.addEventListener("pointerdown", async function () {
+  storeBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1331,7 +1332,7 @@ async function sceneTownSquare() {
     // if he has key, add new options here *****
   });
 
-  churchBtn.addEventListener("pointerdown", async function () {
+  churchBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1398,7 +1399,7 @@ async function sceneClinic() {
   // append button to user controls container
   userControlsContainer.appendChild(townSquareBtn);
 
-  townSquareBtn.addEventListener("pointerdown", async function () {
+  townSquareBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1434,29 +1435,69 @@ async function scenePool() {
   document.getElementById("header-title").textContent = getCurrentSceneTitle();
 
   // create button
-  let townSquareBtn = document.createElement("button"); // create buttons for scene
+  let townSquareBtn = document.createElement("button");
+  let talkBtn = document.createElement("button");
+  let whatBtn = document.createElement("button");
+  let whereBtn = document.createElement("button");
 
   // set button text
   townSquareBtn.textContent = "go to town square";
+  talkBtn.textContent = "talk to the girl";
+  whatBtn.textContent = "what are you doing here?";
+  whereBtn.textContent = "where are your parents?";
 
   // add styling for button
   applyGlassStylingGreyBtn(townSquareBtn);
+  applyGlassStylingGreyBtn(talkBtn);
+  applyGlassStylingGreyBtn(whatBtn);
+  applyGlassStylingGreyBtn(whereBtn);
 
   // local conditionals
-  //   let ONCEOFF = false;
 
-  await typeText(
-    textContainer,
-    "<p>Before you lies a meticulously maintained swimming pool, enclosed by a white fence. The gate, creaking on its rusty hinges, stands ajar. Adjacent to the pool, a solitary little girl, her grip tender on a time-worn stuffed toy bear, amuses herself by playfully kicking a ball against the inn's weathered wall.</p>",
-    applyGlassStylingRed
-  );
+  if (GIRL == true) {
+    await typeText(
+      textContainer,
+      "<p>The area around the swimming pool is empty, there is nothing else to see here.</p>",
+      applyGlassStylingRed
+    );
+  } else {
+    await typeText(
+      textContainer,
+      "<p>Before you lies a meticulously maintained swimming pool, enclosed by a white fence. The gate, creaking on its rusty hinges, stands ajar. Adjacent to the pool, a solitary little girl, her grip tender on a time-worn stuffed toy bear, amuses herself by playfully kicking a ball against the inn's weathered wall.</p>",
+      applyGlassStylingRed
+    );
+  }
 
   await sleep(1500);
 
   // append button to user controls container
-  userControlsContainer.appendChild(townSquareBtn);
+  if (GIRL == true) {
+    userControlsContainer.appendChild(townSquareBtn);
+  } else {
+    userControlsContainer.appendChild(talkBtn);
+    userControlsContainer.appendChild(townSquareBtn);
+  }
 
-  townSquareBtn.addEventListener("pointerdown", async function () {
+  townSquareBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    GIRL = true;
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    townSquareBtn.remove();
+    talkBtn.remove();
+
+    sceneTownSquare();
+  });
+
+  talkBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1468,10 +1509,150 @@ async function scenePool() {
     textContainer.innerHTML = "";
 
     // remove button from user controls container
-    townSquareBtn.remove(); // remove relevant buttons
+    talkBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove();
 
-    sceneTownSquare();
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>Hello. What's you name?</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Without turning to face you, little girl responds...</p>",
+      applyGlassStylingRed
+    )
+
+    await sleep(1500);
+    
+    await typeTextItalic(
+      textContainer,
+      "<p>Hello mister, my name is Nora...</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>Nora continues to kick her ball against the wall.</p>",
+      applyGlassStylingRed
+    );
+
+    // append new button
+    userControlsContainer.appendChild(whatBtn);
+    userControlsContainer.appendChild(townSquareBtn);
   });
+
+  whatBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    whatBtn.remove();
+    townSquareBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>May I ask what you are doing here all by yourself?</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Still not acknowledging you, Nora responds...</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+    
+    await typeTextItalic(
+      textContainer,
+      "<p>I'm visiting Auntie Ingrid. She owns the Inn. She's busy now and can't come out to play with me...</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(whereBtn); // append relevant buttons
+  });
+
+  whereBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    whereBtn.remove(); // remove relevant buttons
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>Nora kicks the ball, it thuds against the wall and bounces back past her legs.<br><br>She turns to face you, a sullen expression has gripped her face...</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Mommy and Daddy left. They said I should stay with Grandma Astrid and Grandpa Filip for a while.<br><br>Grandma Astrid also left. Grandpa Filip went to sleep and I got bored...<br><br>I came to ask Auntie Ingrid if she would play with me... </p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Before you could respond, Nora picked up her ball and ran through the gate. You could see tears welling up in her eyes.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+    
+    if (LETTER == true) {
+      textContainer.innerHTML = "";
+      await typeTextItalic(
+        textContainer,
+        "<p>I wonder if she knows about her grandfather?<br><br>I should speak to her aunt, Ingrid.</p>",
+        applyGlassStylingGreen
+      )
+
+      await sleep(1500);
+
+      userControlsContainer.append(townSquareBtn);
+    } else {
+      // append new button
+      userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
+    }
+
+  });
+  // more here
 }
 
 //| SCENE INN
@@ -1504,6 +1685,7 @@ async function sceneInn() {
   let filipBtn = document.createElement("button");
   let spokeToBtn = document.createElement("button");
   let spokeNotBtn = document.createElement("button");
+  let nothingBtn = document.createElement("button");
 
   // set button text
   townSquareBtn.textContent = "go to town square";
@@ -1519,6 +1701,7 @@ async function sceneInn() {
   filipBtn.textContent = "tell her about filip";
   spokeToBtn.textContent = "i spoke to father jakob";
   spokeNotBtn.textContent = "i haven't spoken to father jacob";
+  nothingBtn.textContent = "nothing at the moment";
 
   // add styling for button
   applyGlassStylingGreyBtn(townSquareBtn);
@@ -1534,11 +1717,14 @@ async function sceneInn() {
   applyGlassStylingGreyBtn(filipBtn);
   applyGlassStylingGreyBtn(spokeToBtn);
   applyGlassStylingGreyBtn(spokeNotBtn);
+  applyGlassStylingGreyBtn(nothingBtn);
 
   // local conditionals
   let SAD = false;
   let WHERE = false;
   let SURVIVE = false;
+  let LETTER_PICKED = false;
+  let FILIP_PICKED = false;
 
   await typeText(
     textContainer,
@@ -1552,7 +1738,7 @@ async function sceneInn() {
   userControlsContainer.appendChild(talkBtn);
   userControlsContainer.appendChild(townSquareBtn);
 
-  townSquareBtn.addEventListener("pointerdown", async function () {
+  townSquareBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1565,11 +1751,24 @@ async function sceneInn() {
 
     // remove button from user controls container
     townSquareBtn.remove(); // remove relevant buttons
+    talkBtn.remove();
+    moneyBtn.remove();
+    rememberBtn.remove();
+    whereBtn.remove();
+    surviveBtn.remove();
+    resistanceBtn.remove();
+    leaveBtn.remove();
+    letterBtn.remove();
+    fatherBtn.remove();
+    filipBtn.remove();
+    spokeToBtn.remove();
+    spokeNotBtn.remove();
+    nothingBtn.remove();
 
     sceneTownSquare();
   });
 
-  talkBtn.addEventListener("pointerdown", async function () {
+  talkBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1605,7 +1804,7 @@ async function sceneInn() {
     } else {
       await typeTextItalic(
         textContainer,
-        "<p>Ingrid:<br>Ah our handsome new face in town. What can I do for you deary?</p>",
+        "<p>Ah our handsome new face in town. What can I do for you deary?</p>",
         applyGlassStylingBlue
       );
 
@@ -1617,12 +1816,15 @@ async function sceneInn() {
       if (STORY == false || ADVICE == true) {
         userControlsContainer.appendChild(spokeNotBtn);
       }
+      if (COORDINATES == true && ADVICE == false) {
+        userControlsContainer.appendChild(resistanceBtn);
+      }
       userControlsContainer.appendChild(townSquareBtn); //| just check this later
     }
 
   });
 
-  moneyBtn.addEventListener("pointerdown", async function () {
+  moneyBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1703,15 +1905,15 @@ async function sceneInn() {
 
     // append new button
     userControlsContainer.appendChild(rememberBtn);
-    if (LETTER == true && GIRL == true) {
+    if (LETTER_PICKED == false && LETTER == true && GIRL == true) {
       userControlsContainer.appendChild(letterBtn);
     }
-    if (INFORMATION == true) {
+    if (LETTER_PICKED == false && FILIP_PICKED == false && INFORMATION == true) {
       userControlsContainer.appendChild(filipBtn);
     }
   });
 
-  rememberBtn.addEventListener("pointerdown", async function () {
+  rememberBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1761,7 +1963,7 @@ async function sceneInn() {
     }
   });
 
-  whereBtn.addEventListener("pointerdown", async function () {
+  whereBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1840,10 +2042,24 @@ async function sceneInn() {
     if (COORDINATES == true) {
       userControlsContainer.appendChild(resistanceBtn);
     }
-    userControlsContainer.appendChild(townSquareBtn);
+    if (SURVIVE == true && WHERE == true) {
+
+      textContainer.innerHTML = "";
+      
+      await typeTextItalic(
+        textContainer,
+        "<p>Well, is there anything else I can do for you?</p>",
+        applyGlassStylingBlue
+      );
+      await sleep(1500);
+      if (COORDINATES == true) {
+        userControlsContainer.appendChild(resistanceBtn);
+      }
+      userControlsContainer.appendChild(nothingBtn);
+    }
   });
 
-  surviveBtn.addEventListener("pointerdown", async function () {
+  surviveBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1935,7 +2151,459 @@ async function sceneInn() {
     if (COORDINATES == true) {
       userControlsContainer.appendChild(resistanceBtn);
     }
+    if (SURVIVE == true && WHERE == true) {
+
+      textContainer.innerHTML = "";
+
+      await typeTextItalic(
+        textContainer,
+        "<p>Well, is there anything else I can do for you?</p>",
+        applyGlassStylingBlue
+      )
+      await sleep(1500);
+      if (COORDINATES == true) {
+        userControlsContainer.appendChild(resistanceBtn);
+      }
+      userControlsContainer.appendChild(nothingBtn);
+    }
+  });
+
+  nothingBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    nothingBtn.remove(); // remove relevant buttons
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>Ingrid starts getting up from the table.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(2000);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Well I have a stew to tend and glasses to polish for all these customers.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>She gestures to the empty Inn and chuckles, then places an aged hand on your shoulder</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Good luck out there, dear.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
+  });
+
+  resistanceBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    resistanceBtn.remove();
+    whereBtn.remove();
+    surviveBtn.remove();
+    filipBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>What else can you tell me about the resistance?<br><br>I heard a CB radio broadcast in one of the houses... they gave their location, but in geographical coordinates.<br><br>Could you help me find them?</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>She raises an eyebrow and gives you a weary look.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>I would advise you not to go into houses uninvited young man.<br>Especially in these seemingly dangerous times... but unfortunately I can't tell you any more, and I can't help you decipher these coordinates either...</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>She looks at you unblinking for a moment and then continues..</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>But I may be able to direct you to someone who can  help you.<br><br>Father Jakob used to be a military man before he became a man of the cloth.<br>He was in reconnaissance if I'm not mistaken.<br><br>He will undoubtedly be able to locate these coordinates for you, why don't you pay him a visit at the church?</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500)
+
+    // append new button
+    userControlsContainer.appendChild(leaveBtn); // append relevant buttons
+  });
+
+  leaveBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    ADVICE = true;
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    leaveBtn.remove(); // remove relevant buttons
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>Ingrid starts getting up from the table.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(2000);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Well I have a stew to tend and glasses to polish for all these customers.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>She gestures to the empty Inn and chuckles, then places an aged hand on your shoulder</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Good luck out there, dear.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>As she walks back towards the hearth she turns to you looking thoughtful...</p>",
+      applyGlassStylingRed
+    );
+  
+    await sleep(1500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>I noticed a bit of a limp when you walked in..<br>You have a problem with your leg? Well when old Hedda fled the town she locked up the clinic and left the key with me.<br><br>I have to look for it first, but come back after you spoke to father Jakob, if I find the key, maybe we can get you something for that leg of yours.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>She flashes a quick smile and returns to her chores.</p>",
+      applyGlassStylingRed
+    );
+    
+
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
+  });
+
+  letterBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    LETTER_PICKED = true;
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    letterBtn.remove();
+    rememberBtn.remove();
+    filipBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>You're Ingrid?<br>I spoke to a little girl, Nora, near the swimming pool. She says she stays with her grandparents outside of town and that she came to visit you...<br><br>I found this letter and thought it might be best if I delivered it to you...</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Ingrid frowns and takes the letter from you.<br><br>When she is done reading she says...</p>",
+      applyGlassStylingRed
+    )
+    
+    await sleep(1500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>I was planning on locking up early and visiting my father today. He always gets so lonely when my mother is not around, the poor soul... I'm sure he will enjoy tasting my mother's famous stew recipe while she's away. Where did you find this?</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(fatherBtn); // append relevant buttons
+  });
+
+  fatherBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    SAD = true;
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    fatherBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>There is no easy way to tell you this...<br>I woke up in the forest, not knowing where I am.<br>I saw a cottage and decided to ask for help and directions.<br>When I looked inside I saw the body of an elderly man... he has been dead for quite some time...</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Ingrid's face pales...<br><br>She stared woefully at the table as an uncomfortable silence filled the inn's four walls. A single tear splashed onto the table's polished surface.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(2000);
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>After finding her voice again she thanks you for the letter, she will let her mother know what has happened. She asks if there is anything else she can do for you.</p>",
+      applyGlassStylingRed
+    );
+
+    if (COORDINATES == true) {
+      userControlsContainer.appendChild(resistanceBtn);
+    }
+    if (INFORMATION == true) {
+      userControlsContainer.appendChild(filipBtn);
+    }
     userControlsContainer.appendChild(townSquareBtn);
+  });
+
+  filipBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    if (SAD !== true) {
+      SAD = true;
+    }
+
+    FILIP_PICKED = true;
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    filipBtn.remove();
+    rememberBtn.remove();
+    letterBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>Ingrid? I spoke to Father Jakob earlier about Filip...</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>She closes her eyes and holds up her hand... you let her speak.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>The good father came and told me that a stranger brought him news about Filip.<br><br>He was my father. Thank you for doing the right thing and speaking to Jakob. He will arrange the funeral.<br><br>Now I will have to take care of Nora ,until my mother returns at least. But then I will probably have to take care of her too<br><br>She chuckles but sheds a tear.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>But So our fates are mysteries to us. And we should be ready for what life sends our way.</p>",
+      applyGlassStylingBlue
+    );
+
+    await typeText(
+      textContainer,
+      "<p>She smiles pensively as she stares into the fire, before seeming to snap back to reality and turns to you.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>I will let my mother know about this. Thank you. Is there anything else I can do for you?</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(rememberBtn);
+  });
+  
+  spokeToBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    CLINIC_KEY = true;
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    spokeToBtn.remove(); // remove relevant buttons
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>I spoke to Father Jakob and he helped me with the location of the resistance. I mean to find them.<br>Somehow I feel connected to this whole thing, and I need to find out why...</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>That's very brave of you dear. Well, like I said, I found the key to the Clinic. I think I can trust you to not break the place down.<br><br>Here, take it, and go get what you need. Fix yourself up, and be careful.<br><br>You are welcome back in the Norrsund Inn any time you pass through here again.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>She smiles warmly at you and hands you the clinic key.</p>",
+      applyGlassStylingRed
+    );
+    
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn);
+  });
+
+  spokeNotBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    spokeNotBtn.remove(); // remove relevant buttons
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>I think you should pay him a visit, he should be at the church. No doubt he will be able to help you</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
   });
   //more here
 }
@@ -1979,7 +2647,7 @@ async function sceneHall() {
   // append button to user controls container
   userControlsContainer.appendChild(townSquareBtn);
 
-  townSquareBtn.addEventListener("pointerdown", async function () {
+  townSquareBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -2036,7 +2704,7 @@ async function sceneResidential() {
   // append button to user controls container
   userControlsContainer.appendChild(townSquareBtn);
 
-  townSquareBtn.addEventListener("pointerdown", async function () {
+  townSquareBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -2093,7 +2761,7 @@ async function sceneStore() {
   // append button to user controls container
   userControlsContainer.appendChild(townSquareBtn);
 
-  townSquareBtn.addEventListener("pointerdown", async function () {
+  townSquareBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -2158,7 +2826,7 @@ async function sceneChurch() {
   // append button to user controls container
   userControlsContainer.appendChild(townSquareBtn);
 
-  townSquareBtn.addEventListener("pointerdown", async function () {
+  townSquareBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
