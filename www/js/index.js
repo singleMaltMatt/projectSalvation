@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function () {
           const itemName = document.createElement("span");
           const itemDescription = document.createElement("p");
           const itemIcon = document.createElement("img");
-          itemIcon.src = `img/inventory/${item.name}.png`;
+          itemIcon.src = `img/${item.name}.png`;
           itemIcon.style.width = "32px";
           itemIcon.style.height = "32px";
           itemName.textContent = item.name;
@@ -202,6 +202,32 @@ let CLINIC_KEY = false; // check this when you get there
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+//|PAUSE
+function pause() {
+  return new Promise(resolve => {
+    const pauseButton = document.createElement("button");
+    pauseButton.textContent = "..."
+    pauseButton.style.position = "absolute";
+    pauseButton.style.bottom = "10px";
+    pauseButton.style.right = "10px";
+    pauseButton.style.border = "1px solid rgba(125, 125, 125, 0.5)";
+    pauseButton.style.boxShadow = "inset 0 0 10px 1px rgba(24, 24, 24, 0.37)";
+    pauseButton.style.backdropFilter = "blur(2px)";
+    pauseButton.style.borderRadius = "10px";
+    pauseButton.style.backgroundColor = "rgba(125, 125, 125, 0.5)";
+    pauseButton.style.padding = "10px";
+
+
+    pauseButton.addEventListener("pointerdown", () => {
+      resolve();
+      pauseButton.remove();
+    });
+
+    document.querySelector(".text-container").appendChild(pauseButton);
+  });
+
+}
 //|SCENE ZERO
 
 function sceneZero() {
@@ -209,7 +235,7 @@ function sceneZero() {
     gameContainer.style.backgroundImage = "url(img/00.png)";
     let textContainer = document.querySelector(".text-container");
     let userControlsContainer = document.querySelector(".user-controls-container");
-   
+
     applyTypingCss(textContainer);
     typeText(
       textContainer,
@@ -273,6 +299,8 @@ async function sceneOne() {
   let gameContainer = document.querySelector(".container");
   gameContainer.style.backgroundImage = "url(img/01.jpg)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
+  let headerBtn = document.getElementById("header-button");
+  headerBtn.style.display = "block";
 
   let userControlsContainer = document.querySelector(".user-controls-container");
   let textContainer = document.querySelector(".text-container");
@@ -313,7 +341,9 @@ async function sceneOne() {
     applyGlassStylingRed,
   );
 
-  await sleep(2000);
+  
+  await sleep(1500);
+  await pause();
   textContainer.innerHTML = "";
   gameContainer.style.backgroundImage = "url(img/01.jpg)";
   gameContainer.style.transition = "background-image 3s ease-in-out";
@@ -340,7 +370,9 @@ async function sceneOne() {
     applyGlassStylingGreen,
   )
 
-  await sleep(2000);
+  
+  await sleep(1500);
+  await pause();
   textContainer.innerHTML = "";
   await typeText(
     textContainer,
@@ -546,7 +578,9 @@ async function sceneOne() {
         applyGlassStylingRed
       );
 
-      await sleep(2000);
+      await sleep(1500);
+      textContainer.innerHTML = "";
+
       await typeText(
         textContainer,
         "<p>...Nestled amidst rolling hills and surrounded by a lush, dense forest, the small town of Holmesburrow once stood as a picture of idyllic serenity. <br> Its charming, neat rows of cottages with colorful shutters and white picket fences exuded a timeless charm that seemed frozen in the past...</p>",
@@ -656,8 +690,6 @@ async function sceneCottage() {
     applyGlassStylingRed
   );
 
-  await sleep(1500);
-  
   // append button to user controls container
   userControlsContainer.appendChild(enterBtn);
   userControlsContainer.appendChild(townBtn);
@@ -2682,13 +2714,31 @@ async function sceneResidential() {
   document.getElementById("header-title").textContent = getCurrentSceneTitle();
 
   // create button
-  let townSquareBtn = document.createElement("button"); // create buttons for scene
+  let townSquareBtn = document.createElement("button");
+  let lookBtn = document.createElement("button");
+  let rundownHouseBtn = document.createElement("button");
+  let flagHouseBtn = document.createElement("button");
+  let largeHouseBtn = document.createElement("button");
+  let overgrownHouseBtn = document.createElement("button");
+  let whiteHouseBtn = document.createElement("button");
 
   // set button text
   townSquareBtn.textContent = "go to town square";
+  lookBtn.textContent = "look at houses";
+  rundownHouseBtn.textContent = "enter the rundown house";
+  flagHouseBtn.textContent = "enter house with the flag";
+  largeHouseBtn.textContent = "enter the large house";
+  overgrownHouseBtn.textContent = "enter the overgrown house";
+  whiteHouseBtn.textContent = "enter the white house";
 
   // add styling for button
   applyGlassStylingGreyBtn(townSquareBtn);
+  applyGlassStylingGreyBtn(lookBtn);
+  applyGlassStylingGreyBtn(rundownHouseBtn);
+  applyGlassStylingGreyBtn(flagHouseBtn);
+  applyGlassStylingGreyBtn(largeHouseBtn);
+  applyGlassStylingGreyBtn(overgrownHouseBtn);
+  applyGlassStylingGreyBtn(whiteHouseBtn);
 
   // local conditionals
   //   let ONCEOFF = false;
@@ -2702,6 +2752,7 @@ async function sceneResidential() {
   await sleep(1500);
 
   // append button to user controls container
+  userControlsContainer.appendChild(lookBtn);
   userControlsContainer.appendChild(townSquareBtn);
 
   townSquareBtn.addEventListener("pointerup", async function () {
@@ -2716,10 +2767,544 @@ async function sceneResidential() {
     textContainer.innerHTML = "";
 
     // remove button from user controls container
-    townSquareBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove();
+    lookBtn.remove();
 
     sceneTownSquare();
   });
+
+  lookBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    lookBtn.remove();
+    townSquareBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You see a rundown and dilapitated house.<br><br>You see a neat house with a large flag outside.<br><br>You see a large house with a manicured garden.<br><br>You see a house overgrown with plants.<br><br>You see a bright white house.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(rundownHouseBtn);
+    userControlsContainer.appendChild(flagHouseBtn);
+    userControlsContainer.appendChild(largeHouseBtn);
+    userControlsContainer.appendChild(overgrownHouseBtn);
+    userControlsContainer.appendChild(whiteHouseBtn);
+    userControlsContainer.appendChild(townSquareBtn);
+  });
+//**************************************************************************************** */
+  rundownHouseBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    rundownHouseBtn.remove();
+    flagHouseBtn.remove();
+    largeHouseBtn.remove();
+    overgrownHouseBtn.remove();
+    whiteHouseBtn.remove();
+    townSquareBtn.remove();
+
+    sceneHouseRundown();
+  });
+
+  flagHouseBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    rundownHouseBtn.remove();
+    flagHouseBtn.remove();
+    largeHouseBtn.remove();
+    overgrownHouseBtn.remove();
+    whiteHouseBtn.remove();
+    townSquareBtn.remove();
+
+    sceneHouseFlag();
+  });
+
+  largeHouseBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    rundownHouseBtn.remove();
+    flagHouseBtn.remove();
+    largeHouseBtn.remove();
+    overgrownHouseBtn.remove();
+    whiteHouseBtn.remove();
+    townSquareBtn.remove();
+
+    sceneHouseLarge();
+  });
+
+  overgrownHouseBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    rundownHouseBtn.remove();
+    flagHouseBtn.remove();
+    largeHouseBtn.remove();
+    overgrownHouseBtn.remove();
+    whiteHouseBtn.remove();
+    townSquareBtn.remove();
+
+    sceneHouseOvergrown();
+  });
+
+  whiteHouseBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    rundownHouseBtn.remove();
+    flagHouseBtn.remove();
+    largeHouseBtn.remove();
+    overgrownHouseBtn.remove();
+    whiteHouseBtn.remove();
+    townSquareBtn.remove();
+
+    sceneHouseWhite();
+  });
+
+  async function sceneHouseRundown() {
+    let gameContainer = document.querySelector(".container");
+    gameContainer.style.backgroundImage = "url(img/111rundown-house.png)"; // Add BG image
+    gameContainer.style.transition = "background-image 4s ease-in-out";
+
+    let userControlsContainer = document.querySelector(
+      ".user-controls-container"
+    );
+    let textContainer = document.querySelector(".text-container");
+    applyTypingCss(textContainer);
+
+    // header title
+    currentSceneTitle = "The Rundown House"; // Add title
+    document.getElementById("header-title").textContent = currentSceneTitle;
+
+    // create button
+    let exploreBtn = document.createElement("button");
+    let leaveBtn = document.createElement("button");
+    let ascendBtn = document.createElement("button");
+    let closedDoorBtn = document.createElement("button");
+    let hallwayBtn = document.createElement("button");
+    let openDoorBtn = document.createElement("button");
+    let goBackBtn = document.createElement("button");
+    let leaveRoomTwoBtn = document.createElement("button");
+
+    // set button text
+    exploreBtn.textContent = "explore the house";
+    leaveBtn.textContent = "leave, this place gives you the creeps";
+    ascendBtn.textContent = "ascend the stairs";
+    closedDoorBtn.textContent = "open the closed door";
+    hallwayBtn.textContent = "go down the hallway";
+    openDoorBtn.textContent = "enter the open door";
+    goBackBtn.textContent = "go downstairs and leave the house";
+    leaveRoomTwoBtn.textContent = "leave";
+
+    // add styling for button
+    applyGlassStylingGreyBtn(exploreBtn);
+    applyGlassStylingGreyBtn(leaveBtn);
+    applyGlassStylingGreyBtn(ascendBtn);
+    applyGlassStylingGreyBtn(closedDoorBtn);
+    applyGlassStylingGreyBtn(hallwayBtn);
+    applyGlassStylingGreyBtn(openDoorBtn);
+    applyGlassStylingGreyBtn(goBackBtn);
+    applyGlassStylingGreyBtn(leaveRoomTwoBtn);
+
+    // local conditionals
+    let ONE = false;
+    let TWO = false;
+    let THREE = false;
+    let FOUR = false;
+
+    if (ONE == true && TWO == true && THREE == true && FOUR == true) {
+          await typeText(
+            textContainer,
+            "<p>You have already explored this house, there is nothing of interest here.</p>",
+            applyGlassStylingRed
+          );
+
+      await sleep(1500);
+      
+      userControlsContainer.appendChild(leaveBtn);
+    } else {
+      await typeText(
+        textContainer,
+        "<p>You try the door of the shabby looking house, and unsurprisingly it is unlocked.<br><br>As you step inside you want to call out to see if someone is home, but stop yourself. It is very evident that no one lives here.<br><br>Dried leaves litter the inside of the small house. They must have blown through the broken windows over time.</p>",
+        applyGlassStylingRed
+      );
+      
+      await sleep(1500);
+  
+      // append button to user controls container
+      userControlsContainer.appendChild(exploreBtn);
+      userControlsContainer.appendChild(leaveBtn);
+    }
+
+
+    exploreBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+
+      // remove button from user controls container
+      exploreBtn.remove();
+      leaveBtn.remove();
+
+      // write new text
+      await typeText(
+        textContainer,
+        "<p>You walk into the living room, crunching leaves as you step.<br>What little furniture is left has either rotted with damp, or fell victim to insects and rodents.<br><br>You wonder why someone would just abandon their home like this. There is nothing much to look at, but there is a staircase leading to the upper floor.</p>",
+        applyGlassStylingRed
+      );
+
+      await sleep(1500);
+
+      // append new button
+      userControlsContainer.appendChild(ascendBtn);
+      userControlsContainer.appendChild(leaveBtn);
+    });
+
+    ascendBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+
+      // remove button from user controls container
+      ascendBtn.remove();
+      leaveBtn.remove();
+
+      // write new text
+      await typeText(
+        textContainer,
+        "<p>You walk towards the stairs, crunching leaves as you go, when you suddenly step on something soft... You recoil in surprise.</p>",
+        applyGlassStylingRed
+      );
+
+      await sleep(1500);
+      textContainer.innerHTML = "";
+      
+      await typeText(
+        textContainer,
+        "<p>You look down to see what it is that you stepped on, and make out something furry between the leaves...<br><br>Looking closer you see that it's a dead rat...  as you step over it you notice that the rat isn't skeletal or dry... in fact there is some blood on the floor around it...</p>",
+        applyGlassStylingRed
+      );
+
+      await sleep(1500);
+      textContainer.innerHTML = "";
+
+      await typeTextItalic(
+        textContainer,
+        "<p>It looks like it was stomped on... and not too long ago either...</p>",
+        applyGlassStylingGreen
+      )
+
+      await sleep(1500);
+      textContainer.innerHTML = "";
+
+      await typeText(
+        textContainer,
+        "<p>You ignore the rat and step over it onto the stairs.<br><br>They creek heavily...<br><br>As you reach the top of the stairs you actually hear a loud crack as the wood strains under your weight</p>",
+        applyGlassStylingRed
+      );
+
+      await sleep(1500);
+      await typeText(
+        textContainer,
+        "<p>At the top of the stairs is a narrow dark hallway leading to a room at the end, with an open door to the right and a closed door to the left.</p>",
+        applyGlassStylingRed
+      )
+
+      // append new button
+      userControlsContainer.appendChild(closedDoorBtn);
+      userControlsContainer.appendChild(hallwayBtn);
+      userControlsContainer.appendChild(openDoorBtn);
+      userControlsContainer.appendChild(goBackBtn);
+    });
+//*********************************************************************************** */
+    closedDoorBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+      
+      // remove button from user controls container
+      closedDoorBtn.remove();
+      hallwayBtn.remove();
+      openDoorBtn.remove();
+      goBackBtn.remove();
+      
+      // write new text
+      if (ONE == false) {
+        await typeText(
+          textContainer,
+          "<p>You open the door with a creak, and you are shocked to see that there is a whole wall missing in this room.<br>Instead you are looking at rustling leaves with a light breeze blowing on your face.<br><br>You couldn't see this side of the house from the road, it is clearly more decayed than it looked from the outside.<br><br>Here is nothing else in this room and you decide to leave before the floor also gives way under you.</p>",
+          applyGlassStylingRed
+          );
+          
+          await sleep(1500);
+          // append new button
+          userControlsContainer.appendChild(hallwayBtn);
+          userControlsContainer.appendChild(openDoorBtn);
+          userControlsContainer.appendChild(goBackBtn);
+        } else {
+          await typeTextItalic(
+            textContainer,
+            "<p>I should probably not go back in there, the floor might cave in at any moment.<p>",
+            applyGlassStylingGreen
+            )
+            
+            await sleep(1500);
+            
+            userControlsContainer.appendChild(hallwayBtn);
+            userControlsContainer.appendChild(openDoorBtn);
+            userControlsContainer.appendChild(goBackBtn);
+          }
+          ONE = true;
+    });
+
+    hallwayBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+
+      // remove button from user controls container
+      closedDoorBtn.remove();
+      hallwayBtn.remove();
+      openDoorBtn.remove();
+      goBackBtn.remove();
+
+      // write new text
+      if (TWO == false) {
+        await typeText(
+          textContainer,
+          "<p>You walk to the end of the hallway and peer into the room there.<br>This must have been the main bedroom.<br>There is still a very badly worn bed here, with an equally worse for wear desk and bedside table, and a very worn and threadbare rug.<br><br>There is nothing else of interest.</p>",
+          applyGlassStylingRed
+        );
+
+        await sleep(1500);
+
+        userControlsContainer.appendChild(leaveRoomTwoBtn);
+      } else {
+        await typeTextItalic(
+          textContainer,
+          "<p>I didn't see anything of value here...</p>",
+          applyGlassStylingGreen
+        )
+
+        await sleep(1500);
+        
+        userControlsContainer.appendChild(closedDoorBtn);
+        userControlsContainer.appendChild(hallwayBtn);
+        userControlsContainer.appendChild(openDoorBtn);
+        userControlsContainer.appendChild(goBackBtn);
+      }
+      TWO = true;
+    });
+
+    leaveRoomTwoBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+
+      // remove button from user controls container
+      leaveRoomTwoBtn.remove(); // remove relevant buttons
+
+      // write new text
+      await typeText(
+        textContainer,
+        "<p>As you turn to leave, something strikes you as odd...<br>The drawers of the desk and bedside table are scattered on the floor. It doesn't look out of place in this rundown house, but if this house was still in a good condition, it would surely look like someone ransacked this room, like they were looking for something...<br><br>You can't imagine finding anything valuable in an abandoned house. You leave the room.</p>",
+        applyGlassStylingRed
+      );
+
+      await sleep(1500);
+
+      // append new button
+      userControlsContainer.appendChild(closedDoorBtn);
+      userControlsContainer.appendChild(hallwayBtn);
+      userControlsContainer.appendChild(openDoorBtn);
+      userControlsContainer.appendChild(goBackBtn);
+    });
+
+    openDoorBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+
+      // remove button from user controls container
+      closedDoorBtn.remove();
+      hallwayBtn.remove();
+      openDoorBtn.remove();
+      goBackBtn.remove();
+
+      // write new text
+      if (THREE == false) {
+        await typeText(
+          textContainer,
+          "<p>You look into the room through the open doorway and see nothing of interest.<br>There is a small desk in the room, its drawers lying on the floor with random papers scattered around.<br><br>You turn around and exit the room.</p>",
+          applyGlassStylingRed
+        );
+
+        await sleep(1500);
+
+        userControlsContainer.appendChild(closedDoorBtn);
+        userControlsContainer.appendChild(hallwayBtn);
+        userControlsContainer.appendChild(openDoorBtn);
+        userControlsContainer.appendChild(goBackBtn);
+      } else {
+        await typeTextItalic(
+          textContainer,
+          "<p>There was nothing in there for me.</p>",
+          applyGlassStylingGreen
+        )
+
+        await sleep(1500);
+        
+        userControlsContainer.appendChild(closedDoorBtn);
+        userControlsContainer.appendChild(hallwayBtn);
+        userControlsContainer.appendChild(openDoorBtn);
+        userControlsContainer.appendChild(goBackBtn);
+      }
+      THREE = true;
+    });
+
+
+    goBackBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+      
+      // remove button from user controls container
+      exploreBtn.remove();
+      leaveBtn.remove();
+      ascendBtn.remove();
+      closedDoorBtn.remove();
+      hallwayBtn.remove();
+      openDoorBtn.remove();
+      goBackBtn.remove();
+      leaveRoomTwoBtn.remove();
+      
+      FOUR = true;
+      sceneResidential();
+    });
+
+    leaveBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+
+      // remove button from user controls container
+      exploreBtn.remove();
+      leaveBtn.remove();
+      ascendBtn.remove();
+      closedDoorBtn.remove();
+      hallwayBtn.remove();
+      openDoorBtn.remove();
+      goBackBtn.remove();
+      leaveRoomTwoBtn.remove();
+
+      sceneResidential();
+    });
+    // more here
+  }
+  // more here
 }
 
 //| SCENE STORE
