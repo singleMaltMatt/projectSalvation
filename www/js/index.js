@@ -1084,6 +1084,10 @@ async function sceneThree() {
       btnRecentlyClicked = false;
     }, 1000);
 
+    //BG
+    gameContainer.style.backgroundImage =
+      "url(img/forest-path-tyre-tracks.jpg)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
     // Clear text container
     textContainer.innerHTML = "";
 
@@ -1396,7 +1400,7 @@ async function sceneTownSquare() {
 //| SCENE CLINIC
 async function sceneClinic() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/000clinic.png)";
+  gameContainer.style.backgroundImage = "url(img/clinic.jpg)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
 
   let userControlsContainer = document.querySelector(".user-controls-container");
