@@ -190,13 +190,33 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 //| GLOBAL BOOLEANS
+// sceneCottage
 let LETTER = false;
+let COTTAGE_ROOM = false;
+// sceneThree
+let MARKET = false;
+// sceneInn
+let INN_SAD = false;
+let INN_WHERE = false;
+let INN_SURVIVE = false;
+let INN_LETTER_PICKED = false;
+let INN_FILIP_PICKED = false;
+let INN_ADVICE = false;
+// sceneResidentail
+// sceneHouseRundown
+let HOUSE_RUNDOWN_ONE = false;
+let HOUSE_RUNDOWN_TWO = false;
+let HOUSE_RUNDOWN_THREE = false;
+let HOUSE_RUNDOWN_FOUR = false;
+//
 let COORDINATES = false;
+// sceneSwimmingPool
 let GIRL = false;
+//
 let INFORMATION = false;
-let ADVICE = false;
 let STORY = false;
 let CLINIC_KEY = false; // check this when you get there
+let RIGHT = false;
 
 //|SLEEPER
 function sleep(ms) {
@@ -528,7 +548,9 @@ async function sceneOne() {
 
     userControlsContainer.appendChild(inspectBtn);
     userControlsContainer.appendChild(leftBtn);
-    userControlsContainer.appendChild(rightBtn);
+    if (RIGHT == false) {
+      userControlsContainer.appendChild(rightBtn);
+    }
 
     inspectBtn.addEventListener("pointerup", async function () {
       // Button click check
@@ -552,7 +574,9 @@ async function sceneOne() {
       );
       //append buttons
       userControlsContainer.appendChild(leftBtn);
-      userControlsContainer.appendChild(rightBtn);
+      if (RIGHT == false) {
+        userControlsContainer.appendChild(rightBtn);
+      }
     });
 
     leftBtn.addEventListener("pointerup", async function () {
@@ -604,6 +628,71 @@ async function sceneOne() {
       //append buttons
       userControlsContainer.appendChild(investigateBtn);
       userControlsContainer.appendChild(townBtn);
+    });
+
+    rightBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      RIGHT = true;
+      // Clear text container
+      textContainer.innerHTML = "";
+      
+      // remove button from user controls container
+      inspectBtn.remove();
+      leftBtn.remove();
+      rightBtn.remove();
+
+      // write new text
+      await typeText(
+        textContainer,
+        "<p>This is the road to the city of Neo-Norway. Its a wide dirt road that curves through steep hills before joining the main road that leads through the mountain passes. It's a comfortable and peaceful walk.</p>",
+        applyGlassStylingRed
+      );
+
+      await pause()
+      textContainer.innerHTML = "";
+
+      await typeText(
+        textContainer,
+        "<p>After about 5 minutes of walking you turn a sharp curve, and see a problem up ahead... the road is blocked.</p>",
+        applyGlassStylingRed
+      );
+
+      await pause();
+      textContainer.innerHTML = "";
+
+      await typeText(
+        textContainer,
+        "<p>As you move closer, you see that the road is not just blocked, but barricaded. Large trees have been piled across the road...</p>",
+        applyGlassStylingRed
+      );
+
+      await pause();
+      textContainer.innerHTML = "";
+
+      await typeTextItalic(
+        textContainer,
+        "<p>This isn't a treefall... these trees have been cut.<br>Some are even scorched... were they set on fire? They might have been blasted...<br><br>Either way there is no way I'm getting through this...<br>I suppose I should rather head to the nearest town from that fork in the road.</p>",
+        applyGlassStylingGreen
+      );
+
+      await pause();
+      textContainer.innerHTML = "";
+
+      await typeText(
+        textContainer,
+        "<p>You turn around head back to the fork in the road where you came from,</p>",
+        applyGlassStylingRed
+      );
+
+      await pause();
+
+      sceneTwo();
     });
 
     investigateBtn.addEventListener("pointerup", async function () {
@@ -682,8 +771,6 @@ async function sceneCottage() {
   applyGlassStylingGreyBtn(takeLetterBtn);
   applyGlassStylingGreyBtn(leaveRoomBtn);
 
-  let ROOM = false;
-
   await typeText(
     textContainer,
     "<p>As you clear the trees, you see a small plot of land with a cottage and some patches of corn growing beside it.  It's completely silent, except for a windmill that slowly creaks as it turns. It seems no life has been here for some time... Then you see some chickens scratching and pecking around the cottage.</p>",
@@ -733,7 +820,7 @@ async function sceneCottage() {
       );
     }
     
-    if (ROOM == false) {
+    if (COTTAGE_ROOM == false) {
       userControlsContainer.appendChild(nextRoomBtn);
     }
     if (LETTER == false) {
@@ -774,7 +861,7 @@ async function sceneCottage() {
     
     await sleep(4000);
     userControlsContainer.appendChild(takeLetterBtn);
-    if (ROOM == false) {
+    if (COTTAGE_ROOM == false) {
       userControlsContainer.appendChild(nextRoomBtn);
     }
     userControlsContainer.appendChild(exitBtn);
@@ -803,7 +890,7 @@ async function sceneCottage() {
     LETTER = true;
     INVENTORY.push({ name: "Letter", description: "A letter you found at the cottage" });
     await sleep(1000);
-    if (ROOM == false) {
+    if (COTTAGE_ROOM == false) {
       userControlsContainer.appendChild(nextRoomBtn);
     }
     userControlsContainer.appendChild(exitBtn);
@@ -827,8 +914,7 @@ async function sceneCottage() {
     takeLetterBtn.remove();
     exitBtn.remove();
 
-    // local conditional
-    ROOM = true;
+    COTTAGE_ROOM = true;
     // write new text
     await typeText(
       textContainer,
@@ -870,7 +956,7 @@ async function sceneCottage() {
     if (LETTER == false) {
       userControlsContainer.appendChild(readLetterBtn);
     }
-    if (ROOM == false) {
+    if (COTTAGE_ROOM == false) {
       userControlsContainer.appendChild(nextRoomBtn);
     }
     userControlsContainer.appendChild(exitBtn);
@@ -970,9 +1056,6 @@ async function sceneThree() {
   applyGlassStylingGreyBtn(marketBtn);
   applyGlassStylingGreyBtn(leftBtn);
   applyGlassStylingGreyBtn(walkBtn);
-
-  // market once off
-  let MARKET = false;
 
   await typeTextItalic(
     textContainer,
@@ -1755,13 +1838,6 @@ async function sceneInn() {
   applyGlassStylingGreyBtn(spokeNotBtn);
   applyGlassStylingGreyBtn(nothingBtn);
 
-  // local conditionals
-  let SAD = false;
-  let WHERE = false;
-  let SURVIVE = false;
-  let LETTER_PICKED = false;
-  let FILIP_PICKED = false;
-
   await typeText(
     textContainer,
     "<p>The small inn exudes warmth and charm, with its polished wooden floors and cozy hearth crackling gently. Wooden chairs and tables, each bearing the mark of countless conversations and laughter, invite patrons to linger. In one corner, the inn's matriarch, an old, greying lady with a twinkle in her eye, tends to the hearth, her wisdom evident in the lines etched upon her face</p>",
@@ -1819,7 +1895,7 @@ async function sceneInn() {
     townSquareBtn.remove(); // remove relevant buttons
     talkBtn.remove();
 
-    if (SAD == false) {
+    if (INN_SAD == false) {
       await typeText(
         textContainer,
         "<p>As you approach the Matriarch, she stands and wipes her soot covered hands on a cloth. She offers a wary smile.</p>",
@@ -1849,10 +1925,10 @@ async function sceneInn() {
       if (STORY == true) {
         userControlsContainer.appendChild(spokeToBtn);
       }
-      if (STORY == false || ADVICE == true) {
+      if (STORY == false || INN_ADVICE == true) {
         userControlsContainer.appendChild(spokeNotBtn);
       }
-      if (COORDINATES == true && ADVICE == false) {
+      if (COORDINATES == true && INN_ADVICE == false) {
         userControlsContainer.appendChild(resistanceBtn);
       }
       userControlsContainer.appendChild(townSquareBtn); //| just check this later
@@ -1941,10 +2017,10 @@ async function sceneInn() {
 
     // append new button
     userControlsContainer.appendChild(rememberBtn);
-    if (LETTER_PICKED == false && LETTER == true && GIRL == true) {
+    if (INN_LETTER_PICKED == false && LETTER == true && GIRL == true) {
       userControlsContainer.appendChild(letterBtn);
     }
-    if (LETTER_PICKED == false && FILIP_PICKED == false && INFORMATION == true) {
+    if (INN_LETTER_PICKED == false && INN_FILIP_PICKED == false && INFORMATION == true) {
       userControlsContainer.appendChild(filipBtn);
     }
   });
@@ -1988,13 +2064,13 @@ async function sceneInn() {
     );
 
     // append new button
-    if (WHERE == false) {
+    if (INN_WHERE == false) {
       userControlsContainer.appendChild(whereBtn);
     }
-    if (SURVIVE == false) {
+    if (INN_SURVIVE == false) {
       userControlsContainer.appendChild(surviveBtn);
     }
-    if (WHERE && SURVIVE == true) {
+    if (INN_WHERE && INN_SURVIVE == true) {
     userControlsContainer.appendChild(townSquareBtn)
     }
   });
@@ -2015,10 +2091,10 @@ async function sceneInn() {
     surviveBtn.remove();
 
     // LC
-    WHERE = true;
+    INN_WHERE = true;
 
     // write new text
-    if (SURVIVE == false) {
+    if (INN_SURVIVE == false) {
       await typeTextItalic(
       textContainer,
       "<p>Since you are not from around here; I think it would be wise to start from the beginning before I answer any more of your questions.</p>",
@@ -2069,16 +2145,16 @@ async function sceneInn() {
     );
 
     // append new button
-    if (WHERE == false) {
+    if (INN_WHERE == false) {
       userControlsContainer.appendChild(whereBtn); // append relevant buttons
     }
-    if (SURVIVE == false) {
+    if (INN_SURVIVE == false) {
       userControlsContainer.appendChild(surviveBtn);
     }
     if (COORDINATES == true) {
       userControlsContainer.appendChild(resistanceBtn);
     }
-    if (SURVIVE == true && WHERE == true) {
+    if (INN_SURVIVE == true && INN_WHERE == true) {
 
       textContainer.innerHTML = "";
       
@@ -2111,10 +2187,10 @@ async function sceneInn() {
     whereBtn.remove();
 
     // LC
-    SURVIVE = true;
+    INN_SURVIVE = true;
 
     // write new text
-    if (WHERE == false) {
+    if (INN_WHERE == false) {
       await typeTextItalic(
       textContainer,
       "<p>Since you are not from around here; I think it would be wise to start from the beginning before I answer any more of your questions.</p>",
@@ -2178,16 +2254,16 @@ async function sceneInn() {
     await sleep(1500);
 
     // append new button
-    if (SURVIVE == false) {
+    if (INN_SURVIVE == false) {
       userControlsContainer.appendChild(surviveBtn); // append relevant buttons
     }
-    if (WHERE == false) {
+    if (INN_WHERE == false) {
       userControlsContainer.appendChild(whereBtn);
     }
     if (COORDINATES == true) {
       userControlsContainer.appendChild(resistanceBtn);
     }
-    if (SURVIVE == true && WHERE == true) {
+    if (INN_SURVIVE == true && INN_WHERE == true) {
 
       textContainer.innerHTML = "";
 
@@ -2328,7 +2404,7 @@ async function sceneInn() {
       btnRecentlyClicked = false;
     }, 1000);
 
-    ADVICE = true;
+    INN_ADVICE = true;
 
     // Clear text container
     textContainer.innerHTML = "";
@@ -2407,7 +2483,7 @@ async function sceneInn() {
       btnRecentlyClicked = false;
     }, 1000);
 
-    LETTER_PICKED = true;
+    INN_LETTER_PICKED = true;
     // Clear text container
     textContainer.innerHTML = "";
 
@@ -2454,7 +2530,7 @@ async function sceneInn() {
       btnRecentlyClicked = false;
     }, 1000);
 
-    SAD = true;
+    INN_SAD = true;
     // Clear text container
     textContainer.innerHTML = "";
 
@@ -2507,7 +2583,7 @@ async function sceneInn() {
       SAD = true;
     }
 
-    FILIP_PICKED = true;
+    INN_FILIP_PICKED = true;
     // Clear text container
     textContainer.innerHTML = "";
 
@@ -2920,6 +2996,8 @@ async function sceneResidential() {
     sceneHouseWhite();
   });
 
+  // SCENE HOUSES
+  // SCENE HOUSE RUNDOWN
   async function sceneHouseRundown() {
     let gameContainer = document.querySelector(".container");
     gameContainer.style.backgroundImage = "url(img/111rundown-house.png)"; // Add BG image
@@ -2966,12 +3044,9 @@ async function sceneResidential() {
     applyGlassStylingGreyBtn(leaveRoomTwoBtn);
 
     // local conditionals
-    let ONE = false;
-    let TWO = false;
-    let THREE = false;
-    let FOUR = false;
 
-    if (ONE == true && TWO == true && THREE == true && FOUR == true) {
+
+    if (HOUSE_RUNDOWN_ONE == true && HOUSE_RUNDOWN_TWO == true && HOUSE_RUNDOWN_THREE == true && HOUSE_RUNDOWN_FOUR == true) {
           await typeText(
             textContainer,
             "<p>You have already explored this house, there is nothing of interest here.</p>",
@@ -3106,32 +3181,32 @@ async function sceneResidential() {
       goBackBtn.remove();
       
       // write new text
-      if (ONE == false) {
+      if (HOUSE_RUNDOWN_ONE == false) {
         await typeText(
           textContainer,
           "<p>You open the door with a creak, and you are shocked to see that there is a whole wall missing in this room.<br>Instead you are looking at rustling leaves with a light breeze blowing on your face.<br><br>You couldn't see this side of the house from the road, it is clearly more decayed than it looked from the outside.<br><br>Here is nothing else in this room and you decide to leave before the floor also gives way under you.</p>",
           applyGlassStylingRed
-          );
-          
-          await sleep(1500);
-          // append new button
-          userControlsContainer.appendChild(hallwayBtn);
-          userControlsContainer.appendChild(openDoorBtn);
-          userControlsContainer.appendChild(goBackBtn);
-        } else {
-          await typeTextItalic(
-            textContainer,
-            "<p>I should probably not go back in there, the floor might cave in at any moment.<p>",
-            applyGlassStylingGreen
-            )
-            
-            await sleep(1500);
-            
-            userControlsContainer.appendChild(hallwayBtn);
-            userControlsContainer.appendChild(openDoorBtn);
-            userControlsContainer.appendChild(goBackBtn);
-          }
-          ONE = true;
+        );
+
+        await sleep(1500);
+        // append new button
+        userControlsContainer.appendChild(hallwayBtn);
+        userControlsContainer.appendChild(openDoorBtn);
+        userControlsContainer.appendChild(goBackBtn);
+      } else {
+        await typeTextItalic(
+          textContainer,
+          "<p>I should probably not go back in there, the floor might cave in at any moment.<p>",
+          applyGlassStylingGreen
+        );
+
+        await sleep(1500);
+
+        userControlsContainer.appendChild(hallwayBtn);
+        userControlsContainer.appendChild(openDoorBtn);
+        userControlsContainer.appendChild(goBackBtn);
+      }
+          HOUSE_RUNDOWN_ONE = true;
     });
 
     hallwayBtn.addEventListener("pointerup", async function () {
@@ -3152,7 +3227,7 @@ async function sceneResidential() {
       goBackBtn.remove();
 
       // write new text
-      if (TWO == false) {
+      if (HOUSE_RUNDOWN_TWO == false) {
         await typeText(
           textContainer,
           "<p>You walk to the end of the hallway and peer into the room there.<br>This must have been the main bedroom.<br>There is still a very badly worn bed here, with an equally worse for wear desk and bedside table, and a very worn and threadbare rug.<br><br>There is nothing else of interest.</p>",
@@ -3167,16 +3242,16 @@ async function sceneResidential() {
           textContainer,
           "<p>I didn't see anything of value here...</p>",
           applyGlassStylingGreen
-        )
+        );
 
         await sleep(1500);
-        
+
         userControlsContainer.appendChild(closedDoorBtn);
         userControlsContainer.appendChild(hallwayBtn);
         userControlsContainer.appendChild(openDoorBtn);
         userControlsContainer.appendChild(goBackBtn);
       }
-      TWO = true;
+      HOUSE_RUNDOWN_TWO = true;
     });
 
     leaveRoomTwoBtn.addEventListener("pointerup", async function () {
@@ -3227,7 +3302,7 @@ async function sceneResidential() {
       goBackBtn.remove();
 
       // write new text
-      if (THREE == false) {
+      if (HOUSE_RUNDOWN_THREE == false) {
         await typeText(
           textContainer,
           "<p>You look into the room through the open doorway and see nothing of interest.<br>There is a small desk in the room, its drawers lying on the floor with random papers scattered around.<br><br>You turn around and exit the room.</p>",
@@ -3254,9 +3329,8 @@ async function sceneResidential() {
         userControlsContainer.appendChild(openDoorBtn);
         userControlsContainer.appendChild(goBackBtn);
       }
-      THREE = true;
+      HOUSE_RUNDOWN_THREE = true;
     });
-
 
     goBackBtn.addEventListener("pointerup", async function () {
       // Button click check
@@ -3279,7 +3353,7 @@ async function sceneResidential() {
       goBackBtn.remove();
       leaveRoomTwoBtn.remove();
       
-      FOUR = true;
+      HOUSE_RUNDOWN_FOUR = true;
       sceneResidential();
     });
 
@@ -3308,7 +3382,182 @@ async function sceneResidential() {
     });
     // more here
   }
-  // more here
+
+  async function sceneHouseFlag() {
+    let gameContainer = document.querySelector(".container");
+    gameContainer.style.backgroundImage = "url(img/111flag-house.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
+
+    let userControlsContainer = document.querySelector(
+      ".user-controls-container"
+    );
+    let textContainer = document.querySelector(".text-container");
+    applyTypingCss(textContainer);
+
+    // header title
+    currentSceneTitle = "The House with the Flag"; // Add title
+    document.getElementById("header-title").textContent = currentSceneTitle;
+
+    // create button
+    let exploreBtn = document.createElement("button");
+    let leaveBtn = document.createElement("button");
+    let upstairsBtn = document.createElement("button");
+    let basementBtn = document.createElement("button");
+    let hallBtn = document.createElement("button");
+    let leftBtn = document.createElement("button");
+    let rightBtn = document.createElement("button");
+    let lightBtn = document.createElement("button");
+    let goBackBtn = document.createElement("button");
+    let leaveRoomBtn = document.createElement("button");
+    let radioBtn = document.createElement("button");
+ 
+    // set button text
+    exploreBtn.textContent = "go through the house";
+    leaveBtn.textContent = "leave house";
+    upstairsBtn.textContent = "go upstairs";
+    basementBtn.textContent = "go to the basement";
+    hallBtn.textContent = "go the the end of the hall";
+    leftBtn.textContent = "try the door on the left";
+    rightBtn.textContent = "try the door on the right";
+    lightBtn.textContent = "head towards the light";
+    goBackBtn.textContent = "go back upstairs";
+    leaveRoomBtn.textContent = "leave room";
+    radioBtn.textContent = "try to use the CB radio";
+
+    // add styling for button
+    applyGlassStylingGreyBtn(exploreBtn);
+    applyGlassStylingGreyBtn(leaveBtn);
+    applyGlassStylingGreyBtn(upstairsBtn);
+    applyGlassStylingGreyBtn(basementBtn);
+    applyGlassStylingGreyBtn(hallBtn);
+    applyGlassStylingGreyBtn(leftBtn);
+    applyGlassStylingGreyBtn(rightBtn);
+    applyGlassStylingGreyBtn(lightBtn);
+    applyGlassStylingGreyBtn(goBackBtn);
+    applyGlassStylingGreyBtn(leaveRoomBtn);
+    applyGlassStylingGreyBtn(radioBtn);
+
+    await typeText(
+      textContainer,
+      "<p>You step inside the small house. If you didn't know better, you would expect someone to be home, spending the day in the kitchen, or reading a book in the clean comfortable living room, but as you look closer you can see that there is no one home.<br><br>An untouched plate of food sits on the kitchen counter, buzzing with flies. A thin layer of dust covers the counter tops, and a tap is constantly dripping.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500); // normal wait time between texts
+
+    // append button to user controls container
+    userControlsContainer.appendChild(exploreBtn);
+    userControlsContainer.appendChild(leaveBtn);
+
+    exploreBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+
+      // remove button from user controls container
+      exploreBtn.remove();
+      leaveBtn.remove();
+
+      await typeText(
+        textContainer,
+        "<p>As you walk through the house, you see the staircase leading to the upper floor.<br>You are about to ascend the stairs when your eye catches a gleam of light.<br>You look closer and see that it is a brass ring, attached to a small door just off the right of the staircase.<br>It is painted the same color as the wall and is almost imperceptible.<br><br>As you pull on the ring you hear the low creaking as the door swings open on it's hinges, revealing a narrow staircase going down into a basement.</p>",
+        applyGlassStylingRed
+      );
+
+      await sleep(1500);
+
+      userControlsContainer.appendChild(upstairsBtn);
+      userControlsContainer.appendChild(basementBtn);
+
+    });
+
+    upstairsBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+
+      // remove button from user controls container
+      upstairsBtn.remove();
+      basementBtn.remove();
+
+      await typeText(
+        textContainer,
+        "<p>At the top of the stairs you reach a narrow hallway. You see an open door at the end of the hallway, and two closed doors on either side of the hallway.</p>",
+        applyGlassStylingRed
+      );
+
+      await sleep(1500)
+
+      userControlsContainer.appendChild(hallBtn);
+      userControlsContainer.appendChild(leftBtn);
+      userControlsContainer.appendChild(rightBtn);
+
+    });
+
+    hallBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+
+      // remove button from user controls container
+      hallBtn.remove();
+      leftBtn.remove();
+      rightBtn.remove();
+
+      await typeText(
+        textContainer,
+        "<p></p>",
+        applyGlassStylingRed
+      )
+
+    });
+
+    leaveBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+
+      // remove button from user controls container
+      exploreBtn.remove();
+      leaveBtn.remove();
+      upstairsBtn.remove();
+      basementBtn.remove();
+      hallBtn.remove();
+      leftBtn.remove();
+      rightBtn.remove();
+      lightBtn.remove();
+      goBackBtn.remove();
+      leaveRoomBtn.remove();
+      radioBtn.remove();
+
+      sceneResidential();
+    });
+  }
+  // more house scenes here below }
 }
 
 //| SCENE STORE

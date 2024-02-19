@@ -60,6 +60,10 @@ body::-webkit-scrollbar {
   padding: 5px;
 }
 
+.user-controls-container button {
+  font-family: monospace;
+}
+
 /* Create a game container element that has a white background and some padding */
 .game-container {
   text-align: center;
