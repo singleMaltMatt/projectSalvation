@@ -200,7 +200,9 @@ let FOREST_RIGHT = false;
 let COTTAGE_LETTER = false;
 let COTTAGE_ROOM = false;
 // sceneThree
-let MARKET = false;
+let TOWN_MARKET = false;
+// sceneSwimmingPool
+let SWIMMING_POOL_GIRL = false;
 // sceneInn
 let INN_SAD = false;
 let INN_WHERE = false;
@@ -221,8 +223,6 @@ let HOUSE_FLAG_TWO = false;
 let HOUSE_FLAG_COORDINATES = false;
 
 //
-// sceneSwimmingPool
-let GIRL = false;
 //
 //sceneChurch
 let CHURCH_STORY = false;
@@ -934,8 +934,11 @@ async function sceneCottage() {
     );
 
     COTTAGE_LETTER = true;
+
     INVENTORY.push({ name: "Letter", description: "A letter you found at the cottage" });
-    await sleep(1000);
+
+    await sleep(1500);
+
     if (COTTAGE_ROOM == false) {
       userControlsContainer.appendChild(nextRoomBtn);
     }
@@ -953,14 +956,17 @@ async function sceneCottage() {
     // change bg
     gameContainer.style.backgroundImage = "url(img/inside-cottage-bedroom.jpg)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
+
     // clear text container
     textContainer.innerHTML = "";
+
     // remove button from user controls container
     nextRoomBtn.remove();
     takeLetterBtn.remove();
     exitBtn.remove();
 
     COTTAGE_ROOM = true;
+
     // write new text
     await typeText(
       textContainer,
@@ -969,11 +975,13 @@ async function sceneCottage() {
     );
 
     await sleep(1500);
+
     await typeTextItalic(
       textContainer,
       "<p>The smell is unbearable! I need to get out of here!</p>",
       applyGlassStylingGreen
     );
+
     userControlsContainer.appendChild(leaveRoomBtn);
     userControlsContainer.appendChild(exitBtn);
   });
@@ -985,11 +993,14 @@ async function sceneCottage() {
     setTimeout(() => {
       btnRecentlyClicked = false;
     }, 1000);
+
     // change bg
     gameContainer.style.backgroundImage = "url(img/inside-cottage.jpg)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
+
     // Clear text container
     textContainer.innerHTML = "";
+
     // remove button from user controls container
     leaveRoomBtn.remove();
     exitBtn.remove();
@@ -1015,11 +1026,14 @@ async function sceneCottage() {
     setTimeout(() => {
       btnRecentlyClicked = false;
     }, 1000);
+
     // change bg
     gameContainer.style.backgroundImage = "url(img/05.jpg)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
+
     // Clear text container
     textContainer.innerHTML = "";
+
     // remove button from user controls container
     exitBtn.remove();
     nextRoomBtn.remove();
@@ -1027,20 +1041,26 @@ async function sceneCottage() {
     if (COTTAGE_LETTER == false) {
       readLetterBtn.remove();
     }
+
     // write new text
     await typeText(
       textContainer,
       "<p>As you step outside the cottage, you pause to catch your breath. You feel a little dazed and shaken. You just stare at the ground in front of you.</p>",
       applyGlassStylingRed
     );
+
     await sleep(1500);
+
     await typeTextItalic(
       textContainer,
-      "<p>I only woke up an hour ago, not knowing where I am... or even WHO I am... and already I've seen a dead body... This feels like a dream.... or a nightmare. I suppose it can only get better from here. Gods forbid it gets worse...</p>",
+      "<p>I only woke up an hour ago, not knowing where I am...<br>or even WHO I am...<br>And already I've seen a dead body...<br>This feels like a dream...<br>or a nightmare...<br>I suppose it can only get better from here. Gods forbid it gets worse...</p>",
       applyGlassStylingGreen
     );
+
     await pause();
+
     textContainer.innerHTML = "";
+
     sceneThree();
   });
 
@@ -1130,6 +1150,7 @@ async function sceneThree() {
 
     gameContainer.style.backgroundImage = "url(img/town-square.jpg)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
+
     // Clear text container
     textContainer.innerHTML = "";
 
@@ -1189,7 +1210,7 @@ async function sceneThree() {
     leftBtn.remove();
 
     // market once off
-    MARKET = true;
+    TOWN_MARKET = true;
 
     // write new text
     await typeText(
@@ -1214,9 +1235,9 @@ async function sceneThree() {
     }, 1000);
 
     //BG
-    gameContainer.style.backgroundImage =
-      "url(img/forest-path-tyre-tracks.jpg)";
+    gameContainer.style.backgroundImage = "url(img/forest-path-tyre-tracks.jpg)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
+
     // Clear text container
     textContainer.innerHTML = "";
 
@@ -1237,7 +1258,7 @@ async function sceneThree() {
     // append new button
     userControlsContainer.appendChild(walkBtn);
     userControlsContainer.appendChild(townSquareBtn);
-    if (MARKET == false) {
+    if (TOWN_MARKET == false) {
       userControlsContainer.appendChild(marketBtn);
     }
   });
@@ -1252,6 +1273,7 @@ async function sceneThree() {
 
     gameContainer.style.backgroundImage = "url(img/forest-path-tyre-tracks.jpg)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
+
     // Clear text container
     textContainer.innerHTML = "";
 
@@ -1263,7 +1285,7 @@ async function sceneThree() {
     // write new text
     await typeTextItalic(
       textContainer,
-      "<p>Bad idea, I might get lost up there... Maybe I should try to find out where this leads first.</p>",
+      "<p>Bad idea, I might get lost up there... Perhaps I should try to find out where this leads first.</p>",
       applyGlassStylingGreen
     );
 
@@ -1271,7 +1293,7 @@ async function sceneThree() {
 
     // append new button
     userControlsContainer.appendChild(townSquareBtn);
-    if (MARKET == false) {
+    if (TOWN_MARKET == false) {
       userControlsContainer.appendChild(marketBtn);
     }
   });
@@ -1362,9 +1384,7 @@ async function sceneTownSquare() {
     churchBtn.remove();
     townSquareBtn.remove();
 
-    // write new text
     sceneClinic();
-    // if he has key, add new options here *****
   });
 
   poolBtn.addEventListener("pointerup", async function () {
@@ -1388,9 +1408,7 @@ async function sceneTownSquare() {
     churchBtn.remove();
     townSquareBtn.remove();
 
-    // write new text
     scenePool();
-    // if he has key, add new options here *****
   });
 
   innBtn.addEventListener("pointerup", async function () {
@@ -1414,9 +1432,7 @@ async function sceneTownSquare() {
     churchBtn.remove();
     townSquareBtn.remove();
 
-    // write new text
     sceneInn();
-    // if he has key, add new options here *****
   });
 
   hallBtn.addEventListener("pointerup", async function () {
@@ -1440,9 +1456,7 @@ async function sceneTownSquare() {
     churchBtn.remove();
     townSquareBtn.remove();
 
-    // write new text
     sceneHall();
-    // if he has key, add new options here *****
   });
 
   residentialBtn.addEventListener("pointerup", async function () {
@@ -1466,9 +1480,7 @@ async function sceneTownSquare() {
     churchBtn.remove();
     townSquareBtn.remove();
 
-    // write new text
     sceneResidential();
-    // if he has key, add new options here *****
   });
 
   storeBtn.addEventListener("pointerup", async function () {
@@ -1492,9 +1504,7 @@ async function sceneTownSquare() {
     churchBtn.remove();
     townSquareBtn.remove();
 
-    // write new text
     sceneStore();
-    // if he has key, add new options here *****
   });
 
   churchBtn.addEventListener("pointerup", async function () {
@@ -1518,9 +1528,7 @@ async function sceneTownSquare() {
     churchBtn.remove();
     townSquareBtn.remove();
 
-    // write new text
     sceneChurch();
-    // if he has key, add new options here *****
   });
 
 }
@@ -1550,9 +1558,6 @@ async function sceneClinic() {
   // add styling for button
   applyGlassStylingGreyBtn(townSquareBtn);
 
-  // local conditionals
-//   let ONCEOFF = false;
-
   await typeText(
     textContainer,
     "<p>The doors to the clinic are chained shut, a heavy silver padlock glistens in the sunlight</p>",
@@ -1576,7 +1581,7 @@ async function sceneClinic() {
     textContainer.innerHTML = "";
 
     // remove button from user controls container
-    townSquareBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove();
 
     sceneTownSquare();
 
@@ -1619,7 +1624,7 @@ async function scenePool() {
 
   // local conditionals
 
-  if (GIRL == true) {
+  if (SWIMMING_POOL_GIRL == true) {
     await typeText(
       textContainer,
       "<p>The area around the swimming pool is empty, there is nothing else to see here.</p>",
@@ -1636,7 +1641,7 @@ async function scenePool() {
   await sleep(1500);
 
   // append button to user controls container
-  if (GIRL == true) {
+  if (SWIMMING_POOL_GIRL == true) {
     userControlsContainer.appendChild(townSquareBtn);
   } else {
     userControlsContainer.appendChild(talkBtn);
@@ -1651,7 +1656,7 @@ async function scenePool() {
       btnRecentlyClicked = false;
     }, 1000);
 
-    GIRL = true;
+    SWIMMING_POOL_GIRL = true;
     // Clear text container
     textContainer.innerHTML = "";
 
@@ -1674,7 +1679,7 @@ async function scenePool() {
     textContainer.innerHTML = "";
 
     // remove button from user controls container
-    talkBtn.remove(); // remove relevant buttons
+    talkBtn.remove();
     townSquareBtn.remove();
 
     // write new text
@@ -1685,6 +1690,7 @@ async function scenePool() {
     );
 
     await sleep(1500);
+
     textContainer.innerHTML = "";
 
     await typeText(
@@ -1737,6 +1743,7 @@ async function scenePool() {
     );
 
     await sleep(1500);
+
     textContainer.innerHTML = "";
 
     await typeText(
@@ -1756,7 +1763,7 @@ async function scenePool() {
     await sleep(1500);
 
     // append new button
-    userControlsContainer.appendChild(whereBtn); // append relevant buttons
+    userControlsContainer.appendChild(whereBtn);
   });
 
   whereBtn.addEventListener("pointerup", async function () {
@@ -1771,7 +1778,7 @@ async function scenePool() {
     textContainer.innerHTML = "";
 
     // remove button from user controls container
-    whereBtn.remove(); // remove relevant buttons
+    whereBtn.remove();
 
     // write new text
     await typeText(
@@ -1781,6 +1788,7 @@ async function scenePool() {
     );
 
     await sleep(1500);
+
     textContainer.innerHTML = "";
 
     await typeTextItalic(
@@ -1790,6 +1798,7 @@ async function scenePool() {
     );
 
     await sleep(1500);
+
     textContainer.innerHTML = "";
 
     await typeText(
@@ -1812,12 +1821,10 @@ async function scenePool() {
 
       userControlsContainer.append(townSquareBtn);
     } else {
-      // append new button
-      userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
+      userControlsContainer.appendChild(townSquareBtn); 
     }
 
   });
-  // more here
 }
 
 //| SCENE INN
@@ -2063,7 +2070,7 @@ async function sceneInn() {
 
     // append new button
     userControlsContainer.appendChild(rememberBtn);
-    if (INN_LETTER_PICKED == false && COTTAGE_LETTER == true && GIRL == true) {
+    if (INN_LETTER_PICKED == false && COTTAGE_LETTER == true && SWIMMING_POOL_GIRL == true) {
       userControlsContainer.appendChild(letterBtn);
     }
     if (INN_LETTER_PICKED == false && INN_FILIP_PICKED == false && INFORMATION == true) {
@@ -3817,6 +3824,8 @@ async function sceneResidential() {
       basementBtn.remove();
       goBackBtn.remove();
 
+      // REMEMBER TO ADD CONDITIONAL THAT BASEMENT WAS CHECKED!!!!!!!!!
+      
       await typeText(
         textContainer,
         "<p>The room at the bottom of the staircase is pitch black. You can't make out anything in the room, but then you notice a single dim point of orange light in the distance.</p>",
