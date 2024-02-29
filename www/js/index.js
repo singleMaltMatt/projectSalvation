@@ -199,12 +199,14 @@ let FOREST_RIGHT = false;
 // sceneCottage
 let COTTAGE_LETTER = false;
 let COTTAGE_ROOM = false;
+let COTTAGE_DEAD_BODY = false;
 // sceneThree
 let TOWN_MARKET = false;
 // sceneSwimmingPool
 let SWIMMING_POOL_GIRL = false;
 // sceneInn
 let INN_SAD = false;
+let INN_LETTER_GIVEN = false;
 let INN_WHERE = false;
 let INN_SURVIVE = false;
 let INN_LETTER_PICKED = false;
@@ -966,6 +968,7 @@ async function sceneCottage() {
     exitBtn.remove();
 
     COTTAGE_ROOM = true;
+    COTTAGE_DEAD_BODY = true;
 
     // write new text
     await typeText(
@@ -1043,7 +1046,8 @@ async function sceneCottage() {
     }
 
     // write new text
-    await typeText(
+    if (COTTAGE_DEAD_BODY == true) {
+      await typeText(
       textContainer,
       "<p>As you step outside the cottage, you pause to catch your breath. You feel a little dazed and shaken. You just stare at the ground in front of you.</p>",
       applyGlassStylingRed
@@ -1061,7 +1065,10 @@ async function sceneCottage() {
 
     textContainer.innerHTML = "";
 
-    sceneThree();
+      sceneThree();
+    } else {
+      sceneThree();
+    }
   });
 
   townBtn.addEventListener("pointerup", async function () {
@@ -1129,7 +1136,9 @@ async function sceneThree() {
     applyGlassStylingRed
   );
 
-  await sleep(1500);
+  await pause();
+
+  textContainer.innerHTML = "";
 
   await typeTextItalic(
     textContainer,
@@ -1663,6 +1672,7 @@ async function scenePool() {
     // remove button from user controls container
     townSquareBtn.remove();
     talkBtn.remove();
+    whatBtn.remove();
 
     sceneTownSquare();
   });
@@ -1809,7 +1819,7 @@ async function scenePool() {
 
     await sleep(1500);
     
-    if (COTTAGE_LETTER == true) {
+    if (COTTAGE_DEAD_BODY == true) {
       textContainer.innerHTML = "";
       await typeTextItalic(
         textContainer,
@@ -1854,6 +1864,7 @@ async function sceneInn() {
   let leaveBtn = document.createElement("button");
   let letterBtn = document.createElement("button");
   let fatherBtn = document.createElement("button");
+  let cottageBtn = document.createElement("button");
   let filipBtn = document.createElement("button");
   let spokeToBtn = document.createElement("button");
   let spokeNotBtn = document.createElement("button");
@@ -1870,6 +1881,7 @@ async function sceneInn() {
   leaveBtn.textContent = "leave"; //| remember this button has text and then executes sceneTownSquare();
   letterBtn.textContent = "show her the letter";
   fatherBtn.textContent = "your father is dead";
+  cottageBtn.textContent = "in a cottage nearby";
   filipBtn.textContent = "tell her about filip";
   spokeToBtn.textContent = "i spoke to father jakob";
   spokeNotBtn.textContent = "i haven't spoken to father jacob";
@@ -1925,6 +1937,7 @@ async function sceneInn() {
     leaveBtn.remove();
     letterBtn.remove();
     fatherBtn.remove();
+    cottageBtn.remove();
     filipBtn.remove();
     spokeToBtn.remove();
     spokeNotBtn.remove();
@@ -1948,7 +1961,7 @@ async function sceneInn() {
     townSquareBtn.remove(); // remove relevant buttons
     talkBtn.remove();
 
-    if (INN_SAD == false) {
+    if (INN_SAD == false || INN_LETTER_GIVEN == false) {
       await typeText(
         textContainer,
         "<p>As you approach the Matriarch, she stands and wipes her soot covered hands on a cloth. She offers a wary smile.</p>",
@@ -2019,7 +2032,8 @@ async function sceneInn() {
       applyGlassStylingRed
     );
 
-    await sleep(1500);
+    await pause();
+
     textContainer.innerHTML = "";
 
     await typeText(
@@ -2034,7 +2048,8 @@ async function sceneInn() {
       applyGlassStylingRed
     );
 
-    await sleep(1500);
+    await pause();
+
     textContainer.innerHTML = "";
 
     await typeText(
@@ -2044,13 +2059,15 @@ async function sceneInn() {
     );
 
     await sleep(1500);
+
     await typeTextItalic(
       textContainer,
       "<p>I haven't seen you around here before. You must be new.<br><br>I'm Ingrid, the proud owner of the Norrsund Inn. My family helped build this town many years ago. I was 4 years old when my father lit a fire in here for the very first time.</p>",
       applyGlassStylingBlue
     );
 
-    await sleep(1500);
+    await pause();
+
     textContainer.innerHTML = "";
 
     await typeText(
@@ -2060,6 +2077,7 @@ async function sceneInn() {
     );
 
     await sleep(1500);
+
     await typeTextItalic(
       textContainer,
       "<p>Now what brings you here?</p>",
@@ -2101,7 +2119,7 @@ async function sceneInn() {
       applyGlassStylingGreen
     );
 
-    await sleep(2000);
+    await pause();
     textContainer.innerHTML = "";
 
     await typeText(
@@ -2109,6 +2127,8 @@ async function sceneInn() {
       "<p>Ingrid lets out a low sigh and folds her hands on the table.</p>",
       applyGlassStylingRed
     );
+
+    await sleep(1500);
 
     await typeTextItalic(
       textContainer,
@@ -2162,7 +2182,7 @@ async function sceneInn() {
       applyGlassStylingBlue
     );
 
-    await sleep(2000);
+    await pause();
 
     textContainer.innerHTML = "";
 
@@ -2180,7 +2200,8 @@ async function sceneInn() {
       applyGlassStylingBlue
     );}
 
-    await sleep(1500);
+    await pause();
+
     textContainer.innerHTML = "";
 
     await typeTextItalic(
@@ -2208,6 +2229,8 @@ async function sceneInn() {
       userControlsContainer.appendChild(resistanceBtn);
     }
     if (INN_SURVIVE == true && INN_WHERE == true) {
+      
+      await pause();
 
       textContainer.innerHTML = "";
       
@@ -2216,7 +2239,9 @@ async function sceneInn() {
         "<p>Well, is there anything else I can do for you?</p>",
         applyGlassStylingBlue
       );
+
       await sleep(1500);
+
       if (HOUSE_FLAG_COORDINATES == true) {
         userControlsContainer.appendChild(resistanceBtn);
       }
@@ -2258,7 +2283,7 @@ async function sceneInn() {
       applyGlassStylingBlue
     );
 
-    await sleep(2000);
+    await pause();
 
     textContainer.innerHTML = "";
 
@@ -2277,7 +2302,8 @@ async function sceneInn() {
       );
     }
 
-    await sleep(1500);
+    await pause();
+
     textContainer.innerHTML = "";
 
     await typeTextItalic(
@@ -2294,7 +2320,7 @@ async function sceneInn() {
       applyGlassStylingBlue
     );
 
-    await sleep(1500);
+    await pause();
 
     textContainer.innerHTML = "";
 
@@ -2303,8 +2329,6 @@ async function sceneInn() {
       "<p>I have yet to see any, but if you see them, be sure to let me know?<br>My trigger finger is itching for action.</p>",
       applyGlassStylingBlue
     );
-
-    await sleep(1500);
 
     // append new button
     if (INN_SURVIVE == false) {
@@ -2318,14 +2342,18 @@ async function sceneInn() {
     }
     if (INN_SURVIVE == true && INN_WHERE == true) {
 
+      await pause();
+
       textContainer.innerHTML = "";
 
       await typeTextItalic(
         textContainer,
         "<p>Well, is there anything else I can do for you?</p>",
         applyGlassStylingBlue
-      )
+      );
+
       await sleep(1500);
+
       if (HOUSE_FLAG_COORDINATES == true) {
         userControlsContainer.appendChild(resistanceBtn);
       }
@@ -2354,7 +2382,7 @@ async function sceneInn() {
       applyGlassStylingRed
     );
 
-    await sleep(2000);
+    await sleep(1500);
 
     await typeTextItalic(
       textContainer,
@@ -2362,7 +2390,7 @@ async function sceneInn() {
       applyGlassStylingBlue
     );
 
-    await sleep(1500);
+    await pause();
     textContainer.innerHTML = "";
 
     await typeText(
@@ -2380,7 +2408,6 @@ async function sceneInn() {
     );
 
     await sleep(1500);
-
     // append new button
     userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
   });
@@ -2409,7 +2436,8 @@ async function sceneInn() {
       applyGlassStylingGreen
     );
 
-    await sleep(1500);
+    await pause();
+
     textContainer.innerHTML = "";
 
     await typeText(
@@ -2426,7 +2454,8 @@ async function sceneInn() {
       applyGlassStylingBlue
     );
 
-    await sleep(1500);
+    await pause();
+
     textContainer.innerHTML = "";
 
     await typeText(
@@ -2443,8 +2472,7 @@ async function sceneInn() {
       applyGlassStylingBlue
     );
 
-    await sleep(1500)
-
+    await sleep(1500);
     // append new button
     userControlsContainer.appendChild(leaveBtn); // append relevant buttons
   });
@@ -2472,7 +2500,7 @@ async function sceneInn() {
       applyGlassStylingRed
     );
 
-    await sleep(2000);
+    await sleep(1500);
 
     await typeTextItalic(
       textContainer,
@@ -2480,7 +2508,7 @@ async function sceneInn() {
       applyGlassStylingBlue
     );
 
-    await sleep(1500);
+    await pause();
     textContainer.innerHTML = "";
 
     await typeText(
@@ -2497,7 +2525,8 @@ async function sceneInn() {
       applyGlassStylingBlue
     );
 
-    await sleep(1500);
+    await pause();
+
     textContainer.innerHTML = "";
 
     await typeText(
@@ -2514,7 +2543,8 @@ async function sceneInn() {
       applyGlassStylingBlue
     );
 
-    await sleep(1500);
+    await pause();
+
     textContainer.innerHTML = "";
 
     await typeText(
@@ -2572,7 +2602,11 @@ async function sceneInn() {
     await sleep(1500);
 
     // append new button
-    userControlsContainer.appendChild(fatherBtn); // append relevant buttons
+    if (COTTAGE_DEAD_BODY == true) {
+      userControlsContainer.appendChild(fatherBtn); // append relevant buttons
+    } else {
+      userControlsContainer.appendChild(cottageBtn);
+    }
   });
 
   fatherBtn.addEventListener("pointerup", async function () {
@@ -2597,7 +2631,8 @@ async function sceneInn() {
       applyGlassStylingGreen
     );
 
-    await sleep(1500);
+    await pause();
+    
     textContainer.innerHTML = "";
 
     await typeText(
@@ -2606,12 +2641,54 @@ async function sceneInn() {
       applyGlassStylingRed
     );
 
-    await sleep(2000);
+    await pause();
+    
     textContainer.innerHTML = "";
 
     await typeText(
       textContainer,
       "<p>After finding her voice again she thanks you for the letter, she will let her mother know what has happened. She asks if there is anything else she can do for you.</p>",
+      applyGlassStylingRed
+    );
+
+    if (HOUSE_FLAG_COORDINATES == true) {
+      userControlsContainer.appendChild(resistanceBtn);
+    }
+    if (INFORMATION == true) {
+      userControlsContainer.appendChild(filipBtn);
+    }
+    userControlsContainer.appendChild(townSquareBtn);
+  });
+
+  cottageBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    INN_LETTER_GIVEN = true;
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    cottageBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>I woke up in the forest, not knowing where I am.<br>I saw a cottage and decided to ask for help and directions.<br>But when I looked inside I saw that it was empty...<br><br>I noticed that letter which had a sorrowful air to it, so I took it, with the hope that I could find somewhere to post it.<br></p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+    
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Ingrid thanks you for the letter and tells you that she will check up on her father tonight.</p>",
       applyGlassStylingRed
     );
 
@@ -2660,7 +2737,8 @@ async function sceneInn() {
       applyGlassStylingRed
     );
 
-    await sleep(1500);
+    await pause();
+
     textContainer.innerHTML = "";
 
     await typeTextItalic(
@@ -2669,14 +2747,17 @@ async function sceneInn() {
       applyGlassStylingBlue
     );
 
-    await sleep(1500);
+    await pause();
+    
     textContainer.innerHTML = "";
 
     await typeTextItalic(
       textContainer,
-      "<p>But So our fates are mysteries to us. And we should be ready for what life sends our way.</p>",
+      "<p>But so our fates are mysteries to us. And we should be ready for what life sends our way.</p>",
       applyGlassStylingBlue
     );
+
+    await sleep(1500);
 
     await typeText(
       textContainer,
@@ -2684,7 +2765,8 @@ async function sceneInn() {
       applyGlassStylingRed
     );
 
-    await sleep(1500);
+    await pause();
+
     textContainer.innerHTML = "";
 
     await typeTextItalic(
@@ -2694,7 +2776,6 @@ async function sceneInn() {
     );
 
     await sleep(1500);
-
     // append new button
     userControlsContainer.appendChild(rememberBtn);
   });
@@ -2722,7 +2803,8 @@ async function sceneInn() {
       applyGlassStylingGreen
     );
 
-    await sleep(1500);
+    await pause();
+    
     textContainer.innerHTML = "";
 
     await typeTextItalic(
@@ -2731,7 +2813,8 @@ async function sceneInn() {
       applyGlassStylingBlue
     );
 
-    await sleep(1500);
+    await pause();
+
     textContainer.innerHTML = "";
 
     await typeText(
