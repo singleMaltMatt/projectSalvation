@@ -4388,8 +4388,12 @@ async function sceneResidential() {
       await sleep(1500);
   
       // append new button
-      userControlsContainer.appendChild(firstDoorRightBtn);
-      userControlsContainer.appendChild(firstDoorLeftBtn);
+      if (LARGE_HOUSE_SECOND_ROOM_RIGHT_VIEWED_AGAIN == false) {
+        userControlsContainer.appendChild(firstDoorRightBtn);
+      }
+      if (LARGE_HOUSE_SECOND_ROOM_LEFT_VIEWED_AGAIN == false) {
+        userControlsContainer.appendChild(firstDoorLeftBtn);
+      }
       userControlsContainer.appendChild(upstairsHallwayBtn);
       userControlsContainer.appendChild(downstairsBtn);
     });
@@ -4720,6 +4724,8 @@ async function sceneResidential() {
       // remove button from user controls container
       firstDoorRightBtn.remove();
       firstDoorLeftBtn.remove();
+      secondDoorRightBtn.remove();
+      secondDoorLeftBtn.remove();
       upstairsHallwayBtn.remove();
       downstairsBtn.remove();
   
@@ -4778,7 +4784,7 @@ async function sceneResidential() {
       // write new text
       await typeText(
         textContainer,
-        "<p>As you walk, the floorboards groan beneath your footsteps, and the silence of the house amplifies the sound.<br>A couple of doors line the corridor, each seemingly concealing its own mystery.</p>",
+        "<p>As you walk, the floorboards groan beneath your footsteps, and the silence of the house amplifies the sound.<br>A couple of doors line the hallway, each seemingly concealing its own mystery.</p>",
         applyGlassStylingRed
       );
     
@@ -5097,6 +5103,7 @@ async function sceneResidential() {
         LARGE_HOUSE_SAFE_FOUND = true;
   
         // append new button
+        userControlsContainer.appendChild(safeBtn);
         if (LARGE_HOUSE_DESK_VIEWED == false) {
           userControlsContainer.appendChild(inspectDeskBtn);
         }
@@ -5110,7 +5117,6 @@ async function sceneResidential() {
           "<p>You are standing in front of the wall safe.</p>",
           applyGlassStylingRed
         );
-
         userControlsContainer.appendChild(safeBtn);
         if (LARGE_HOUSE_MAYOR_KEY == false) {
           userControlsContainer.appendChild(inspectBodyBtn);
@@ -5272,7 +5278,7 @@ async function sceneResidential() {
   
         sceneResidential();
       } else {
-        
+
         sceneResidential();
       }
     });
