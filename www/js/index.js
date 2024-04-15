@@ -5629,6 +5629,8 @@ async function sceneResidential() {
       textContainer.innerHTML = "";
 
       HOUSE_OVERGROWN_CAT_TOY = true;
+
+      INVENTORY.push({ name: "Cat Toy", description: "A fish-shaped cat toy you found at the overgrown house." });
   
       // remove button from user controls container
       takeToyBtn.remove();
