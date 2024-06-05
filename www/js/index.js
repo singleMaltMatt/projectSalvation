@@ -254,10 +254,18 @@ let HOUSE_WHITE_SNAKE_BITE = false;
 //
 //sceneChurch
 let CHURCH_STORY = false;
-
 let INFORMATION = false;
+
+// sceneClinic
 let CLINIC_KEY = false; // check this when you get there
-let CLINIC_STERIODS = false;
+let CLINIC_KEY_USED = false;
+let CLINIC_STEROIDS = false;
+let CLINIC_LIGHT = false;
+let CLINIC_BASEMENT = false;
+let CLINIC_ROBOT_SEEN = false;
+let CLINIC_RESEARCH_SAVED = false;
+let CLINIC_SECRET_DOOR = false;
+let CLINIC_LOCKED_IN = false;
 
 //|SLEEPER
 function sleep(ms) {
@@ -268,7 +276,7 @@ function sleep(ms) {
 function pause() {
   return new Promise(resolve => {
     const pauseButton = document.createElement("button");
-    pauseButton.textContent = "..."
+    pauseButton.textContent = "►"
     pauseButton.style.position = "absolute";
     pauseButton.style.bottom = "10px";
     pauseButton.style.right = "10px";
@@ -1341,7 +1349,7 @@ async function sceneThree() {
 
 async function sceneTownSquare() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/town-square.jpg)";
+  gameContainer.style.backgroundImage = "url(img/town-square-2.jpg)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
   let userControlsContainer = document.querySelector(
     ".user-controls-container"
@@ -1589,23 +1597,310 @@ async function sceneClinic() {
 
   // create button
   let townSquareBtn = document.createElement("button"); // create buttons for scene
+  let keyBtn = document.createElement("button");
+  let enterBtn = document.createElement("button");
+  let investigateBtn = document.createElement("button");
+  let leaveBtn = document.createElement("button");
+  let hallwayBtn = document.createElement("button");
+  let continueBtn = document.createElement("button");
+  let flickBtn = document.createElement("button");
+  let doorLeftBtn = document.createElement("button");
+  let doorRightBtn = document.createElement("button");
+  let continueFurtherBtn = document.createElement("button");
+  let continueCornerBtn = document.createElement("button");
+  let locateBtn = document.createElement("button");
+  let openDoorBtn = document.createElement("button");
+  let fridgeBtn = document.createElement("button");
+  let syringeBtn = document.createElement("button");
+  let closeBtn = document.createElement("button");
+  let findBtn = document.createElement("button");
+  let returnBtn = document.createElement("button");
+  let investigatePlateBtn = document.createElement("button");
+  let openHatchBtn = document.createElement("button");
+  let seekHelpLeaveBtn = document.createElement("button");
+  let climbHatchBtn = document.createElement("button");
+  let callBtn = document.createElement("button");
+  let investigateRoomBtn = document.createElement("button");
+  let investigateCounterBtn = document.createElement("button");
+  let investigateDeskBtn = document.createElement("button");
+  let computerBtn = document.createElement("button");
+  let computerOffBtn = document.createElement("button");
+  let openFolderBtn = document.createElement("button");
+  let openDocBtn = document.createElement("button");
+  let openImageBtn = document.createElement("button");
+  let investigateTanksBtn = document.createElement("button");
+  let investigateTableBtn = document.createElement("button");
+  let investigateBodyBtn = document.createElement("button");
+  let enoughLeaveBtn = document.createElement("button");
+  let openSecretDoorBtn = document.createElement("button");
+  let lookThroughBtn = document.createElement("button");
+  let walkBtn = document.createElement("button");
+  let tryToOpenDoorBtn = document.createElement("button");
+  let lookAroundBtn = document.createElement("button");
+  let returnToResidentialBtn = document.createElement("button");
 
   // set button text
-  townSquareBtn.textContent = "go to town square";
+  townSquareBtn.textContent = "Go to town square";
+  keyBtn.textContent = "Use Clinic Key";
+  enterBtn.textContent = "Enter the Clinic";
+  investigateBtn.textContent = "Investigate your surroundings";
+  leaveBtn.textContent = "This place is creepy, leave for now";
+  hallwayBtn.textContent = "Walk down the corridor";
+  continueBtn.textContent = "Continue further down the corridor";
+  flickBtn.textContent = "Flick the light switch";
+  doorLeftBtn.textContent = "Open door to the left";
+  doorRightBtn.textContent = "Open door to the right";
+  continueFurtherBtn.textContent = "Continue down the corridor";
+  continueCornerBtn.textContent = "Continue around the corner";
+  locateBtn.textContent = "Try to locate the humming";
+  openDoorBtn.textContent = "Open the door";
+  fridgeBtn.textContent = "Check inside the fridge";
+  syringeBtn.textContent = "Take the syringe";
+  closeBtn.textContent = "Close the fridge";
+  findBtn.textContent = "Find painkillers";
+  returnBtn.textContent = "Return to the entrance of the Clinic";
+  investigatePlateBtn.textContent = "Investigate the metal plate";
+  openHatchBtn.textContent = "Open the hatch";
+  seekHelpLeaveBtn.textContent = "This could be dangerous, better to leave and get help";
+  climbHatchBtn.textContent = "Climb down the hatch";
+  callBtn.textContent = "Call out for someone";
+  investigateRoomBtn.textContent = "Investigate the room";
+  investigateCounterBtn.textContent = "Investigate counter";
+  investigateDeskBtn.textContent = "Investigate study desk";
+  computerBtn.textContent = "Switch on the computer";
+  computerOffBtn.textContent = "Switch off the computer";
+  openFolderBtn.textContent = "Open the folder";
+  openDocBtn.textContent = "Open the text document";
+  openImageBtn.textContent = "Open the image files";
+  investigateTanksBtn.textContent = "Investigate glass tanks";
+  investigateTableBtn.textContent = "Investigate operating table";
+  investigateBodyBtn.textContent = "Investigate the body";
+  enoughLeaveBtn.textContent = "You've seen enough, you want to leave";
+  openSecretDoorBtn.textContent = "Open the secret door";
+  lookThroughBtn.textContent = "Look through the secret door";
+  walkBtn.textContent = "Walk down the secret passage";
+  tryToOpenDoorBtn.textContent = "Try to open the door";
+  lookAroundBtn.textContent = "Look around the house";
+  returnToResidentialBtn.textContent = "Return to residential area";
+  
 
   // add styling for button
   applyGlassStylingGreyBtn(townSquareBtn);
+  applyGlassStylingGreyBtn(keyBtn);
+  applyGlassStylingGreyBtn(enterBtn);
+  applyGlassStylingGreyBtn(investigateBtn);
+  applyGlassStylingGreyBtn(leaveBtn);
+  applyGlassStylingGreyBtn(hallwayBtn);
+  applyGlassStylingGreyBtn(continueBtn);
+  applyGlassStylingGreyBtn(flickBtn);
+  applyGlassStylingGreyBtn(doorLeftBtn);
+  applyGlassStylingGreyBtn(doorRightBtn);
+  applyGlassStylingGreyBtn(continueFurtherBtn);
+  applyGlassStylingGreyBtn(continueCornerBtn);
+  applyGlassStylingGreyBtn(locateBtn);
+  applyGlassStylingGreyBtn(openDoorBtn);
+  applyGlassStylingGreyBtn(fridgeBtn);
+  applyGlassStylingGreyBtn(syringeBtn);
+  applyGlassStylingGreyBtn(closeBtn);
+  applyGlassStylingGreyBtn(findBtn);
+  applyGlassStylingGreyBtn(returnBtn);
+  applyGlassStylingGreyBtn(investigatePlateBtn);
+  applyGlassStylingGreyBtn(openHatchBtn);
+  applyGlassStylingGreyBtn(seekHelpLeaveBtn);
+  applyGlassStylingGreyBtn(climbHatchBtn);
+  applyGlassStylingGreyBtn(callBtn);
+  applyGlassStylingGreyBtn(investigateRoomBtn);
+  applyGlassStylingGreyBtn(investigateCounterBtn);
+  applyGlassStylingGreyBtn(investigateDeskBtn);
+  applyGlassStylingGreyBtn(computerBtn);
+  applyGlassStylingGreyBtn(computerOffBtn);
+  applyGlassStylingGreyBtn(openFolderBtn);
+  applyGlassStylingGreyBtn(openDocBtn);
+  applyGlassStylingGreyBtn(openImageBtn);
+  applyGlassStylingGreyBtn(investigateTanksBtn);
+  applyGlassStylingGreyBtn(investigateTableBtn);
+  applyGlassStylingGreyBtn(investigateBodyBtn);
+  applyGlassStylingGreyBtn(enoughLeaveBtn);
+  applyGlassStylingGreyBtn(openSecretDoorBtn);
+  applyGlassStylingGreyBtn(lookThroughBtn);
+  applyGlassStylingGreyBtn(walkBtn);
+  applyGlassStylingGreyBtn(tryToOpenDoorBtn);
+  applyGlassStylingGreyBtn(lookAroundBtn);
+  applyGlassStylingGreyBtn(returnToResidentialBtn);
 
-  await typeText(
-    textContainer,
-    "<p>The doors to the clinic are chained shut, a heavy silver padlock glistens in the sunlight</p>",
-    applyGlassStylingRed
-  );
+  if (CLINIC_KEY_USED == false) {
+    await typeText(
+      textContainer,
+      "<p>The doors to the clinic are chained shut, a heavy silver padlock glistens in the sunlight<br><br>You try looking through the glass but the inside is dark, you can't see anything.</p>",
+      applyGlassStylingRed
+    );
+  
+    await sleep(1500);
+  
+    // append button to user controls container
+    if (CLINIC_KEY == true) {
+      userControlsContainer.appendChild(keyBtn);
+      userControlsContainer.appendChild(townSquareBtn);
+    } else {
+      userControlsContainer.appendChild(townSquareBtn);
+    }
+  } else {
+    await typeText(
+      textContainer,
+      "<p>The glass doors to the clinic are closed, a heavy silver padlock and chains lays on the ground in front of the door.<p>",
+      applyGlassStylingRed
+    );
 
-  await sleep(1500);
+    await sleep(1500);
 
-  // append button to user controls container
-  userControlsContainer.appendChild(townSquareBtn);
+    userControlsContainer.appendChild(enterBtn);
+  }
+    
+
+  keyBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    userControlsContainer.remove(keyBtn);
+    userControlsContainer.remove(townSquareBtn);
+
+    CLINIC_KEY_USED = true;
+
+    // remove button from user controls container
+    townSquareBtn.remove();
+    keyBtn.remove();
+
+    await typeText(
+      textContainer,
+      "<p>You take the key you received from Ingrid and slide it into the lock. With an easy turn the padlock springs open.<br><br>You unwrap the chains and they slink to the ground.<p>",
+      applyGlassStylingRed
+    );
+
+    userControlsContainer.appendChild(enterBtn);
+  });
+
+  enterBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    enterBtn.remove();
+
+    if (CLINIC_BASEMENT == true) {
+      await typeText(
+        textContainer,
+        "<p>You have already found enough important information inside the clinic, you don't think you want to go inside again.<p>",
+        applyGlassStylingRed
+      );
+
+      await sleep(1500);
+
+      userControlsContainer.appendChild(townSquareBtn);
+    } else {
+      await typeText(
+        textContainer,
+        "<p>You push open one of the glass doors, and you feel some resistance.<br>You notice it has one of those automatic closing devices attached.<br><br>You step into the dark interior and the door automatically closes behind you, banging loudly in the frame.<p>",
+        applyGlassStylingRed
+      );
+
+      await pause();
+
+      textContent.innerHTML = "";
+
+      await typeText(
+        textContainer,
+        "<p>The sound echoes through the empty building and a shiver runs up your spine.<br><br>You are glad you made it inside the Clinic because you suddenly notice a sharp pain in our ankle again.<p>",
+        applyGlassStylingRed
+      );
+
+      await sleep(1500);
+
+      userControlsContainer.appendChild(investigateBtn);
+      userControlsContainer.appendChild(leaveBtn);
+    }
+  });
+
+  investigateBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    townSquareBtn.remove();
+    investigateBtn.remove();
+    leaveBtn.remove();
+
+    await typeText(
+      textContainer,
+      "<p>You can see much better now that you are inside the dark room with the light coming in through the windows and doors, but it is still rather dark.<br><br>You seem to be standing in the reception area of the Clinic. To your right is the waiting area with many benches and some old magazines for patients to read; to your left is a reception window.<p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>There is an empty water cooler and some withering plants here and there throughout the room. There is a small dark hallway leading further into the Clinic.<br><br>You suddenly realize you can hear a faint humming sound coming from deeper within the building.<p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    userControlsContainer.appendChild(hallwayBtn);
+    userControlsContainer.appendChild(leaveBtn);
+
+  });
+
+  
+  hallwayBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    leaveBtn.remove();
+    hallwayBtn.remove();
+
+    await typeText(
+      textContainer,
+      "<p>You can barely see in this dark area, but your eyes quickly adjust to the darkness thanks to the  faint light coming from the entrance.<br><br>Here on your right you see another window with a serving counter just like the reception, however here you see a big sign above it that reads 'Dispensary', but you cant make out anything inside the room, then you notice a light switch on the wall next to the counter.<p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    userControlsContainer.appendChild(continueBtn);
+    userControlsContainer.appendChild(flickBtn);
+  });
+
 
   townSquareBtn.addEventListener("pointerup", async function () {
     // Button click check
@@ -1620,10 +1915,171 @@ async function sceneClinic() {
 
     // remove button from user controls container
     townSquareBtn.remove();
+    keyBtn.remove();
+    enterBtn.remove();
+    investigateBtn.remove();
+    leaveBtn.remove();
+    hallwayBtn.remove();
+    continueBtn.remove();
+    flickBtn.remove();
+    doorLeftBtn.remove();
+    doorRightBtn.remove();
+    continueFurtherBtn.remove();
+    continueCornerBtn.remove();
+    locateBtn.remove();
+    openDoorBtn.remove();
+    fridgeBtn.remove();
+    syringeBtn.remove();
+    closeBtn.remove();
+    findBtn.remove();
+    returnBtn.remove();
+    investigatePlateBtn.remove();
+    openHatchBtn.remove();
+    seekHelpLeaveBtn.remove();
+    climbHatchBtn.remove();
+    callBtn.remove();
+    investigateRoomBtn.remove();
+    investigateCounterBtn.remove();
+    investigateDeskBtn.remove();
+    computerBtn.remove();
+    computerOffBtn.remove();
+    openFolderBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    investigateBodyBtn.remove();
+    enoughLeaveBtn.remove();
+    openSecretDoorBtn.remove();
+    lookThroughBtn.remove();
+    walkBtn.remove();
+    tryToOpenDoorBtn.remove();
+    lookAroundBtn.remove();
+    returnToResidentialBtn.remove();
+    
+  });
+
+  
+  leaveBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    townSquareBtn.remove();
+    keyBtn.remove();
+    enterBtn.remove();
+    investigateBtn.remove();
+    leaveBtn.remove();
+    hallwayBtn.remove();
+    continueBtn.remove();
+    flickBtn.remove();
+    doorLeftBtn.remove();
+    doorRightBtn.remove();
+    continueFurtherBtn.remove();
+    continueCornerBtn.remove();
+    locateBtn.remove();
+    openDoorBtn.remove();
+    fridgeBtn.remove();
+    syringeBtn.remove();
+    closeBtn.remove();
+    findBtn.remove();
+    returnBtn.remove();
+    investigatePlateBtn.remove();
+    openHatchBtn.remove();
+    seekHelpLeaveBtn.remove();
+    climbHatchBtn.remove();
+    callBtn.remove();
+    investigateRoomBtn.remove();
+    investigateCounterBtn.remove();
+    investigateDeskBtn.remove();
+    computerBtn.remove();
+    computerOffBtn.remove();
+    openFolderBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    investigateBodyBtn.remove();
+    enoughLeaveBtn.remove();
+    openSecretDoorBtn.remove();
+    lookThroughBtn.remove();
+    walkBtn.remove();
+    tryToOpenDoorBtn.remove();
+    lookAroundBtn.remove();
+    returnToResidentialBtn.remove();
 
     sceneTownSquare();
 
   });
+
+
+  townSquareBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    townSquareBtn.remove();
+    keyBtn.remove();
+    enterBtn.remove();
+    investigateBtn.remove();
+    leaveBtn.remove();
+    hallwayBtn.remove();
+    continueBtn.remove();
+    flickBtn.remove();
+    doorLeftBtn.remove();
+    doorRightBtn.remove();
+    continueFurtherBtn.remove();
+    continueCornerBtn.remove();
+    locateBtn.remove();
+    openDoorBtn.remove();
+    fridgeBtn.remove();
+    syringeBtn.remove();
+    closeBtn.remove();
+    findBtn.remove();
+    returnBtn.remove();
+    investigatePlateBtn.remove();
+    openHatchBtn.remove();
+    seekHelpLeaveBtn.remove();
+    climbHatchBtn.remove();
+    callBtn.remove();
+    investigateRoomBtn.remove();
+    investigateCounterBtn.remove();
+    investigateDeskBtn.remove();
+    computerBtn.remove();
+    computerOffBtn.remove();
+    openFolderBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    investigateBodyBtn.remove();
+    enoughLeaveBtn.remove();
+    openSecretDoorBtn.remove();
+    lookThroughBtn.remove();
+    walkBtn.remove();
+    tryToOpenDoorBtn.remove();
+    lookAroundBtn.remove();
+    returnToResidentialBtn.remove();
+
+    sceneTownSquare();
+
+  });
+
+  
 }
 
 //| SCENE SWIMMING POOL
@@ -5866,7 +6322,7 @@ async function sceneResidential() {
       } else {
         await typeText(
           textContainer,
-          "<p>As you turn around on the path to walk balk to the main road, your breath catches in your throat...<br><br>A large snake is looking straight at you, its head reared up from the gravel. you can see a twitching rabbit off to the side of the path, you must have interrupted a fresh kill.</p>",
+          "<p>As you turn around on the path to walk back to the main road, your breath catches in your throat...<br><br>A large snake is looking straight at you, its head reared up from the gravel. you can see a twitching rabbit off to the side of the path, you must have interrupted a fresh kill.</p>",
           applyGlassStylingRed
         );
 
