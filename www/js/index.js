@@ -2241,7 +2241,7 @@ async function sceneClinic() {
     userControlsContainer.appendChild(continueCornerBtn); // append relevant buttons
   });
 
-  buttonNameBtn.addEventListener("pointerup", async function () {
+  continueCornerBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -2253,22 +2253,23 @@ async function sceneClinic() {
     textContainer.innerHTML = "";
 
     // remove button from user controls container
-    buttonNameBtn.remove(); // remove relevant buttons
+    continueCornerBtn.remove(); // remove relevant buttons
+    locateBtn.remove();
 
     // write new text
     await typeText(
       textContainer,
-      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
+      "<p>As you turn the corner you see a narrow corridor containing a desk with some files and an old computer on it. At the end of the corridor is a filing cabinet.<br><br>As you reach the desk you notice a door to your right with a plaque attached to it which reads 'Dispensary'.</p>",
       applyGlassStylingRed
     );
 
     await sleep(1500);
 
     // append new button
-    userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
+    userControlsContainer.appendChild(openDoorBtn); // append relevant buttons
   });
 
-  buttonNameBtn.addEventListener("pointerup", async function () {
+  openDoorBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -2280,20 +2281,133 @@ async function sceneClinic() {
     textContainer.innerHTML = "";
 
     // remove button from user controls container
-    buttonNameBtn.remove(); // remove relevant buttons
+    openDoorBtn.remove(); // remove relevant buttons
 
+    if (CLINIC_LIGHT == false) {
+        // write new text
+      await typeText(
+        textContainer,
+        "<p>You turn the handle and surprisingly the door is unlocked.<br>The door opens into a dark room. You see no windows, but is there is some light coming from outside the clinic through the service window.<br>There are medicine boxes and bottles lining the walls of the room, but you can't make out any of the names or labels. You notice the pain in your ankle again.</p>",
+        applyGlassStylingRed
+      );
+
+      await sleep(1500);
+
+      // append new button
+      userControlsContainer.appendChild(findBtn); // append relevant buttons
+      } else {
+        await typeText(
+          textContainer,
+          "<p>You turn the handle and surprisingly the door is unlocked.<br>The door opens into the brightly lit dispensary. On this side of the service window you can see the room is old fashioned with wooden furniture and thick carpeting .<br><br>You also see a pharmacist's station with a chair, an old computer, printer and a dried and dead plant.</p>",
+          applyGlassStylingRed
+        );
+    
+      await pause();
+
+      textContainer.innerHTML = "";
+      
+      await typeText(
+        textContainer,
+        "<p>There are medicine boxes and bottles lining the walls . You notice the pain in your ankle again.</p>",
+        applyGlassStylingRed
+      );
+    
+        // append new button
+        userControlsContainer.appendChild(findBtn); // append relevant buttons
+    };
+    
+  });
+
+  findBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    findBtn.remove(); // remove relevant buttons
+
+    if (CLINIC_LIGHT == false) {
     // write new text
     await typeText(
       textContainer,
-      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
+      "<p>You grab some bottles from the shelf in front of you and try to read the tiny label but you can't read it in this light... maybe you should try finding a light switch first.</p>",
       applyGlassStylingRed
     );
 
     await sleep(1500);
 
     // append new button
-    userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
+      userControlsContainer.appendChild(returnBtn); // append relevant buttons
+    } else {
+      // write new text
+      await typeText(
+        textContainer,
+        "<p>You scan the shelves looking for anything that indicates pain medication. Suddenly some words stand out to you, paracetamol; ibuprofen, naproxen, phenazone... you don't know how you know this, but these are painkillers.</p>",
+        applyGlassStylingRed
+      );
+  
+      await pause();
+
+      textContainer.innerHTML = "";
+
+      await typeText(
+        textContainer,
+        "<p>You take a few pills from a bottle labeled Mendaxil and swallow them. Hopefully this will do the trick.<br><br>You put the bottle back on the shelf but you put it too close to the edge and it falls. You instinctively reach out to grab it but you are too late and you hear it strike the floor with a metallic clang...",
+        applyGlassStylingRed
+      );
+  
+      await pause();
+
+      textContainer.innerHTML = "";
+
+      await typeText(
+        textContainer,
+        "<p>You are startled by the sound... the whole floor is soft carpet?<br><br>Looking down you see that the bottle struck the edge of metal-looking plate, just sticking out from under a low coffee table stacked with files and magazines.</p>",
+        applyGlassStylingRed
+      );
+  
+      await sleep(1500);
+  
+      // append new button
+      userControlsContainer.appendChild(investigatePlateBtn); // append relevant buttons
+    }
   });
+
+  returnBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    returnBtn.remove(); // remove relevant buttons
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You can barely see in this dark area, but your eyes quickly adjust to the darkness thanks to the  faint light coming from the entrance.<br><br>Here on your right you see another window with a serving counter just like the reception, however here you see a big sign above it that reads 'Dispensary', but you cant make out anything inside the room, then you notice a light switch on the wall next to the counter.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(continueBtn); // append relevant buttons
+    userControlsContainer.appendChild(flickBtn);
+  });
+
+  // now we need to investigate the metal plate investigatePlateBtn***
 
   leaveBtn.addEventListener("pointerup", async function () {
     // Button click check
