@@ -266,6 +266,8 @@ let CLINIC_ROBOT_SEEN = false;
 let CLINIC_RESEARCH_SAVED = false;
 let CLINIC_SECRET_DOOR = false;
 let CLINIC_LOCKED_IN = false;
+let CLINIC_DOOR_LEFT = false;
+let CLINIC_DOOR_RIGHT = false;
 
 //|SLEEPER
 function sleep(ms) {
@@ -1747,7 +1749,7 @@ async function sceneClinic() {
   } else {
     await typeText(
       textContainer,
-      "<p>The glass doors to the clinic are closed, a heavy silver padlock and chains lays on the ground in front of the door.<p>",
+      "<p>The glass doors to the clinic are closed, a heavy silver padlock and chains lays on the ground in front of the door.</p>",
       applyGlassStylingRed
     );
 
@@ -1779,7 +1781,7 @@ async function sceneClinic() {
 
     await typeText(
       textContainer,
-      "<p>You take the key you received from Ingrid and slide it into the lock. With an easy turn the padlock springs open.<br><br>You unwrap the chains and they slink to the ground.<p>",
+      "<p>You take the key you received from Ingrid and slide it into the lock. With an easy turn the padlock springs open.<br><br>You unwrap the chains and they slink to the ground.</p>",
       applyGlassStylingRed
     );
 
@@ -1803,7 +1805,7 @@ async function sceneClinic() {
     if (CLINIC_BASEMENT == true) {
       await typeText(
         textContainer,
-        "<p>You have already found enough important information inside the clinic, you don't think you want to go inside again.<p>",
+        "<p>You have already found enough important information inside the clinic, you don't think you want to go inside again.</p>",
         applyGlassStylingRed
       );
 
@@ -1813,7 +1815,7 @@ async function sceneClinic() {
     } else {
       await typeText(
         textContainer,
-        "<p>You push open one of the glass doors, and you feel some resistance.<br>You notice it has one of those automatic closing devices attached.<br><br>You step into the dark interior and the door automatically closes behind you, banging loudly in the frame.<p>",
+        "<p>You push open one of the glass doors, and you feel some resistance.<br>You notice it has one of those automatic closing devices attached.<br><br>You step into the dark interior and the door automatically closes behind you, banging loudly in the frame.</p>",
         applyGlassStylingRed
       );
 
@@ -1823,7 +1825,7 @@ async function sceneClinic() {
 
       await typeText(
         textContainer,
-        "<p>The sound echoes through the empty building and a shiver runs up your spine.<br><br>You are glad you made it inside the Clinic because you suddenly notice a sharp pain in our ankle again.<p>",
+        "<p>The sound echoes through the empty building and a shiver runs up your spine.<br><br>You are glad you made it inside the Clinic because you suddenly notice a sharp pain in our ankle again.</p>",
         applyGlassStylingRed
       );
 
@@ -1852,7 +1854,7 @@ async function sceneClinic() {
 
     await typeText(
       textContainer,
-      "<p>You can see much better now that you are inside the dark room with the light coming in through the windows and doors, but it is still rather dark.<br><br>You seem to be standing in the reception area of the Clinic. To your right is the waiting area with many benches and some old magazines for patients to read; to your left is a reception window.<p>",
+      "<p>You can see much better now that you are inside the dark room with the light coming in through the windows and doors, but it is still rather dark.<br><br>You seem to be standing in the reception area of the Clinic. To your right is the waiting area with many benches and some old magazines for patients to read; to your left is a reception window.</p>",
       applyGlassStylingRed
     );
 
@@ -1862,7 +1864,7 @@ async function sceneClinic() {
 
     await typeText(
       textContainer,
-      "<p>There is an empty water cooler and some withering plants here and there throughout the room. There is a small dark hallway leading further into the Clinic.<br><br>You suddenly realize you can hear a faint humming sound coming from deeper within the building.<p>",
+      "<p>There is an empty water cooler and some withering plants here and there throughout the room. There is a small dark hallway leading further into the Clinic.<br><br>You suddenly realize you can hear a faint humming sound coming from deeper within the building.</p>",
       applyGlassStylingRed
     );
 
@@ -1891,18 +1893,61 @@ async function sceneClinic() {
 
     await typeText(
       textContainer,
-      "<p>You can barely see in this dark area, but your eyes quickly adjust to the darkness thanks to the  faint light coming from the entrance.<br><br>Here on your right you see another window with a serving counter just like the reception, however here you see a big sign above it that reads 'Dispensary', but you cant make out anything inside the room, then you notice a light switch on the wall next to the counter.<p>",
+      "<p>You can barely see in this dark area, but your eyes quickly adjust to the darkness thanks to the  faint light coming from the entrance.<br><br>Here on your right you see another window with a serving counter just like the reception, however here you see a big sign above it that reads 'Dispensary', but you cant make out anything inside the room, then you notice a light switch on the wall next to the counter.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    if (CLINIC_LIGHT == false) {
+      userControlsContainer.appendChild(flickBtn);
+      userControlsContainer.appendChild(continueBtn);
+    } else {
+      userControlsContainer.appendChild(continueBtn);
+    }
+  });
+
+
+  flickBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    CLINIC_LIGHT = true;
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    continueBtn.remove();
+    flickBtn.remove();
+
+    await typeText(
+      textContainer,
+      "<p>You flick on the light switch and nothing happens.<br><br>Then you hear a hum and a hollow sputtering sound as a light tube comes to life inside the dispensary.<br>You can now make out that there are rows of boxes and bottles on shelves lining all the walls of the small room... Medicine.<p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You want to have a look and see what you can take, when you suddenly realize there is no door on this side that leads into the dispensary, you can't really see a door in the interior of the room either.<br><br>There must be a way in somewhere in this building.</p>",
       applyGlassStylingRed
     );
 
     await sleep(1500);
 
     userControlsContainer.appendChild(continueBtn);
-    userControlsContainer.appendChild(flickBtn);
   });
 
-
-  townSquareBtn.addEventListener("pointerup", async function () {
+  
+  continueBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -1914,12 +1959,354 @@ async function sceneClinic() {
     textContainer.innerHTML = "";
 
     // remove button from user controls container
-    townSquareBtn.remove();
-    keyBtn.remove();
-    enterBtn.remove();
-    investigateBtn.remove();
-    leaveBtn.remove();
-    hallwayBtn.remove();
+    continueBtn.remove();
+    flickBtn.remove();
+
+    await typeText(
+      textContainer,
+      "<p>You walk further down the hallway and see a closed door on either side. You notice small plaques next to each door that read 'Dr. Hedda Johansen' and 'Dr. Erik Johansen'.  In front of you the hallway makes a sharp right turn around a corner.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    if (CLINIC_DOOR_LEFT == false) {
+      userControlsContainer.appendChild(doorLeftBtn);
+    }
+    if (CLINIC_DOOR_RIGHT == false) {
+      userControlsContainer.appendChild(doorRightBtn);
+    }
+    userControlsContainer.appendChild(continueFurtherBtn);
+
+  });
+
+
+  doorLeftBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    CLINIC_DOOR_LEFT = true;
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    doorLeftBtn.remove();
+    doorRightBtn.remove();
+    continueFurtherBtn.remove();
+
+    await typeText(
+      textContainer,
+      "<p>The door is locked.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    if (CLINIC_DOOR_LEFT == false) {
+      userControlsContainer.appendChild(doorLeftBtn);
+    }
+    if (CLINIC_DOOR_RIGHT == false) {
+      userControlsContainer.appendChild(doorRightBtn);
+    }
+    userControlsContainer.appendChild(continueFurtherBtn);
+
+  });
+
+  doorRightBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    CLINIC_DOOR_RIGHT = true;
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    doorLeftBtn.remove();
+    doorRightBtn.remove();
+    continueFurtherBtn.remove();
+
+    await typeText(
+      textContainer,
+      "<p>The door is locked.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    if (CLINIC_DOOR_LEFT == false) {
+      userControlsContainer.appendChild(doorLeftBtn);
+    }
+    if (CLINIC_DOOR_RIGHT == false) {
+      userControlsContainer.appendChild(doorRightBtn);
+    }
+    userControlsContainer.appendChild(continueFurtherBtn);
+
+  });
+
+  continueFurtherBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    doorLeftBtn.remove();
+    doorRightBtn.remove();
+    continueFurtherBtn.remove();
+
+    await typeText(
+      textContainer,
+      "<p>You walk further down the hallway and turn the corner to the right. You are now standing in what looks to be a small staff kitchen.<br><br>There are a few kitchen cupboards and a small coffee station in one corner next to a very old looking refrigerator.<br><br>The light is very dim here; there is a dirty window that is obscured from the outside by leaves and branches above a small kitchen sink.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    await typeText(
+      textContainer,
+      "<p>You hear a very distinct humming sound in this room but you can't place exactly where it is coming from.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>There is another small hallway that leads out of this room and makes another corner turn to the right.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    userControlsContainer.appendChild(continueCornerBtn);
+    userControlsContainer.appendChild(locateBtn);
+    
+  });
+
+  
+  locateBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    locateBtn.remove(); // remove relevant buttons
+    continueCornerBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You slowly walk around the room trying to discern where the humming is coming from, in this quiet area it feels like it is coming from everywhere...</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    await typeText(
+      textContainer,
+      "<p>You pace around and suddenly the fridge catches your attention.<br><br>Of course, it's the old refrigerator, they were much loader than modern refrigerators, and it must have been running all this time in the empty clinic.<br><br>What ever was kept in there must be rotten by now.</p>",
+      applyGlassStylingRed
+    )
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(fridgeBtn); // append relevant buttons
+    userControlsContainer.appendChild(continueCornerBtn);
+  });
+
+  fridgeBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    fridgeBtn.remove(); // remove relevant buttons
+    continueCornerBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You open the refrigerator and you are firstly assaulted by the sudden bright light, and secondly by the awful smell from inside.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>The fridge is mostly empty except for a plate holding the remains of what was once a sandwich, covered in black and green mold; and a very bloated plastic milk bottle.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    await typeText(
+      textContainer,
+      "<p>You are surprised to also see an old ampoule syringe laying in one of the shelves, it's needle capped.<br>But then you realize it's not that strange to have medicines around that are kept cold.<br><br>There is a small label on the ampoule that reads 'Prototype-S'</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(syringeBtn); // append relevant buttons
+    userControlsContainer.appendChild(closeBtn);
+  });
+
+  syringeBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    CLINIC_STEROIDS = true;
+
+    INVENTORY.push({ name: "Syringe", description: "A syringe you found at the clinic" });
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    syringeBtn.remove(); // remove relevant buttons
+    closeBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You take the 'prototype-S'</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(closeBtn); // append relevant buttons
+  });
+
+  closeBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    syringeBtn.remove(); // remove relevant buttons
+    closeBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You close the fridge and take a few moments to adjust to the darkness again.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(continueCornerBtn); // append relevant buttons
+  });
+
+  buttonNameBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    buttonNameBtn.remove(); // remove relevant buttons
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
+  });
+
+  buttonNameBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    buttonNameBtn.remove(); // remove relevant buttons
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
+  });
+
+  leaveBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
     continueBtn.remove();
     flickBtn.remove();
     doorLeftBtn.remove();
@@ -1956,7 +2343,8 @@ async function sceneClinic() {
     tryToOpenDoorBtn.remove();
     lookAroundBtn.remove();
     returnToResidentialBtn.remove();
-    
+
+
   });
 
   

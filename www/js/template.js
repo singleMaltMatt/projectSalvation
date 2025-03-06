@@ -53,6 +53,8 @@ async function-name
 
 */
 
+import { applyGlassStylingRed } from "./boxes";
+
 async function sceneName() {
   let gameContainer = document.querySelector(".container");
   gameContainer.style.backgroundImage = "url(img/)"; // Add BG image
@@ -106,10 +108,10 @@ async function sceneName() {
     buttonNameBtn.remove(); // remove relevant buttons
 
     // write new text
-    await typeTextItalic(
+    await typeText(
       textContainer,
       "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-      applyGlassStylingGreen
+      applyGlassStylingRed
     );
 
     await sleep(1500);
