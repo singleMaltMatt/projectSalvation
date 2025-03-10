@@ -2407,8 +2407,784 @@ async function sceneClinic() {
     userControlsContainer.appendChild(flickBtn);
   });
 
-  // now we need to investigate the metal plate investigatePlateBtn***
+  investigatePlateBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
 
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigatePlateBtn.remove(); // remove relevant buttons
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You bend down and try to look at the plate, but it's well hidden under the table. You decide to move the table away.<br><br>You pick the table up and a few magazines and files fall to the floor, but you don't pay any attention to it, you are surprised by what you are looking at.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Where the table stood before there is now a small, flat metal square... you might mistake it for a manhole if not for the large handle attached to one edge..</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>This is a hatch door! There must be a basement underneath the clinic... but why was it hidden? I wonder if I should see what's down there...</p>",
+      applyGlassStylingGreen
+    );
+
+    // append new button
+    userControlsContainer.appendChild(openHatchBtn); // append relevant buttons
+  });
+
+  openHatchBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    CLINIC_BASEMENT = true;
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    openHatchBtn.remove(); // remove relevant buttons
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>There is a locking mechanism in the hatch door, so you rotate the handle anti-clockwise and feel the door release. You lift the hatch and a rush of cold air hits your face. you see a shaft and iron rungs leading straight down.<br><br>You can see a well lit white floor at the bottom of the shaft, about four meters down.<br><br>You notice the distinct smell of a musty room that has been closed off for a long time.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(seekHelpLeaveBtn); // append relevant buttons
+    userControlsContainer.appendChild(climbHatchBtn);
+  });
+  
+  seekHelpLeaveBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    seekHelpLeaveBtn.remove(); // remove relevant buttons
+    climbHatchBtn.remove();
+
+    sceneTownSquare();
+  });
+  
+  climbHatchBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    seekHelpLeaveBtn.remove(); // remove relevant buttons
+    climbHatchBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You stand in front of the open hatch, looking down into the deep hole, and decide to climb down.<br>As you climb down each rung you notice the air getting colder around you, and that your ankle still hurts.<br>Suddenly you hear a loud crash as the hatch door slams shut above you. You feel mild panic but decide to continue down and investigate.<br>After what feels like a really long time you reach the floor at the bottom and turn around...</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You are standing in a short but very narrow hallway that leads a few meters ahead and then opens into a larger room.<br>Everything seems white and very brightly lit, It's making your eyes burn a bit.<br>You see Industrial looking equipment in the room ahead. The air smells stale down here.<br><br>You apprehensively move forward to get a better look.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(callBtn); // append relevant buttons
+    userControlsContainer.appendChild(investigateRoomBtn); // append relevant buttons
+  });
+  
+  callBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    callBtn.remove(); // remove relevant buttons
+    investigateRoomBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>Hello? Is anyone down here?</p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You listen for a reply, The only reply is eerie silence, you are almost disappointed.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(investigateRoomBtn); // append relevant buttons
+  });
+  
+  investigateRoomBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateRoomBtn.remove(); // remove relevant buttons
+    callBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You step forward out of the hallway into the larger room, but this not just a room...<br><br>This is a laboratory. There are no other doors or windows in the room, just an air vent in one corner of the ceiling.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You see a counter against a wall which holds different tools like microscopes and other medical equipment that you don't know the purpose of.<br><br>You also see a regular study desk with a computer monitor and lots of papers on it.<br><br>Against the far wall there are 3 large glass tanks filled with a liquid that looks like water. There is some debris or detritus floating in the liquid.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You step forward out of the hallway into the larger room, but this not just a room...<br><br>This is a laboratory. There are no other doors or windows in the room, just an air vent in one corner of the ceiling.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>The rest of the room looks almost like an operating theatre, as you see a blue fabric screen with an operating table behind it to one side, with lights and various gas tanks standing around it.<br><br>The room is completely silent. It makes your skin crawl.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(investigateCounterBtn); // append relevant buttons
+    userControlsContainer.appendChild(investigateDeskBtn);
+    userControlsContainer.appendChild(investigateTanksBtn);
+    userControlsContainer.appendChild(investigateTableBtn);
+    userControlsContainer.appendChild(enoughLeaveBtn);
+  });
+  
+  investigateCounterBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You move up to the counter on which you see a microscope, a circular device that holds a few vials of liquid, and what looks like some dried grass or twigs.<br><br>You look into the microscope, and see a sample of whatever the last person here was looking at, but you can't exactly make it out, you see lots of tiny circular shapes, but the sample has dried and the view is blurry, you decide to leave it alone.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You catch a glimpse of the dried grass or twigs and wonder what it's doing in a lab like this... maybe the doctors were trying...</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Your thoughts catch and your eyes snap back to the long thin objects as you catch a slight glint of metal, you realise those aren't twigs... or grass...<br><br>you slowly move closer for a better look , just to confirm what your mind already knows is true...</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Those are wires... caked in dried blood... </p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Just what in the hells was happening down here...</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>You turn away before your mind can linger on the possibilities.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(investigateDeskBtn); // append relevant buttons
+    userControlsContainer.appendChild(investigateTanksBtn);
+    userControlsContainer.appendChild(investigateTableBtn);
+    userControlsContainer.appendChild(enoughLeaveBtn);
+  });
+  
+  investigateDeskBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You stand in front of the simple desk and see that there is a computer tower underneath it. It is not switched on. There are various papers littering the desk, most look like shorthand notes scribbled on different notepads.<br><br>A bright orange sticky note, stuck to the computer keyboard catches your eye. On it is written : 'PASSWORD' with a string of numbers underneath - 34-39-55-132-45-36.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You wonder why someone would choose such a strange password, and then keep it on a note next to the computer, but you decide that whoever was working down here in a secret laboratory probably didn't worry about someone finding and using their computer.<br><br>You notice a USB drive sticking out of the top of computer.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(computerBtn); // append relevant buttons
+    userControlsContainer.appendChild(investigateCounterBtn);
+    userControlsContainer.appendChild(investigateTanksBtn);
+    userControlsContainer.appendChild(investigateTableBtn);
+    userControlsContainer.appendChild(enoughLeaveBtn);
+  });
+  
+  computerBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    computerBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You sit down on the chair in front of the desk and press the large power button on the front of the computer and it starts buzzing and gives a beep which sounds extremely loud in the silence of this room.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>After a few seconds you see a cursor flashing on the screen and a plain blue background appears, with a prompt window that says 'Password:'<br><br>You enter the password you see on the sticky note and the text 'Welcome Dr. Johansen' appears on the screen before a few icons appear on the background.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>There is nothing much of interest, it all looks very medical in nature and you don't feel like reading medical journals at this moment.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(computerOffBtn); // append relevant buttons
+  });
+  
+  computerOffBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    computerOffBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You reach for the power button again and as you touch it you see something on the screen and your hand freezes where it is...  a folder you didn't notice before in the upper right corner of the screen reads 'Project Salvation'.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Project Salvation? The government project father Jakob told me about?</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(openFolderBtn); // append relevant buttons
+  });
+  
+  openFolderBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openFolderBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You click on the folder to open it's contents and the window opens a long list of files.<br><br>They mostly look like text documents, and the names are all called 'research notes' with different dates, there are also some image files.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(openDocBtn); // append relevant buttons
+    userControlsContainer.appendChild(openImageBtn);
+  });
+  
+  openDocBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    CLINIC_RESEARCH_SAVED = true;
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You open the most recent dated file and a text document appears on the screen.<br>It consists of listed dates with a note next to each date.<br>You skim the page and see that these were progress reports of research the doctors were conducting on 'humanoid assets'<br><br>The last entry says 'finalising work before leaving for HQ, To return in a fortnight'</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You suddenly remember you saw a USB drive in the computer...<br><br>It might not be a bad idea to save this information and take it with you...<br><br>If you plan to go to the resistance, they will want to know what is happening in this town.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You save the images and text documents to the USB drive and remove it, safely putting it in your pocket. You have a feeling that this is very important to finding answers about what is happening here.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    INVENTORY.push({ name: "USB Drive", description: "A USB drive you found at the lab containing documents and images about 'Project Salvation'." });
+    
+    // append new button
+    userControlsContainer.appendChild(openImageBtn); // append relevant buttons
+  });
+
+  openImageBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    CLINIC_SECRET_DOOR = true;
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You open the photos and you are initially shocked, but then fascinated by what you are looking at.<br>You recognise the room around you in the pictures, the large water tanks having human subjects in them in various dissected states, but something about the humans look off...<br><br>You would rather say they look like dolls.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You notice an open door in one image that you don't recognise...<br><br>You look up to the corner behind the operating screen, where the door should be but see only wall, you look down at the image again and you are sure it's the same room you are in now, but you are distracted by the most recent dated picture, a disturbing autopsy photo of a woman on an operating table, mangled limbs and blood everywhere, you decide to close the image.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    // write new text
+    if (CLINIC_ROBOT_SEEN == true) {
+      await typeText(
+        textContainer,
+        "<p>This is the android body on the table over there...<br><br>The other bodies from the tanks must have been removed or discarded...</p>",
+        applyGlassStylingRed
+      );
+
+      await sleep(1500);
+
+      // append new button
+      if (CLINIC_RESEARCH_SAVED == false) {
+        userControlsContainer.appendChild(openDocBtn);
+      } else {
+        userControlsContainer.appendChild(computerOffBtn);
+      }
+    }
+
+    if (CLINIC_RESEARCH_SAVED == true) {
+      userControlsContainer.appendChild(computerOffBtn);
+    }    
+  });
+
+  computerOffBtn.addEventListener("pointerup", async function () {
+  // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+    computerOffBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You turn off the computer and get up from the desk./p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(investigateCounterBtn); // append relevant buttons
+    userControlsContainer.appendChild(investigateTanksBtn);
+    userControlsContainer.appendChild(investigateTableBtn);
+    userControlsContainer.appendChild(enoughLeaveBtn);
+  });
+
+  // before moving on to the next button, which is probably tanks? just check if there is a way to add
+  // alt text for the counter or desk, no global conditions provided. so maybe use research saved
+  // maybe just use secret door for a check as well, this is the only place to find the boolean, so use it
+  // as a condition that another place has already been investigated.
+
+  buttonNameBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
+  });
+
+  buttonNameBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
+  });
+
+  buttonNameBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
+  });
+
+  buttonNameBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
+  });
+  
   leaveBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
