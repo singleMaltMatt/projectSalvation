@@ -3053,6 +3053,509 @@ async function sceneClinic() {
   // maybe just use secret door for a check as well, this is the only place to find the boolean, so use it
   // as a condition that another place has already been investigated.
 
+  investigateTanksBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You move towards the large tanks against a far wall. You see that these are probably specimen tanks, but they are so large that they could hold whole animals, or humans...<br><br>You shake your head and try to clear your mind of that thought. You take a closer look at the debris in the tank and try to make out what it is you are looking at. At the top of the tank you see small floating pieces of what look like paper, and hair...</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>...and looking at the bottom sediment you see wires lying in a thick brownish sludge.<br><br>There is another shape in the sludge, and as you look closer, the curve of the tank suddenly magnifies the shape... it's a human hand...</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>Your eyes widen as you see the pale hand covered by the brown sludge...</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Oh my God... there really was a human in this tank!?</p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You recoil from the tank you are looking at and apprehensively look in the other two tanks...<br><br>You see the same brown sludge with wires sticking out of it, and the same pieces of strange paper floating at the top, but no other body parts.<br><br>You sigh in relief... until your eye catches something floating in between the pieces of paper in one of the tanks...  it's a human ear...</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You didn't see it because it's the same pale white as the paper.  Then you realise... that is not paper at all... those are bits of skin floating in the tanks...</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>You turn away from the tanks,  nausea pushing up your throat... but you steel yourself, taking a deep breath of the dry stale air.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(investigateCounterBtn); // append relevant buttons
+    userControlsContainer.appendChild(investigateDeskBtn);
+    userControlsContainer.appendChild(investigateTableBtn);
+    userControlsContainer.appendChild(enoughLeaveBtn);
+  });
+
+  investigateTableBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    CLINIC_ROBOT_SEEN = true;
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You approach the operating table sticking out from behind the heavy fabric screen, and pull away the blue curtain to see if there is anything interesting worth looking at.<br>Your eyes widen and it takes your mind a second to comprehend what you see on the operating slab, and you instinctively clap your hands to your mouth, not wanting to breathe, not wanting to make a sound...</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>In front of you is the pale and mutilated body of a woman, displaying grotesquely mangled body parts.<br><br>Both the legs are missing from the knee down, one seems cut and one seems like it was ripped off; one arm is missing from the elbow and there is a large gash down the center of her chest.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>Her face is staring straight ahead of her, beautiful and calm. Thick dried blood is pooled around the body on the table.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    if (CLINIC_RESEARCH_SAVED == true) {
+          await typeTextItalic(
+            textContainer,
+            "<p>This is the same woman I saw in the pictures on the computer, what were they doing to her? Is human experimentation part of Project Salvation?</p>",
+            applyGlassStylingGreen
+          );
+
+      await sleep(1500);
+      
+      userControlsContainer.appendChild(investigateBodyBtn); // append relevant buttons
+    } else {
+      // append new button
+      userControlsContainer.appendChild(investigateBodyBtn); // append relevant buttons
+      userControlsContainer.appendChild(investigateCounterBtn);
+      userControlsContainer.appendChild(investigateDeskBtn);
+      userControlsContainer.appendChild(investigateTanksBtn);
+      userControlsContainer.appendChild(enoughLeaveBtn);
+    }
+  });
+
+  investigateBodyBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+    investigateBodyBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>The first thing that snaps you out of your shock is the smell. You don't recognise it as blood or as decay... It is a faint, almost chemical smell like an oil or a solvent, then your eyes catches a glint in between the scarlet gore. You can't help yourself as you reach out to touch whatever it is you see, in the gash down her chest.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You cautiously reach for the shiny object and proceed to stick your hand into the bloody gash. As if realising what you are doing you want to recoil and pull your arm back, but something stops you... you feel something hard and cold beneath your fingers... Wires.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You look at the exposed flesh on the mangled legs and arm... and you see blood clumped wires where you expected to see bone. You slowly retract your fingers, covered in red liquid and bring them to your face.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>You apprehensively smell your fingers... this is the oily chemical smell you noticed earlier... before you can stop yourself you taste the liquid but immediately regret it, you spit the sour  greasy liquid from your mouth... definitely not blood...</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>This is not a woman at all... this is not even a human...<br><br>It is a machine...<br><br>An Android...</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Is this the AI technology Father Jakob was talking about? This must be what I saw in the mayor's house... Why is there an android here in this secret lab? What were the good doctors doing to it? dissecting it? or repairing it...</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(investigateCounterBtn); // append relevant buttons
+    userControlsContainer.appendChild(investigateDeskBtn);
+    userControlsContainer.appendChild(investigateTanksBtn);
+    userControlsContainer.appendChild(enoughLeaveBtn);
+  });
+
+  enoughLeaveBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+
+    if (CLINIC_LOCKED_IN == false) {
+      // write new text
+      await typeText(
+        textContainer,
+        "<p>You head back down the hallway towards the ladder leading up to the hatch door. You reach the ladder and look up at the dark tunnel, remembering that the door slammed shut behind you. You start making your way up the ladder and try to push open the hatch above you... but it doesn't budge.<br><br>You look above you, trying to find the handle to rotate, but there is no handle on this side.  Instead you see the small blue light of an LCD screen, with a keypad beneath it.  The hatch door needs a security code.</p>",
+        applyGlassStylingRed
+      );
+  
+      await pause();
+
+      textContainer.innerHTML = "";
+
+      await typeTextItalic(
+        textContainer,
+        "<p>Damn it! I have no idea what the code could be. Maybe I should just try my luck...</p>",
+        applyGlassStylingGreen
+      );
+
+      await sleep(1500);
+
+      await typeText(
+        textContainer,
+        "<p>You start pushing the number keys and after 4 numbers you hear a soft beep, with the word ERROR displayed on the screen. You try again; ERROR. Almost frantically you start pressing the buttons... ERROR.<br><br>You start to panic but you get a hold of yourself and climb back down the ladder.</p>",
+        applyGlassStylingRed
+      );
+  
+      await pause();
+
+      await typeTextItalic(
+        textContainer,
+        "<p>Panicking and breaking the keypad is not going to help me in any way. I have to look around if there is anything that could help me get out of here.</p>",
+        applyGlassStylingGreen
+      );
+
+      await pause();
+      
+      CLINIC_LOCKED_IN = true;
+
+      // append new button
+      if (CLINIC_SECRET_DOOR == true) {
+        await typeText(
+          textContainer,
+          "<p>Your head suddenly snaps up as you remember the picture you saw on the computer...<br><br>There was another door! You remember seeing it in the corner behind the operating table.<br><br>You walk to the corner of the room but you only see the wall paneling. Your eyes drift along the seams of the panel, and then you see it! There is an almost indiscernible gap between the corner panels, if you weren't looking for it, you would never have seen it.</p>",
+          applyGlassStylingRed
+        );
+  
+        await sleep(1500);
+
+        userControlsContainer.appendChild(openSecretDoorBtn);
+      } else {
+        userControlsContainer.appendChild(investigateCounterBtn);
+        userControlsContainer.appendChild(investigateDeskBtn);
+        userControlsContainer.appendChild(investigateTableBtn);
+        userControlsContainer.appendChild(enoughLeaveBtn);
+      }
+    }
+    if (CLINIC_LOCKED_IN == true) {
+      // write new text
+      await typeTextItalic(
+        textContainer,
+        "<p>I still need to find a way to open the hatch or find another way out of this place.</p>",
+        applyGlassStylingGreen
+      );
+  
+      await sleep(1500);
+
+      if (CLINIC_SECRET_DOOR == true) {
+        await typeText(
+          textContainer,
+          "<p>Your head suddenly snaps up as you remember the picture you saw on the computer...<br><br>There was another door! You remember seeing it in the corner behind the operating table.<br><br>You walk to the corner of the room but you only see the wall paneling. Your eyes drift along the seams of the panel, and then you see it! There is an almost indiscernible gap between the corner panels, if you weren't looking for it, you would never have seen it.</p>",
+          applyGlassStylingRed
+        );
+  
+        await sleep(1500);
+
+        userControlsContainer.appendChild(openSecretDoorBtn);
+      } else {
+        userControlsContainer.appendChild(investigateCounterBtn);
+        userControlsContainer.appendChild(investigateDeskBtn);
+        userControlsContainer.appendChild(investigateTableBtn);
+        userControlsContainer.appendChild(enoughLeaveBtn);
+      }
+    }
+  });
+
+  openSecretDoorBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+    openSecretDoorBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>There is a work counter with metal trays and bloody wires on it blocking the door, but you easily move it out of the way, revealing a simple latch keeping the wall panel in place. you slide open the latch and give the wall a gentle push... it swings open slowly with a very eerie creak..</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(lookThroughBtn); // append relevant buttons
+  });
+
+  lookThroughBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+    lookThroughBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>The secret door reveals a narrow hallway which is dimly lit in comparison to the stark white laboratory you are standing in. The walls of the hallway are simple concrete. It seems to stretch on for a long distance...</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(walkBtn); // append relevant buttons
+  });
+
+  walkBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+    walkBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You stand in front of the open passage and apprehensively give a step forward. You let out an audible sigh... You realise you have no other choice, this is the only option you have right now. You hope that you can get out this way, and that this lab won't become your tomb.<br><br>You shake your head, getting rid of that morbid thought and start walking down the cold passage.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>After walking about 20 meters you realise you can't see the lab door anymore, but there is just hallway behind and in front of you...<br>The tunnel is curving. You keep walking, wondering how long this tunnel is...<br><br>after 5 minutes of walking you start feel a familiar sense of panic start to play in your mind...<br><br>you start walking faster.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You realise that you are probably deep underground, alone in the middle of a long tunnel, you don't know how far you have walked or how far you still have to go, you don't even know what you expect to find at the end of this tunnel...<br><br>You are almost running at this point as your imagination goes wild.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Perhaps you find a dead end brick wall... what if the lab door locked behind you like the hatch door did.... Would anyone hear you if were to call for help?   Suddenly out of nowhere a wooden door appears in front of you.<br><br>You have reached the end of the tunnel!</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Oh thank God, I almost started panicking back there...</p>",
+      applyGlassStylingGreen
+    );
+
+    // append new button
+    userControlsContainer.appendChild(tryToOpenDoorBtn); // append relevant buttons
+  });
+
+  // continue from try to open door paragraph
+
   buttonNameBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
