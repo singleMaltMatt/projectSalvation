@@ -1684,6 +1684,9 @@ async function sceneClinic() {
   tryToOpenDoorBtn.textContent = "Try to open the door";
   lookAroundBtn.textContent = "Look around the house";
   returnToResidentialBtn.textContent = "Return to residential area";
+  walkBtn.textContent = "Walk around the snake";
+  scareBtn.textContent = "Try and scare the snake away";
+  runBtn.textContent = "Run past the snake!";
   
 
   // add styling for button
@@ -1729,6 +1732,9 @@ async function sceneClinic() {
   applyGlassStylingGreyBtn(tryToOpenDoorBtn);
   applyGlassStylingGreyBtn(lookAroundBtn);
   applyGlassStylingGreyBtn(returnToResidentialBtn);
+  applyGlassStylingGreyBtn(walkBtn);
+  applyGlassStylingGreyBtn(scareBtn);
+  applyGlassStylingGreyBtn(runBtn);
 
   if (CLINIC_KEY_USED == false) {
     await typeText(
@@ -3575,171 +3581,249 @@ async function sceneClinic() {
     enoughLeaveBtn.remove();
     openDocBtn.remove();
     openImageBtn.remove();
-
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    // append new button
-    userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
-  });
-
-  buttonNameBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    investigateCounterBtn.remove(); // remove relevant buttons
-    investigateDeskBtn.remove();
-    investigateTanksBtn.remove();
-    investigateTableBtn.remove();
-    enoughLeaveBtn.remove();
-    openDocBtn.remove();
-    openImageBtn.remove();
-
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    // append new button
-    userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
-  });
-
-  buttonNameBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    investigateCounterBtn.remove(); // remove relevant buttons
-    investigateDeskBtn.remove();
-    investigateTanksBtn.remove();
-    investigateTableBtn.remove();
-    enoughLeaveBtn.remove();
-    openDocBtn.remove();
-    openImageBtn.remove();
-
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    // append new button
-    userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
-  });
-
-  buttonNameBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    investigateCounterBtn.remove(); // remove relevant buttons
-    investigateDeskBtn.remove();
-    investigateTanksBtn.remove();
-    investigateTableBtn.remove();
-    enoughLeaveBtn.remove();
-    openDocBtn.remove();
-    openImageBtn.remove();
-
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    // append new button
-    userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
-  });
-  
-  leaveBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    continueBtn.remove();
-    flickBtn.remove();
-    doorLeftBtn.remove();
-    doorRightBtn.remove();
-    continueFurtherBtn.remove();
-    continueCornerBtn.remove();
-    locateBtn.remove();
-    openDoorBtn.remove();
-    fridgeBtn.remove();
-    syringeBtn.remove();
-    closeBtn.remove();
-    findBtn.remove();
-    returnBtn.remove();
-    investigatePlateBtn.remove();
-    openHatchBtn.remove();
-    seekHelpLeaveBtn.remove();
-    climbHatchBtn.remove();
-    callBtn.remove();
-    investigateRoomBtn.remove();
-    investigateCounterBtn.remove();
-    investigateDeskBtn.remove();
-    computerBtn.remove();
-    computerOffBtn.remove();
-    openFolderBtn.remove();
-    openDocBtn.remove();
-    openImageBtn.remove();
-    investigateTanksBtn.remove();
-    investigateTableBtn.remove();
-    investigateBodyBtn.remove();
-    enoughLeaveBtn.remove();
-    openSecretDoorBtn.remove();
-    lookThroughBtn.remove();
-    walkBtn.remove();
     tryToOpenDoorBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>This seems like an ordinary door you have seen all too often in this town.<br>You grab the knob and give it a turn and push. <br>You are surprised that it opens up without as much as a creak.<br>You were expecting having to break it down to escape the hallway, but instead you step into a dark but nicely decorated home.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Looking to the left you see a shelf with various trinkets and decorations adorning it. A photo frame catches your eyes. There is photo of a middle aged couple, a gentle looking woman and a handsome man, smiling at the camera.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Are these the Johansen doctors? This must be their home...</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(lookAroundBtn); // append relevant buttons
+  });
+
+  lookAroundBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
     lookAroundBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You know no one is home so you slowly walk through the house, looking for anything suspicious, but this house is as ordinary as any other. Large neat kitchen, Bedroom with a walk-in wardrobe, medical books on the coffee table in the living room...<br><br>Everything is neatly in it's place, the house is well kept and clean.<br><br>You suspect they had everything tidied up before they 'Left for HQ'... wherever that may be.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You decide that the Johansens have enough hidden secrets in their underground laboratory, and you doubt you would find anything more suspicious in their home. You are just happy to be out of that place, and you head for the front door to leave, but unfortunately it is locked.<br><br>Without giving it a second thought, you unlatch a window instead and open it. You give a quick glance to make sure no one is in the street watching, and then proceed to climb through the window and close it behind you.</p>",
+      applyGlassStylingRed
+    );
+
+    // append new button
+    userControlsContainer.appendChild(returnToResidentialBtn); // append relevant buttons
+  });
+
+  returnToResidentialBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
     returnToResidentialBtn.remove();
 
+    // write new text
+    if (HOUSE_WHITE_SNAKE_BITE == true) {
+      await typeText(
+        textContainer,
+        "<p>This is the same spot where you encountered that nasty snake that bit you! Luckily you don't see any sign of it anymore.</p>",
+        applyGlassStylingRed
+      );
+  
+      await pause();
 
+      textContainer.innerHTML = "";
+
+      sceneResidential();
+    }
+    if (HOUSE_WHITE_SNAKE_BITE == false) {
+      await typeText(
+        textContainer,
+        "<p>As you turn around on the path to walk back to the main road, your breath catches in your throat... A large snake is looking straight at you, its head reared up from the gravel. You can see a twitching rabbit off to the side of the path, you must have interrupted a fresh kill.</p>",
+        applyGlassStylingRed
+      );
+  
+      await sleep(1500);
+  
+      // append new button
+      userControlsContainer.appendChild(walkBtn); // append relevant buttons
+      userControlsContainer.appendChild(scareBtn);
+    }
   });
 
+  walkBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+    walkBtn.remove();
+    scareBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You try to give the snake a wide berth but it slithers in front of you, hissing, and starts to come closer, venom dripping from it's fangs.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(runBtn); // append relevant buttons
+  });
+
+  scareBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+    walkBtn.remove();
+    scareBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You raise your arms high into the air and try lunging at the snake, however it only hisses loudly and tries to rear itself higher... it looks both angry and defensive of its meal. You see shiny droplets of venom dripping from its exposed fangs.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(runBtn); // append relevant buttons
+  });
+
+  runBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCounterBtn.remove(); // remove relevant buttons
+    investigateDeskBtn.remove();
+    investigateTanksBtn.remove();
+    investigateTableBtn.remove();
+    enoughLeaveBtn.remove();
+    openDocBtn.remove();
+    openImageBtn.remove();
+    walkBtn.remove();
+    scareBtn.remove();
+    runBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You stand still for a moment, carefully watching the snake... Then you dash and try to run right past the snake, if it gets any closer you will jump over it.<br><br>But the snake is faster than you expected and you have barely given two steps when you feel a sharp pain in your lower leg, you look down to see the snake retract, barely a split second after biting you.<br><br>You trip from the sudden fright, and as you land on the grass, you see the snake slither back to it's kill and start to wrap around it, confident that it has dispatched the intruder.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You look down at your leg where the snake bit you, and see two small puncture wounds, but there is barely any pain, swelling or blood.  You count yourself lucky, the snake must not have been venomous. Not to humans anyway.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    sceneResidential();
+  });
   
   leaveBtn.addEventListener("pointerup", async function () {
     // Button click check
@@ -3795,11 +3879,13 @@ async function sceneClinic() {
     tryToOpenDoorBtn.remove();
     lookAroundBtn.remove();
     returnToResidentialBtn.remove();
+    walkBtn.remove();
+    scareBtn.remove();
+    runBtn.remove();
 
     sceneTownSquare();
 
   });
-
 
   townSquareBtn.addEventListener("pointerup", async function () {
     // Button click check
@@ -3855,6 +3941,9 @@ async function sceneClinic() {
     tryToOpenDoorBtn.remove();
     lookAroundBtn.remove();
     returnToResidentialBtn.remove();
+    walkBtn.remove();
+    scareBtn.remove();
+    runBtn.remove();
 
     sceneTownSquare();
 
