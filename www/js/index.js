@@ -254,7 +254,7 @@ let HOUSE_WHITE_SNAKE_BITE = false;
 //
 //sceneChurch
 let CHURCH_STORY = false;
-let INFORMATION = false;
+let CHURCH_INFORMATION = false;
 let CHURCH_DISMISS = false;
 let CHURCH_DESTINATION = false;
 
@@ -8992,6 +8992,7 @@ async function sceneChurch() {
     btnRecentlyClicked = false;
   }, 1000);
 
+    CHURCH_INFORMATION = true;
   // Clear text container
   textContainer.innerHTML = "";
 
@@ -9024,6 +9025,238 @@ async function sceneChurch() {
       applyGlassStylingBlue
     );
 
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>Was there anything else?</p>",
+      applyGlassStylingBlue
+    )
+
+  // append new button
+  userControlsContainer.appendChild(explainBtn); // append relevant buttons
+  });
+
+  clearThroatBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+  clearThroatBtn.remove(); // remove relevant buttons
+
+  // write new text
+  await typeText(
+    textContainer,
+    "<p>The priest looks up, startled.</p>",
+    applyGlassStylingRed
+  );
+
+  await sleep(1500);
+  
+  await typeText(
+    textContainer,
+    "<p>Who are you? If you're another 'recruiter', you can just leave now, there's no one left to join you, and I haven't got time for this.</p>",
+    applyGlassStylingBlue
+  );
+
+  await sleep(1500);
+
+  // append new button
+  userControlsContainer.appendChild(explainBtn); // append relevant buttons
+  });
+
+  explainBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+  explainBtn.remove(); // remove relevant buttons
+
+  // write new text
+  await typeTextItalic(
+    textContainer,
+    "<p>I'm not a recruiter, I'm actually not even sure where I am.<br><br>I just woke up this morning in the forest nearby, with only hazy memories and I stumbled on this town.<br><br>Do you know what happened here? Where is everyone?</p>",
+    applyGlassStylingGreen
+  );
+
+  await pause();
+    
+  textContainer.innerHTML = "";
+  
+  // write new text
+  await typeText(
+    textContainer,
+    "<p>The priest looks you up and down suspiciously.</p>",
+    applyGlassStylingRed
+  );
+
+  await sleep(1500);
+  
+  await typeText(
+    textContainer,
+    "<p>Everyone fled. Either to get away from here, or to join this 'resistance'...<br>But how is it you don't know this? The world has gone to hell in the span of a week. People have lost their faith in God and that is why our world is as rotten and corrupt as it is.<br><br>I am Father Jakob, and this is my church. I refuse to leave my town and my flock because of fear.<br><br>My faith protects me, even though most of my congregation has clearly lost their own faith. So Tell me, do you still have faith?</p>",
+    applyGlassStylingBlue
+  );
+
+  await sleep(1500);
+
+  // append new button
+  userControlsContainer.appendChild(prayBtn); // append relevant buttons
+  userControlsContainer.appendChild(problemBtn);
+  });
+
+  
+  problemBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  CHURCH_DISMISS = true;
+  
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+  prayBtn.remove(); // remove relevant buttons
+  problemBtn.remove();
+
+  // write new text
+  await typeText(
+    textContainer,
+    "<p>Well then I have nothing more to say to you. Please leave me to my thoughts. And God help you.</p>",
+    applyGlassStylingRed
+  );
+
+  await sleep(1500);
+
+  // append new button
+  userControlsContainer.appendChild(leaveBtn); // append relevant buttons
+  });
+
+  
+  prayBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+  buttonNameBtn.remove(); // remove relevant buttons
+
+  // write new text
+  await typeText(
+    textContainer,
+    "<p>Then may the Lord bless and keep you my child. Was there anything else?</p>",
+    applyGlassStylingBlue
+  );
+
+  await sleep(1500);
+
+  // append new button
+  userControlsContainer.appendChild(resistanceBtn); // append relevant buttons
+  });
+
+  
+  resistanceBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+  buttonNameBtn.remove(); // remove relevant buttons
+
+  // write new text
+  await typeText(
+    textContainer,
+    "<p>Perhaps I have said too much already... but the resistance is a group of people, from this town and some others, who are trying to save humanity from this threat.<br><br>Foolish if you ask me, they should rather be praying for strength and forgiveness. So they might enter heaven when the time comes.</p>",
+    applyGlassStylingBlue
+  );
+
+  await pause();
+  
+  textContainer.innerHTML = "";
+    
+  // write new text
+  await typeTextItalic(
+    textContainer,
+    "<p>I'm sorry father, but my memories are very faint. What is this threat? What are they trying to save humanity from?</p>",
+    applyGlassStylingGreen
+    );
+    
+  await pause();
+  
+  textContainer.innerHTML = "";
+    
+  await typeText(
+    textContainer,
+    "<p>... From Salvation ...</p>",
+    applyGlassStylingBlue
+    );
+
+  await sleep(1500);
+
+  await typeText(
+    textContainer,
+    "<p>The priest chuckles.</p>",
+    applyGlassStylingBlue
+    );
+
+  await sleep(1500);
+    
+    await typeText(
+      textContainer,
+      "<p>Ironic isn't it? That it should have a name like that. Project Salvation is a military program that was engineered by the government's top scientists in Artificial Intelligence. He motivated that AI could run the country's military security without failure, without human tendencies like corruption or greed or malice. It seemed like the project was a success, despite our neighboring countries warning of the dangers of AI.</p>",
+      applyGlassStylingBlue
+    );
+    
+  await pause();
+
+  textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Our military expanded the operation and procured massive budgets to give the AI system more power, and further reach. It has access to automated weapons, airstrikes, and even nuclear weapons.<br><br>Everyone was convinced that our country is the safest and most secure in the world, and it seems they were right.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>But if the country is safe and secure, what is the threat? Why is everyone fleeing? Isn't it safer to stay in the towns and cities?</p>",
+      applyGlassStylingGreen
+    );
+
   // append new button
   userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
   });
@@ -9196,8 +9429,7 @@ async function sceneChurch() {
   userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
   });
 
-  
-  buttonNameBtn.addEventListener("pointerup", async function () {
+  leaveBtn.addEventListener("pointerup", async function () {
   // Button click check
   if (isTyping || btnRecentlyClicked) return;
   btnRecentlyClicked = true;
@@ -9209,134 +9441,34 @@ async function sceneChurch() {
   textContainer.innerHTML = "";
 
   // remove button from user controls container
-  buttonNameBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove(); // remove relevant buttons
+    enterChurchBtn.remove();
+    badLeaveBtn.remove();
+    walkManBtn.remove();
+    clearThroatBtn.remove();
+    tellPriestBtn.remove();
+    explainBtn.remove();
+    priestOldManBtn.remove();
+    resistanceBtn.remove();
+    leaveBtn.remove();
+    problemBtn.remove();
+    prayBtn.remove();
+    mapBtn.remove();
+    leaveChurchBtn.remove();
 
-  // write new text
-  await typeText(
-    textContainer,
-    "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-    applyGlassStylingRed
-  );
+    await typeText(
+      textContainer,
+      "<p>You return to the town square.</p>",
+      applyGlassStylingRed
+    );
 
-  await sleep(1500);
+    await pause();
 
-  // append new button
-  userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
+    textContainer.innerHTML = "";
+
+    sceneTownSquare();
   });
 
-  
-  buttonNameBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-  buttonNameBtn.remove(); // remove relevant buttons
-
-  // write new text
-  await typeText(
-    textContainer,
-    "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-    applyGlassStylingRed
-  );
-
-  await sleep(1500);
-
-  // append new button
-  userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
-  });
-
-  
-  buttonNameBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-  buttonNameBtn.remove(); // remove relevant buttons
-
-  // write new text
-  await typeText(
-    textContainer,
-    "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-    applyGlassStylingRed
-  );
-
-  await sleep(1500);
-
-  // append new button
-  userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
-  });
-
-  
-  buttonNameBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-  buttonNameBtn.remove(); // remove relevant buttons
-
-  // write new text
-  await typeText(
-    textContainer,
-    "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-    applyGlassStylingRed
-  );
-
-  await sleep(1500);
-
-  // append new button
-  userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
-  });
-
-  
-  buttonNameBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-  buttonNameBtn.remove(); // remove relevant buttons
-
-  // write new text
-  await typeText(
-    textContainer,
-    "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-    applyGlassStylingRed
-  );
-
-  await sleep(1500);
-
-  // append new button
-  userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
-  });
-
-  
   badLeaveBtn.addEventListener("pointerup", async function () {
   // Button click check
   if (isTyping || btnRecentlyClicked) return;
