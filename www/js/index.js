@@ -8807,6 +8807,7 @@ async function sceneChurch() {
   let prayBtn = document.createElement("button");
   let mapBtn = document.createElement("button");
   let leaveChurchBtn = document.createElement("button");
+  let continueBtn = document.createElement("button")
 
   // set button text
   townSquareBtn.textContent = "Go to town square";
@@ -8823,6 +8824,7 @@ async function sceneChurch() {
   prayBtn.textContent = "Yes, I pray that we will be saved";
   mapBtn.textContent = "Give the map to Father Jakob";
   leaveChurchBtn.textContent = "Leave the church and head back to town";
+  continueBtn.textContent = "Continue";
 
   // add styling for button
   applyGlassStylingGreyBtn(townSquareBtn);
@@ -8839,6 +8841,7 @@ async function sceneChurch() {
   applyGlassStylingGreyBtn(prayBtn);
   applyGlassStylingGreyBtn(mapBtn);
   applyGlassStylingGreyBtn(leaveChurchBtn);
+  applyGlassStylingGreyBtn(continueBtn);
 
   // local conditionals
   //   let ONCEOFF = false;
@@ -9257,10 +9260,167 @@ async function sceneChurch() {
       applyGlassStylingGreen
     );
 
+    await sleep(1500);
+    
+    await typeText(
+      textContainer,
+      "<p>Well, the country is very safe and secure as long as project Salvation is operational...<br>But what if it was shut down?<br>What if our entire country's military power disappears over night?<br>Could you imagine what that would mean to the government and the military heads?</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Well we would be open to all kinds of threats and attacks... but I don't understand, why would they shut it down?<br>No one would disable their entire country's defense?</p>",
+      applyGlassStylingGreen
+    )
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>I believe you are right, however ask yourself...<br><br>If Project Salvation could be shut down, if there was one threat that could stop it and remove it's ability to protect it's country...<br><br>What would that threat be?</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Slowly the realisation comes to you</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>... Us... Humans...</p>",
+      applyGlassStylingGreen
+    );
+
+    await typeText(
+      textContainer,
+      "<p>Precisely! Our neighbors warned us against AI because they knew it would get too intelligent for its, or OUR own good. But the military commanders were too concerned about making more money to expand the military, they even thought of selling the system to other countries once it was perfected. But for some reason the Chief scientist halted the project.<br><br>No one knows for sure what happened to him since he was no longer mentioned in the news.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>But I digress. The bottom line of this story is that Project Salvation has identified humans as a threat to it's continued existence, so in order for it to keep doing it's job, and keep our people safe, is by removing our people's ability to disable it... by  removing our people...</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>The priest chuckles again, it almost grows into a hearty laugh.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>Suddenly it all dawns on you...<br><br>The reason why the town is empty; the reason why everyone has fled...<br><br>They are fleeing from extermination...</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Father Jakob stops laughing and looks sternly at you.</p>",
+      applyGlassStylingRed
+    )
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>So there you have it my child. All the country's military power is now focused on it's own people. Where people are fleeing to I do not know. And when Project Salvation will eventually strike is anyone's guess.<br><br>What we do know from inside the military compound is that Project Salvation has identified humans as a threat to eliminate. And that is why the resistance was formed. They are trying to find a way into the military compound where The Core of Project Salvation is located, and deactivate it.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Some prominent experts have joined the resistance. I know this because they came to me as recruiters, because I know most of the people in town and I have a military background, I might have had some advise for them... but the only advice I have to offer now is to pray that the worst doesn't happen.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
   // append new button
-  userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
+  userControlsContainer.appendChild(continueBtn); // append relevant buttons
   });
 
+  continueBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  CHURCH_STORY = true;
+
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+  continueBtn.remove(); // remove relevant buttons
+
+  // write new text
+    if (INN_ADVICE == true) { // need to do the longer one now
+      await typeText(
+      textContainer,
+      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
+      applyGlassStylingRed
+    );
+  
+    await sleep(1500);
+  
+    // append new button
+    userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
+    } else {
+      await typeTextItalic(
+        textContainer,
+        "<p>Father Jakob will you be able to show me where to find the resistance? I feel that I need to find them and perhaps help them if I can, in any way possible...</p>",
+        applyGlassStylingGreen
+      );
+    
+      await pause();
+
+      textContainer.innerHTML = "";
+
+      await typeText(
+        textContainer,
+        "<p>Well my child, either you are very foolish, or very brave... but unfortunately I don't know where they are located. They wanted to keep it quiet, lest the AI is able to pinpoint their whereabouts...<br><br>However if you are able to find any information about where they are, come back and I might be able to help you.</p>",
+        applyGlassStylingBlue
+      )
+
+      await sleep(1500);
+    
+      // append new button
+      userControlsContainer.appendChild(leaveChurchBtn); // append relevant buttons
+  }
+  });
   
   buttonNameBtn.addEventListener("pointerup", async function () {
   // Button click check
@@ -9401,8 +9561,7 @@ async function sceneChurch() {
   userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
   });
 
-  
-  buttonNameBtn.addEventListener("pointerup", async function () {
+  leaveChurchBtn.addEventListener("pointerup", async function () {
   // Button click check
   if (isTyping || btnRecentlyClicked) return;
   btnRecentlyClicked = true;
@@ -9414,19 +9573,32 @@ async function sceneChurch() {
   textContainer.innerHTML = "";
 
   // remove button from user controls container
-  buttonNameBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove(); // remove relevant buttons
+    enterChurchBtn.remove();
+    badLeaveBtn.remove();
+    walkManBtn.remove();
+    clearThroatBtn.remove();
+    tellPriestBtn.remove();
+    explainBtn.remove();
+    priestOldManBtn.remove();
+    resistanceBtn.remove();
+    leaveBtn.remove();
+    problemBtn.remove();
+    prayBtn.remove();
+    mapBtn.remove();
+    leaveChurchBtn.remove();
 
-  // write new text
-  await typeText(
-    textContainer,
-    "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-    applyGlassStylingRed
-  );
+    await typeText(
+      textContainer,
+      "<p>You return to the town square.</p>",
+      applyGlassStylingRed
+    );
 
-  await sleep(1500);
+    await pause();
 
-  // append new button
-  userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
+    textContainer.innerHTML = "";
+
+    sceneTownSquare();
   });
 
   leaveBtn.addEventListener("pointerup", async function () {
