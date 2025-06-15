@@ -8806,6 +8806,7 @@ async function sceneChurch() {
   let problemBtn = document.createElement("button");
   let prayBtn = document.createElement("button");
   let mapBtn = document.createElement("button");
+  let noMapBtn = document.createElement("button");
   let leaveChurchBtn = document.createElement("button");
   let continueBtn = document.createElement("button")
 
@@ -8823,6 +8824,7 @@ async function sceneChurch() {
   problemBtn.textContent = "I believe that we should solve our own problems, and not look to divine intervention";
   prayBtn.textContent = "Yes, I pray that we will be saved";
   mapBtn.textContent = "Give the map to Father Jakob";
+  noMapBtn.textContent = "No, I don't have a map right now";
   leaveChurchBtn.textContent = "Leave the church and head back to town";
   continueBtn.textContent = "Continue";
 
@@ -8840,6 +8842,7 @@ async function sceneChurch() {
   applyGlassStylingGreyBtn(problemBtn);
   applyGlassStylingGreyBtn(prayBtn);
   applyGlassStylingGreyBtn(mapBtn);
+  applyGlassStylingGreyBtn(noMapBtn);
   applyGlassStylingGreyBtn(leaveChurchBtn);
   applyGlassStylingGreyBtn(continueBtn);
 
@@ -9388,16 +9391,30 @@ async function sceneChurch() {
 
   // write new text
     if (INN_ADVICE == true) { // need to do the longer one now
+      await typeTextItalic(
+      textContainer,
+      "<p>Father Jakob, will you be able to show me where to find the resistance with those coordinates? I feel that I need to find them and perhaps help them if I can, in any way possible..</p>",
+      applyGlassStylingGreen
+    );
+  
+      await pause();
+      textContainer.innerHTML = "";
+
+      
       await typeText(
       textContainer,
-      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-      applyGlassStylingRed
+      "<p>Well my child, either you are very foolish, or very brave... but yes. I can show you where to find them. Do you have a map that I can mark for you?</p>",
+      applyGlassStylingBlue
     );
   
     await sleep(1500);
   
     // append new button
-    userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
+      if (LARGE_HOUSE_MAP == true) {
+        userControlsContainer.appendChild(mapBtn);
+      } else {
+        userControlsContainer.appendChild(noMapBtn);
+      }
     } else {
       await typeTextItalic(
         textContainer,
@@ -9422,7 +9439,7 @@ async function sceneChurch() {
   }
   });
   
-  buttonNameBtn.addEventListener("pointerup", async function () {
+  noMapBtn.addEventListener("pointerup", async function () {
   // Button click check
   if (isTyping || btnRecentlyClicked) return;
   btnRecentlyClicked = true;
@@ -9434,23 +9451,23 @@ async function sceneChurch() {
   textContainer.innerHTML = "";
 
   // remove button from user controls container
-  buttonNameBtn.remove(); // remove relevant buttons
+  noMapBtn.remove(); // remove relevant buttons
+  mapBtn.remove();
 
   // write new text
   await typeText(
     textContainer,
-    "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-    applyGlassStylingRed
+    "<p>You're going to need to find their headquarters. Come back once you have a map and I will mark it for you</p>",
+    applyGlassStylingBlue
   );
 
   await sleep(1500);
 
   // append new button
-  userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
+  userControlsContainer.appendChild(leaveChurchBtn); // append relevant buttons
   });
-
   
-  buttonNameBtn.addEventListener("pointerup", async function () {
+  mapBtn.addEventListener("pointerup", async function () {
   // Button click check
   if (isTyping || btnRecentlyClicked) return;
   btnRecentlyClicked = true;
@@ -9458,107 +9475,161 @@ async function sceneChurch() {
     btnRecentlyClicked = false;
   }, 1000);
 
+  CHURCH_DESTINATION = true;
+    
   // Clear text container
   textContainer.innerHTML = "";
 
   // remove button from user controls container
-  buttonNameBtn.remove(); // remove relevant buttons
+  mapBtn.remove(); // remove relevant buttons
+  noMapBtn.remove();
 
   // write new text
   await typeText(
     textContainer,
-    "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-    applyGlassStylingRed
+    "<p>All right let's have a look...<br><br>Here, I have marked where you can find them if you leave town to the west and head north.<br><br>You'll find the main road to the city blocked off... safer that way.</p>",
+    applyGlassStylingBlue
   );
 
-  await sleep(1500);
-
-  // append new button
-  userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
-  });
-
+  await pause();
   
-  buttonNameBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  // Clear text container
   textContainer.innerHTML = "";
-
-  // remove button from user controls container
-  buttonNameBtn.remove(); // remove relevant buttons
-
-  // write new text
-  await typeText(
-    textContainer,
-    "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-    applyGlassStylingRed
-  );
-
-  await sleep(1500);
-
-  // append new button
-  userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
-  });
-
   
-  buttonNameBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-  buttonNameBtn.remove(); // remove relevant buttons
-
-  // write new text
   await typeText(
     textContainer,
-    "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
+    "<p>The priest hands you back the map with a big red X marked on it... You feel an odd sensation...</p>",
     applyGlassStylingRed
   );
 
   await sleep(1500);
-
-  // append new button
-  userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
-  });
-
   
-  buttonNameBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-  buttonNameBtn.remove(); // remove relevant buttons
-
-  // write new text
   await typeText(
     textContainer,
-    "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-    applyGlassStylingRed
+    "<p>You're a brave man. Tell me, what is your name?</p>",
+    applyGlassStylingBlue
   );
 
   await sleep(1500);
+  
+  await typeText(
+    textContainer,
+    "<p>You hear the priests muffled words echoing in your mind, as if spoken in a long empty hallway, you stare at the big red X as your mind starts to drift away,</p>",
+    applyGlassStylingRed
+  )
+  
+  await typeText(
+    textContainer,
+    "<p>you suddenly lose all sense of where you are...</p>",
+    applyGlassStylingRedFlicker
+    )
+    
+  await pause();
+    
+  textContainer.innerHTML = "";
 
-  // append new button
-  userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
+  await typeTextItalic(
+    textContainer,
+    "<p>Doctor, the procedure was a success, he should be regaining consciousness soon.</p>",
+    applyGlassStylingBlueFlicker
+  );
+
+  await sleep(1500)
+
+  await typeText(
+    textContainer,
+    "<p>He is waking up. Quickly, leave the room. I need to be the first person he sees.</p>",
+    applyGlassStylingBlueFlicker
+  );
+
+  await sleep(1500)
+
+  await typeText(
+    textContainer,
+    "<p>But Doctor! We have not ran any of the safety tests yet, it could be dangerous!</p>",
+    applyGlassStylingBlueFlicker
+  );
+
+  await sleep(1500)
+
+  await typeText(
+    textContainer,
+    "<p>Leave us! Now!</p>",
+    applyGlassStylingBlueFlicker
+  );
+
+  await sleep(1500)
+
+  await typeTextItalic(
+    textContainer,
+    "<p>Where... where am I?<br><br>Who are you?</p>",
+    applyGlassStylingGreenFlicker
+  );
+
+  await sleep(1500)
+
+  await typeText(
+    textContainer,
+    "<p>Ah, Xander Ignis, you are finally awake my son. I have a very important task for you...</p>",
+    applyGlassStylingRedFlicker
+    );
+    
+  await pause();
+  textContainer.innerHTML = "";
+    
+
+  await typeText(
+    textContainer,
+    "<p>You suddenly snap back. You are still in the church, still staring at the big X on the map that Father Jakob handed to you. You slowly look up at him with a perplexed look on your face.</p>",
+    applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>My name? My name is Xander....  Xander Ignis.</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>It feels strange saying your own name, until now it did not even occur to you that you have a name, and that you did not know it.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>Ignis? No relation to Dr. Ignis I hope... He is the very reason for all of this anarchy.<br><br>Ah but surely if you were related to the Government's top scientist you would have known all about this already.<br><br>Well, you have your destination now. Good luck out there Xander. I pray that you find what you seek and that God keep you.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You thank Father Jakob for his help and leave the church, heading back to the town square</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(2500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>... Dr. Ignis... is that the man I keep seeing in these memories? Could he be...<br><br>No. you can't think about this right now. You might find some more information once you reach the resistance HQ.</p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    sceneTownSquare();
   });
 
   leaveChurchBtn.addEventListener("pointerup", async function () {
