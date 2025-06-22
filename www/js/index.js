@@ -34,6 +34,8 @@ import { applyGlassStylingRedFlicker } from "./boxes.js";
 import { applyGlassStylingGreenFlicker } from "./boxes.js";
 import { applyGlassStylingBlueFlicker } from "./boxes.js";
 import { applyGlassStylingGreyBtnFlicker } from "./boxes.js";
+// LOCK
+import { DialLock } from "./dial-lock.js";
 
 let isUserInterrupted = false;
 let interruptionIndex = 0;
@@ -244,6 +246,8 @@ let LARGE_HOUSE_MAYOR_KEY = false;
 let LARGE_HOUSE_DESK_VIEWED = false;
 let LARGE_HOUSE_SAFE_FOUND = false;
 let LARGE_HOUSE_MAP = false;
+let LARGE_HOUSE_MAYOR_LETTER_READ = false;
+let LARGE_HOUSE_NO_SENDER_LETTER_READ = false;
 // sceneHouseOvergrown
 let HOUSE_OVERGROWN_STERIODS_USED = false;
 let HOUSE_OVERGROWN_CAT_TOY = false;
@@ -326,7 +330,7 @@ function sceneZero() {
 
     // set button text
     wakeUpButton.textContent = "Wake up";
-    townButton.textContent = "Teleport to town";
+    townButton.textContent = "Teleport to Residential Area";
 
     // add styling for button
     applyGlassStylingGreyBtn(wakeUpButton);
@@ -366,7 +370,7 @@ function sceneZero() {
     userControlsContainer.removeChild(wakeUpButton);
     userControlsContainer.removeChild(townButton);
     // start SceneOne
-    sceneTownSquare();
+    sceneResidential();
   });
 }
 
@@ -6996,11 +7000,11 @@ async function sceneResidential() {
     let inspectDeskBtn = document.createElement("button");
     let inspectShelfBtn = document.createElement("button");
     let safeBtn = document.createElement("button");
-    let tryAgainBtn = document.createElement("button");
     let takeBtn = document.createElement("button");
     let mayorLetterBtn = document.createElement("button");
     let noSenderLetterBtn = document.createElement("button");
     let keyBtn = document.createElement("button");
+    let silverKeyBtn = document.createElement("button");
   
     // set button text
     leaveBtn.textContent = "Leave";
@@ -7025,11 +7029,11 @@ async function sceneResidential() {
     inspectDeskBtn.textContent = "Inspect desk";
     inspectShelfBtn.textContent = "Inspect shelf";
     safeBtn.textContent = "Attempt to open safe";
-    tryAgainBtn.textContent = "Try again";
     takeBtn.textContent = "Take the map";
     mayorLetterBtn.textContent = "Read the letter addressed to the mayor";
     noSenderLetterBtn.textContent = "Read letter with no sender information";
     keyBtn.textContent = "Take key";
+    silverKeyBtn.textContent = "Take silver key";
   
     // add styling for button
     applyGlassStylingGreyBtn(leaveBtn);
@@ -7054,11 +7058,11 @@ async function sceneResidential() {
     applyGlassStylingGreyBtn(inspectDeskBtn);
     applyGlassStylingGreyBtn(inspectShelfBtn);
     applyGlassStylingGreyBtn(safeBtn);
-    applyGlassStylingGreyBtn(tryAgainBtn);
     applyGlassStylingGreyBtn(takeBtn);
     applyGlassStylingGreyBtn(mayorLetterBtn);
     applyGlassStylingGreyBtn(noSenderLetterBtn);
     applyGlassStylingGreyBtn(keyBtn);
+    applyGlassStylingGreyBtn(silverKeyBtn);
     
     await typeText(
       textContainer,
@@ -7791,6 +7795,7 @@ async function sceneResidential() {
       inspectBodyBtn.remove();
       inspectRoomBtn.remove();
       leaveRoomBtn.remove();
+      safeBtn.remove();
   
       // write new text
       if (LARGE_HOUSE_PHOTOS_VIEWED == true) {
@@ -7803,20 +7808,68 @@ async function sceneResidential() {
         await sleep(1500);
   
         // append new button
-        userControlsContainer.appendChild(keyBtn);
+        if (LARGE_HOUSE_MAYOR_KEY == false) {
+          userControlsContainer.appendChild(keyBtn);
+        } 
         userControlsContainer.appendChild(inspectRoomBtn);
         userControlsContainer.appendChild(leaveRoomBtn);
       } else {
         await typeText(
           textContainer,
-          "<p>Hesitantly, you glance at the man once more, it does not look like this poor soul stood a chance in this fight.</p>",
+          "<p>Hesitantly, you glance at the man once more, it does not look like this poor soul stood a chance in this fight.<br><br>You see the head of an old fashioned key jutting from his coat pocket.</p>",
           applyGlassStylingRed
         );
 
+        if (LARGE_HOUSE_MAYOR_KEY == false) {
+          userControlsContainer.appendChild(keyBtn);
+        }
         userControlsContainer.appendChild(inspectRoomBtn);
         userControlsContainer.appendChild(leaveRoomBtn);
       }
     });
+
+  keyBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    HALL_KEY = true;
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    keyBtn.remove();
+    inspectRoomBtn.remove();
+    leaveRoomBtn.remove();
+
+    // write new text
+    if (LARGE_HOUSE_PHOTOS_VIEWED == true) {
+      await typeText(
+        textContainer,
+        "<p>You remove the key from the mayor's body and place it in your pocket.</p>",
+        applyGlassStylingRed
+      );
+    }
+    if (LARGE_HOUSE_PHOTOS_VIEWED == false) {
+      await typeText(
+        textContainer,
+        "<p>You remove the key from the body and place it in your pocket.</p>",
+        applyGlassStylingRed
+      );
+    }
+
+    await sleep(1500);
+
+    INVENTORY.push({name: "Old Fashioned Key", description: "An old fashioned key you found on the mayor's mutilated corpse."});
+
+    // append new button
+    userControlsContainer.appendChild(inspectRoomBtn); // append relevant buttons
+    userControlsContainer.appendChild(leaveRoomBtn);
+  });
 
     inspectRoomBtn.addEventListener("pointerup", async function () {
       // Button click check
@@ -7834,6 +7887,7 @@ async function sceneResidential() {
       inspectRoomBtn.remove();
       keyBtn.remove();
       leaveRoomBtn.remove();
+      safeBtn.remove();
   
       // write new text
       await typeText(
@@ -7865,6 +7919,7 @@ async function sceneResidential() {
       // remove button from user controls container
       inspectDeskBtn.remove();
       inspectShelfBtn.remove();
+      safeBtn.remove();
   
       // write new text
       await typeText(
@@ -7897,6 +7952,7 @@ async function sceneResidential() {
       inspectShelfBtn.remove();
       inspectDeskBtn.remove();
       leaveRoomBtn.remove();
+      safeBtn.remove();
   
       // write new text
       if (LARGE_HOUSE_SAFE_FOUND == false) {
@@ -7933,7 +7989,7 @@ async function sceneResidential() {
         if (LARGE_HOUSE_DESK_VIEWED == false) {
           userControlsContainer.appendChild(inspectDeskBtn);
         }
-        if (LARGE_HOUSE_MAYOR_KEY == false) {
+        if (HALL_KEY == false) {
           userControlsContainer.appendChild(inspectBodyBtn);
         }
         userControlsContainer.appendChild(leaveRoomBtn);
@@ -7944,7 +8000,7 @@ async function sceneResidential() {
           applyGlassStylingRed
         );
         userControlsContainer.appendChild(safeBtn);
-        if (LARGE_HOUSE_MAYOR_KEY == false) {
+        if (HALL_KEY == false) {
           userControlsContainer.appendChild(inspectBodyBtn);
         }
         if (LARGE_HOUSE_DESK_VIEWED == false) {
@@ -7974,20 +8030,246 @@ async function sceneResidential() {
       // write new text
       await typeText(
         textContainer,
-        "<p>You jiggle at the handle... it's locked. and also not coded into the game yet.</p>",
+        "<p>You jiggle at the handle... it's locked. The safe has a combination dial.</p>",
         applyGlassStylingRed
       );
+
+      // |TEST SAFE BUTTON FROM HERE
+      const { DialLock } = await import("./dial-lock.js");
+      const lock = new DialLock(
+        [8, 15, 32, 48], // the combination from the journal (8, 15, 32, 48)
+        async () => {
+          //success callback
+          textContainer.innerHTML = "";
+          await typeText(
+            textContainer,
+            "<p>With a click, the safe door swings open.<br><br>You find a collection of old letters and documents. A few of them catch your attention -<br><br>A letter addressed to Mayor Nilsen.<br><br>A blank envelope with no sender information.A single piece of parchment.<br><br>Unfolding the parchment, you find a hand-drawn map which resembles the town and its surrounding area but with more detail than the one you looked at near the town square.<br><br>And lastly, a silver key.</p>",
+            applyGlassStylingRed
+          );
+
+          await sleep(1500);
+
+          userControlsContainer.appendChild(takeBtn);
+          userControlsContainer.appendChild(mayorLetterBtn);
+          userControlsContainer.appendChild(noSenderLetterBtn);
+          userControlsContainer.appendChild(silverKeyBtn);
+        },
+        async () => {
+          //failure callback
+          textContainer.innerHTML = "";
+          await typeText(
+            textContainer,
+            "<p>The safe remains locked. The combination doesn't seem to work.</p>",
+            applyGlassStylingRed
+          );
+
+          this.resetCombination();
+
+          userControlsContainer.appendChild(safeBtn);
+          if (LARGE_HOUSE_DESK_VIEWED == false) {
+            userControlsContainer.appendChild(inspectDeskBtn);
+          }
+          userControlsContainer.appendChild(leaveRoomBtn);
+        }
+      );
+
+      textContainer.appendChild(lock.init());
     
       await sleep(1500);
   
       // append new button
-      // userControlsContainer.appendChild(tryAgainBtn); remember this exists!
       if (LARGE_HOUSE_DESK_VIEWED == false) {
         userControlsContainer.appendChild(inspectDeskBtn);
       };
+      userControlsContainer.appendChild(safeBtn);
       userControlsContainer.appendChild(leaveRoomBtn);
     });
 
+    takeBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    LARGE_HOUSE_MAP = true;
+  
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    safeBtn.remove(); // remove relevant buttons
+    takeBtn.remove();
+    mayorLetterBtn.remove();
+    noSenderLetterBtn.remove();
+    keyBtn.remove();
+    silverKeyBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You fold the map up neatly and stuff it in your back pocket.<br>This might come in handy later.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+      
+    INVENTORY.push({
+      name: "Map",
+      description: "A detailed map of the town and its surroundings you found in the mayor's safe.",
+    });
+
+    // append new button
+    if (LARGE_HOUSE_MAYOR_LETTER_READ == false) {
+      userControlsContainer.appendChild(mayorLetterBtn); // append relevant buttons
+    }
+    if (LARGE_HOUSE_NO_SENDER_LETTER_READ == false) {
+      userControlsContainer.appendChild(noSenderLetterBtn);
+    }
+    if (LARGE_HOUSE_MAYOR_KEY == false) {
+      userControlsContainer.appendChild(silverKeyBtn);
+    }
+      userControlsContainer.appendChild(leaveRoomBtn);
+    });
+    
+    mayorLetterBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    LARGE_HOUSE_MAYOR_LETTER_READ = true;
+    
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    safeBtn.remove(); // remove relevant buttons
+    takeBtn.remove();
+    mayorLetterBtn.remove();
+    noSenderLetterBtn.remove();
+    keyBtn.remove();
+    silverKeyBtn.remove();
+    leaveRoomBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You scan through the letter. Judging by how the sender uses 'Dennis' instead of 'Mayor Nilsen', you can tell that these two knew each other on a personal level.<br><br>The sender warns the Mayor to evacuate his town as an unknown threat is now imminent.<br><br><br>The letter is signed 'Dr. Ignis'</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    if (LARGE_HOUSE_MAYOR_LETTER_READ == false) {
+      userControlsContainer.appendChild(mayorLetterBtn);
+    }
+    if (LARGE_HOUSE_NO_SENDER_LETTER_READ == false) {
+      userControlsContainer.appendChild(noSenderLetterBtn);
+    }
+    if (LARGE_HOUSE_MAYOR_KEY == false) {
+      userControlsContainer.appendChild(silverKeyBtn);
+    }
+      userControlsContainer.appendChild(leaveRoomBtn);
+    });
+    
+    noSenderLetterBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+      
+    LARGE_HOUSE_NO_SENDER_LETTER_READ = true;
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    safeBtn.remove(); // remove relevant buttons
+    takeBtn.remove();
+    mayorLetterBtn.remove();
+    noSenderLetterBtn.remove();
+    keyBtn.remove();
+    silverKeyBtn.remove();
+    leaveRoomBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>The sender of this letter is requesting financial aid from the Mayor to support a cause.<br>They are not elaborating on the subject matter.<br><br>You assume that the Mayor is familiar with whatever it may be.<br><br<br>The letter is signed 'Thelir Sabotører'</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    if (LARGE_HOUSE_MAYOR_LETTER_READ == false) {
+      userControlsContainer.appendChild(mayorLetterBtn);
+    }
+    if (LARGE_HOUSE_NO_SENDER_LETTER_READ == false) {
+      userControlsContainer.appendChild(noSenderLetterBtn);
+    }
+    if (LARGE_HOUSE_MAYOR_KEY == false) {
+      userControlsContainer.appendChild(silverKeyBtn);
+    }
+      userControlsContainer.appendChild(leaveRoomBtn);
+    });
+    
+    silverKeyBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    LARGE_HOUSE_MAYOR_KEY = true;
+      
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    safeBtn.remove(); // remove relevant buttons
+    takeBtn.remove();
+    mayorLetterBtn.remove();
+    noSenderLetterBtn.remove();
+    keyBtn.remove();
+    silverKeyBtn.remove();
+    leaveRoomBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You hastily stuff the key in your pocket. A key like this must open an important door.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+      
+      INVENTORY.push({
+      name: "Silver Key",
+      description: "A silver key you found in the mayor's safe.",
+    })
+
+    // append new button
+    if (LARGE_HOUSE_MAYOR_LETTER_READ == false) {
+      userControlsContainer.appendChild(mayorLetterBtn);
+    }
+    if (LARGE_HOUSE_NO_SENDER_LETTER_READ == false) {
+      userControlsContainer.appendChild(noSenderLetterBtn);
+    }
+    if (LARGE_HOUSE_MAYOR_KEY == false) {
+      userControlsContainer.appendChild(silverKeyBtn);
+    }
+      userControlsContainer.appendChild(leaveRoomBtn);
+  });
+    
     leaveRoomBtn.addEventListener("pointerup", async function () {
       // Button click check
       if (isTyping || btnRecentlyClicked) return;
@@ -8003,6 +8285,12 @@ async function sceneResidential() {
       inspectBodyBtn.remove();
       inspectRoomBtn.remove();
       leaveRoomBtn.remove();
+      safeBtn.remove();
+      takeBtn.remove();
+      mayorLetterBtn.remove();
+      noSenderLetterBtn.remove ();
+      keyBtn.remove();
+      silverKeyBtn.remove();
   
       // write new text
       await typeText(
@@ -8016,37 +8304,6 @@ async function sceneResidential() {
         // append new button
         userControlsContainer.appendChild(downstairsBtn);
         userControlsContainer.appendChild(leaveBtn);
-    });
-
-    inspectBodyBtn.addEventListener("pointerup", async function () {
-      // Button click check
-      if (isTyping || btnRecentlyClicked) return;
-      btnRecentlyClicked = true;
-      setTimeout(() => {
-        btnRecentlyClicked = false;
-      }, 1000);
-  
-      // Clear text container
-      textContainer.innerHTML = "";
-  
-      // remove button from user controls container
-      inspectBodyBtn.remove();
-      inspectRoomBtn.remove();
-      leaveRoomBtn.remove();
-  
-      // write new text
-      await typeText(
-        textContainer,
-        "<p></p>",
-        applyGlassStylingRed
-      );
-    
-      await sleep(1500);
-  
-      // append new button
-      userControlsContainer.appendChild(keyBtn);
-      userControlsContainer.appendChild(inspectRoomBtn);
-      userControlsContainer.appendChild(leaveRoomBtn);
     });
     
     leaveBtn.addEventListener("pointerup", async function () {
@@ -8083,11 +8340,11 @@ async function sceneResidential() {
       inspectDeskBtn.remove()
       inspectShelfBtn.remove()
       safeBtn.remove()
-      tryAgainBtn.remove()
       takeBtn.remove()
       mayorLetterBtn.remove()
       noSenderLetterBtn.remove()
       keyBtn.remove()
+      silverKeyBtn.remove()
 
       if (LARGE_HOUSE_BODY_SEEN == true && LARGE_HOUSE_ENTERING_SECOND_TIME == false) {
         await typeTextItalic(
