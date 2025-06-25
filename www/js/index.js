@@ -813,7 +813,7 @@ async function sceneOne() {
   
 async function sceneCottage() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/05.jpg)";
+  gameContainer.style.backgroundImage = "url(img/05-test.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
   let userControlsContainer = document.querySelector(
     ".user-controls-container"
@@ -7293,6 +7293,10 @@ async function sceneResidential() {
   
       // Clear text container
       textContainer.innerHTML = "";
+
+      //Load image
+      gameContainer.style.backgroundImage = "url(img/mantle-photo.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
   
       // remove button from user controls container
       mantleBtn.remove();
@@ -7382,7 +7386,7 @@ async function sceneResidential() {
   
         await typeText(
           textContainer,
-          "<p>Some of the pages in the journal are numbered.<br>As you flip through, the numbers you find are 8, 15, 32, 89.<br><br>Nothing written on these pages seem to have any significance to the numbers.</p>",
+          "<p>Some of the pages in the journal are numbered.<br>As you flip through, the numbers you find are 8, 15, 32, 48.<br><br>Nothing written on these pages seem to have any significance to the numbers.</p>",
           applyGlassStylingRed
         );
   

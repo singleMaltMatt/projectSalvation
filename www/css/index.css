@@ -54,7 +54,7 @@ body::-webkit-scrollbar {
   position: relative;
   background-position: center 85px;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
   background-color: #000;
 }
 
