@@ -56,6 +56,9 @@ body::-webkit-scrollbar {
   background-repeat: no-repeat;
   background-size: cover;
   background-color: #000;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 #header {
@@ -70,14 +73,14 @@ body::-webkit-scrollbar {
   font-size: 1.5em;
 }
 
-.user-controls-container button {
-  font-family: victorMono, monospace;
-  font-size: 0.7em;
-}
 
 /* Create a game container element that has a white background and some padding */
 .game-container {
   text-align: center;
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
   box-shadow: inset 0px 92px 15px 10px #000;
   position: relative;
 }
@@ -102,6 +105,7 @@ body::-webkit-scrollbar {
 /* Create a text container element that takes up 80% of the viewport height and has a scrollable overflow */
 .text-container {
   position: relative;
+  flex-grow: 1;
   height: 62.5vh;
   max-height: 1408px;
   overflow-y: auto;
@@ -111,35 +115,65 @@ body::-webkit-scrollbar {
 
 /* Create a user controls container element that has some margin and padding */
 .user-controls-container {
-  margin-top: 5px;
+  margin-top: auto;
+  padding: 10px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
   gap: 5px;
-  position: absolute;
+  background-color: transparent;
+  position: relative;
   width: 100%;
+  box-shadow: inset 0px -50px 15px 10px #000;
+}
+
+/*this is for the background blur behind the buttons. remove if lame*/
+.user-controls-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(5px);
+  z-index: 1;
+}
+
+.user-controls-container > * {
+  position: relative;
+  z-index: 2;
+}
+
+/*end of the background blur behind the buttons*/
+
+.user-controls-container button {
+  font-family: victorMono, monospace;
+  font-size: 0.7em;
+  position: relative;
+  z-index: 2;
 }
 
 /*ANIMATIONS*/
 @keyframes jitter {
-    0% { transform: translateX(0); }
-    50% { transform: translateX(2px); }
-    100% { transform: translateX(-2px); }
+  0% { transform: translateX(0); }
+  50% { transform: translateX(2px); }
+  100% { transform: translateX(-2px); }
 }
 
 .jitter-text {
-    animation: jitter 0.1s infinite;
+  animation: jitter 0.1s infinite;
 }
 
 @keyframes glitch {
-    0% {transform: skewX(-45deg); text-shadow: 2px 2px rgba(57, 201, 233, 0.8);}
-    15% {transform: skewX(-1deg); text-shadow: -2px -2px rgba(253, 25, 74, 0.8);}
-    30% {transform: skewX(-89deg);}
-    45% {transform: skewX(-1deg);}
-    60% {transform: skewX(-45deg);}
-    75% {transform: skewX(-80deg);}
-    100% {transform: skewX(0deg); text-shadow: -2px -2px rgba(255, 196, 0, 0.8);}
+  0% {transform: skewX(-45deg); text-shadow: 2px 2px rgba(57, 201, 233, 0.8);}
+  15% {transform: skewX(-1deg); text-shadow: -2px -2px rgba(253, 25, 74, 0.8);}
+  30% {transform: skewX(-89deg);}
+  45% {transform: skewX(-1deg);}
+  60% {transform: skewX(-45deg);}
+  75% {transform: skewX(-80deg);}
+  100% {transform: skewX(0deg); text-shadow: -2px -2px rgba(255, 196, 0, 0.8);}
 }
 
 .glitch-text {

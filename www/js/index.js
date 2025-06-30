@@ -314,6 +314,7 @@ function pause() {
 function sceneZero() {
     let gameContainer = document.querySelector(".container");
     gameContainer.style.backgroundImage = "url(img/00.png)";
+    gameContainer.style.backgroundAttachment = "fixed"; // this is for paralax effect. remove if it looks bad on mobile
     let textContainer = document.querySelector(".text-container");
     let userControlsContainer = document.querySelector(".user-controls-container");
 

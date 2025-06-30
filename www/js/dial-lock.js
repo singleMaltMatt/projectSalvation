@@ -1,16 +1,7 @@
 // IMPORTS
 // NORMAL
 import { applyGlassStylingGrey } from "./boxes.js";
-import { applyGlassStylingRed } from "./boxes.js";
-import { applyGlassStylingGreen } from "./boxes.js";
-import { applyGlassStylingBlue } from "./boxes.js";
 import { applyGlassStylingGreyBtn } from "./boxes.js";
-// EFFECTS
-import { applyGlassStylingGreyFlicker } from "./boxes.js";
-import { applyGlassStylingRedFlicker } from "./boxes.js";
-import { applyGlassStylingGreenFlicker } from "./boxes.js";
-import { applyGlassStylingBlueFlicker } from "./boxes.js";
-import { applyGlassStylingGreyBtnFlicker } from "./boxes.js";
 
 // dial-lock.js
 export class DialLock {
