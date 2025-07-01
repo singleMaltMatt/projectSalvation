@@ -19,6 +19,9 @@ export class DialLock {
     this.enteredCombination = [null, null, null, null];
     this.container = null;
     this.messageElement = null;
+    this.captureBtn = null;
+    this.submitBtn = null;
+    this.resetBtn = null;
   }
 
   init() {
@@ -78,36 +81,36 @@ export class DialLock {
       this.comboNumbers.push(numBox);
     }
 
-    // Create buttons
-    const captureBtn = document.createElement('button');
-    captureBtn.textContent = 'Capture Current Number';
-    applyGlassStylingGreyBtn(captureBtn);
-    captureBtn.addEventListener('pointerup', () => this.captureNumber());
+    // Create buttons (not added to container yet)
+    this.captureBtn = document.createElement('button');
+    this.captureBtn.textContent = 'Capture Current Number';
+    applyGlassStylingGreyBtn(this.captureBtn);
+    this.captureBtn.addEventListener('pointerup', () => this.captureNumber());
 
-    const submitBtn = document.createElement('button');
-    submitBtn.textContent = 'Try Combination';
-    applyGlassStylingGreyBtn(submitBtn);
-    submitBtn.addEventListener('pointerup', () => this.checkCombination());
+    this.submitBtn = document.createElement('button');
+    this.submitBtn.textContent = 'Try Combination';
+    applyGlassStylingGreyBtn(this.submitBtn);
+    this.submitBtn.addEventListener('pointerup', () => this.checkCombination());
 
-    const resetBtn = document.createElement('button');
-    resetBtn.textContent = 'Reset Combination';
-    applyGlassStylingGreyBtn(resetBtn);
-    resetBtn.addEventListener('pointerup', () => this.resetCombination());
+    this.resetBtn = document.createElement('button');
+    this.resetBtn.textContent = 'Reset Combination';
+    applyGlassStylingGreyBtn(this.resetBtn);
+    this.resetBtn.addEventListener('pointerup', () => this.resetCombination());
 
     dialContainer.appendChild(this.dialElement);
     dialContainer.appendChild(this.arrowElement);
     this.container.appendChild(dialContainer);
     this.container.appendChild(comboDisplay);
-    this.container.appendChild(captureBtn);
-    this.container.appendChild(submitBtn);
-    this.container.appendChild(resetBtn);
 
     // Event listeners
     this.dialElement.addEventListener('pointerdown', (e) => this.startDrag(e));
     document.addEventListener('pointermove', (e) => this.drag(e));
     document.addEventListener('pointerup', () => this.endDrag());
 
-    return this.container;
+    return {
+      dialContainer: this.container,
+      buttons: [this.captureBtn, this.submitBtn, this.resetBtn]
+    }
   }
 
   startDrag(e) {

@@ -136,7 +136,7 @@ body::-webkit-scrollbar {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
   z-index: 1;
 }
@@ -274,19 +274,21 @@ p.flicker-frame{
 
 /* Dial Lock Styles */
 .dial-container {
-  display: flex;
+  /* display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  margin: 10px;
-  gap: 15px;
+  align-items: center; */
+  /* gap: 15px; */
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: rgba(125, 125, 125, 0.3);
 }
 
 .dial-container-inner {
   position: relative;
   width: 200px;
   height: 200px;
-  margin: 0 auto;
+  margin: 0 auto 20px;
 }
 
 .dial {
@@ -336,7 +338,7 @@ p.flicker-frame{
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
   border-bottom: 15px solid rgba(234, 108, 108, 0.8);
-  transform: translateX(-50%) translateY(-4px);
+  transform: translateX(-50%) translateY(-4px) rotate(180deg);
   z-index: 2;
   pointer-events: none;
 }
@@ -345,6 +347,7 @@ p.flicker-frame{
   display: flex;
   gap: 10px;
   margin: 15px 0;
+  justify-content: center;
 }
 
 .combo-number {

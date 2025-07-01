@@ -7756,6 +7756,8 @@ async function sceneResidential() {
           applyGlassStylingRedFlicker
         );
 
+        // start with video adding here
+
         await pause();
 
         textContainer.innerHTML = "";
@@ -8015,6 +8017,8 @@ async function sceneResidential() {
       }
     });
 
+    //|OG safe button start
+    /*
     safeBtn.addEventListener("pointerup", async function () {
       // Button click check
       if (isTyping || btnRecentlyClicked) return;
@@ -8085,10 +8089,107 @@ async function sceneResidential() {
       // append new button
       if (LARGE_HOUSE_DESK_VIEWED == false) {
         userControlsContainer.appendChild(inspectDeskBtn);
-      };
-      userControlsContainer.appendChild(safeBtn);
-      userControlsContainer.appendChild(leaveRoomBtn);
+        };
+        userControlsContainer.appendChild(safeBtn);
+        userControlsContainer.appendChild(leaveRoomBtn);
+        });
+        */
+    //|OG safe button end
+    
+    //|NEW safe button start
+    safeBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+      
+      // Clear text container
+      textContainer.innerHTML = "";
+      
+      // remove button from user controls container
+      safeBtn.remove();
+      inspectBodyBtn.remove();
+      inspectDeskBtn.remove();
+      leaveRoomBtn.remove();
+
+      // write new text
+      await typeText(
+        textContainer,
+        "<p>You jiggle at the handle... it's locked. The safe has a combination dial.</p>",
+        applyGlassStylingRed
+      );
+
+      // Remove all buttons except leaveRoomBtn and relevant inspection buttons
+      const buttonsToKeep = [];
+      if (LARGE_HOUSE_DESK_VIEWED == false) {
+        buttonsToKeep.push(inspectDeskBtn);
+      }
+      if (HALL_KEY == false) {
+        buttonsToKeep.push(inspectBodyBtn);
+      }
+      buttonsToKeep.push(leaveRoomBtn);
+
+      // Clear all buttons
+      userControlsContainer.innerHTML = "";
+
+      // Add back the buttons we want to keep
+      buttonsToKeep.forEach((btn) => {
+        userControlsContainer.appendChild(btn);
+      });
+
+      // Initialize the dial lock
+      const { DialLock } = await import("./dial-lock.js");
+      const lock = new DialLock(
+        [8, 15, 32, 48], // the combination from the journal (8, 15, 32, 48)
+        async () => {
+          // Success callback
+          textContainer.innerHTML = "";
+          captureBtn.remove();
+          sumbitBtn.remove();
+          resetBtn.remove();
+
+          await typeText(
+            textContainer,
+            "<p>With a click, the safe door swings open.<br><br>You find a collection of old letters and documents. A few of them catch your attention -<br><br>A letter addressed to Mayor Nilsen.<br><br>A blank envelope with no sender information.A single piece of parchment.<br><br>Unfolding the parchment, you find a hand-drawn map which resembles the town and its surrounding area but with more detail than the one you looked at near the town square.<br><br>And lastly, a silver key.</p>",
+            applyGlassStylingRed
+          );
+          // Rest of success callback...?
+
+          await sleep(1500);
+
+          userControlsContainer.appendChild(takeBtn);
+          userControlsContainer.appendChild(mayorLetterBtn);
+          userControlsContainer.appendChild(noSenderLetterBtn);
+          userControlsContainer.appendChild(silverKeyBtn);
+        },
+        async () => {
+          // Failure callback
+          textContainer.innerHTML = "";
+          await typeText(
+            textContainer,
+            "<p>The safe remains locked. The combination doesn't seem to work.</p>",
+            applyGlassStylingRed
+          );
+          lock.resetCombination();
+        }
+      );
+  
+      // Initialize lock and get the dial container and buttons
+      const { dialContainer, buttons } = lock.init();
+      
+      // Add the dial to the text container
+      textContainer.appendChild(dialContainer);
+
+      // Add the lock buttons to user controls container
+      buttons.forEach(btn => { 
+        userControlsContainer.appendChild(btn);
+      })
+
+      await sleep(1500);
     });
+    //|NEW safe button end
 
     takeBtn.addEventListener("pointerup", async function () {
     // Button click check
