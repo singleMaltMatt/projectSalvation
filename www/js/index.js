@@ -7750,17 +7750,65 @@ async function sceneResidential() {
 
         textContainer.innerHTML = "";
 
+        // video element start
+        let video = document.createElement("video");
+        video.src = "vid/01_large_house.mp4";
+        video.autoplay = true;
+        video.muted = true;
+        video.loop = false;
+        video.style.position = "fixed";
+        video.style.top = "0";
+        video.style.left = "0";
+        video.style.width = "100%";
+        video.style.height = "100%";
+        video.style.objectFit = "cover";
+        video.style.zIndex = "0"; // above other elements
+        video.style.pointerEvents = "none";
+
+        // Video loops
+        let loopCount = 0;
+        let maxLoops = 2;
+
+        // insert video as first child (background)
+        gameContainer.insertBefore(video, gameContainer.firstChild);
+
+        video.addEventListener("ended", () => {
+          loopCount++;
+          if (loopCount < maxLoops) {
+            video.currentTime = 0;
+            video.play();
+          } else {
+            video.pause();
+            video.removeAttribute('Controls');
+          }
+        });
+        // insert video into container
+//        gameContainer.appendChild(video);
+
         await typeText(
           textContainer,
           "<p>Behind the desk looms a figure.<br>Before you could find your voice and cry out, you dash forward, leap across the desk and grab the figure by the throat.<br><br>Your eyes are probably playing tricks on you, but you see you red glow in the figure's eyes.<br>You raise your fist to strike</p>",
           applyGlassStylingRedFlicker
         );
 
-        // start with video adding here
-
         await pause();
 
+        // let cleanupVideo = () => {
+        //   if (gameContainer.contains(video)) {
+        //     gameContainer.removeChild(video);
+        //   }
+        //   gameContainer.style.backgroundImage = "url(img/111large-house.png)";
+        // };
+
+        // // add cleanup to all following buttons
+        // inspectBodyBtn.addEventListener("pointerup", cleanupVideo);
+        // inspectRoomBtn.addEventListener("pointerup", cleanupVideo);
+        // leaveRoomBtn.addEventListener("pointerup", cleanupVideo);
+
         textContainer.innerHTML = "";
+        gameContainer.removeChild(video);
+        gameContainer.style.backgroundImage = "url(img/111large-house.png)";
+        gameContainer.style.transition = "background-image 4s ease-in-out";
 
         await typeText(
           textContainer,
