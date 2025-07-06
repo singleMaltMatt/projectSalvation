@@ -118,6 +118,11 @@ function applyTypingCss(element) {
   element.style.color = "#fff";
 }
 
+function showHeaderButtons() {
+  document.getElementById("header-button").style.display = "block";
+  document.getElementById("header-button-2").style.display = "block";
+}
+
 function onDeviceReady() {
     // Cordova is now initialized. Have fun!
 
@@ -189,6 +194,40 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     inventoryVisible = !inventoryVisible; // toggle the state
   });
+});
+
+//| JOURNAL
+let JOURNAL = [];
+let journalVisible = false;
+let journalBtn = document.getElementById("header-button-2");
+  
+  journalBtn.addEventListener("pointerup", function() {
+    const journalOverlay = document.getElementById("journal-overlay");
+    const headerTitle = document.getElementById("header-title"); // Use the same header title
+
+    if (journalVisible) {
+      journalOverlay.style.display = "none";
+      headerTitle.textContent = currentSceneTitle;
+    } else {
+      headerTitle.textContent = "Journal";
+      journalOverlay.style.display = "flex";
+      journalOverlay.innerHTML = "";
+
+      if (JOURNAL.length === 0) {
+        const emptyMessage = document.createElement("p");
+        emptyMessage.textContent = "No entries in journal.";
+        applyGlassStylingGrey(emptyMessage);
+        journalOverlay.appendChild(emptyMessage);
+      } else {
+        JOURNAL.forEach((entry) => {
+          const entryContainer = document.createElement("div");
+          // ... rest of your journal entry creation code ...
+          journalOverlay.appendChild(entryContainer);
+        });
+      }
+    }
+    journalVisible = !journalVisible;
+  
 });
 
 
@@ -378,10 +417,11 @@ function sceneZero() {
 //|SCENE ONE
 async function sceneOne() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/01.jpg)";
+  gameContainer.style.backgroundImage = "url(img/01-starting-scene.jpg)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
-  let headerBtn = document.getElementById("header-button");
-  headerBtn.style.display = "block";
+  // let headerBtn = document.getElementById("header-button");
+  // headerBtn.style.display = "block";
+  showHeaderButtons();
 
   let userControlsContainer = document.querySelector(".user-controls-container");
   let textContainer = document.querySelector(".text-container");
@@ -573,7 +613,7 @@ async function sceneOne() {
 //|SCENE TWO
   async function sceneTwo() {
     let gameContainer = document.querySelector(".container");
-    gameContainer.style.backgroundImage = "url(img/03.jpg)";
+    gameContainer.style.backgroundImage = "url(img/03-fork-in-the-road.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
 
     let userControlsContainer = document.querySelector(
@@ -662,7 +702,7 @@ async function sceneOne() {
 
       // Clear text container
       textContainer.innerHTML = "";
-      gameContainer.style.backgroundImage = "url(img/01.jpg)";
+      gameContainer.style.backgroundImage = "url(img/04-forest-path.png)";
       gameContainer.style.transition = "background-image 3s ease-in-out";
 
       // remove button from user controls container
@@ -721,6 +761,8 @@ async function sceneOne() {
       FOREST_RIGHT = true;
       // Clear text container
       textContainer.innerHTML = "";
+      gameContainer.style.backgroundImage = "url(img/08-path-to-neo-norway.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       
       // remove button from user controls container
       inspectBtn.remove();
@@ -814,7 +856,7 @@ async function sceneOne() {
   
 async function sceneCottage() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/05-test.png)";
+  gameContainer.style.backgroundImage = "url(img/05-cottage.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
   let userControlsContainer = document.querySelector(
     ".user-controls-container"
@@ -873,7 +915,7 @@ async function sceneCottage() {
     }, 1000);
 
     // change bg
-    gameContainer.style.backgroundImage = "url(img/inside-cottage.jpg)";
+    gameContainer.style.backgroundImage = "url(img/06-cottage-inside.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // Clear text container
@@ -1004,7 +1046,7 @@ async function sceneCottage() {
     }, 1000);
 
     // change bg
-    gameContainer.style.backgroundImage = "url(img/dead-old-man.jpg)";
+    gameContainer.style.backgroundImage = "url(img/07-cottage-dead-old-man.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // clear text container
@@ -1046,7 +1088,7 @@ async function sceneCottage() {
     }, 1000);
 
     // change bg
-    gameContainer.style.backgroundImage = "url(img/inside-cottage.jpg)";
+    gameContainer.style.backgroundImage = "url(img/06-cottage-inside.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // Clear text container
@@ -1079,7 +1121,7 @@ async function sceneCottage() {
     }, 1000);
 
     // change bg
-    gameContainer.style.backgroundImage = "url(img/05.jpg)";
+    gameContainer.style.backgroundImage = "url(img/05-cottage.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // Clear text container
@@ -1144,7 +1186,7 @@ async function sceneCottage() {
 
 async function sceneThree() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/town-in-the-distance.jpg)";
+  gameContainer.style.backgroundImage = "url(img/town-in-the-distance.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
   let userControlsContainer = document.querySelector(
     ".user-controls-container"
@@ -1207,7 +1249,7 @@ async function sceneThree() {
       btnRecentlyClicked = false;
     }, 1000);
 
-    gameContainer.style.backgroundImage = "url(img/town-square-2.jpg)";
+    gameContainer.style.backgroundImage = "url(img/11-town-square.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // Clear text container
@@ -1362,7 +1404,7 @@ async function sceneThree() {
 
 async function sceneTownSquare() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/town-square-2.jpg)";
+  gameContainer.style.backgroundImage = "url(img/11-town-square.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
   let userControlsContainer = document.querySelector(
     ".user-controls-container"
@@ -3265,16 +3307,6 @@ async function sceneClinic() {
 
     await typeText(
       textContainer,
-      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-      applyGlassStylingRed
-    );
-
-    await pause();
-
-    textContainer.innerHTML = "";
-
-    await typeText(
-      textContainer,
       "<p>You cautiously reach for the shiny object and proceed to stick your hand into the bloody gash. As if realising what you are doing you want to recoil and pull your arm back, but something stops you... you feel something hard and cold beneath your fingers... Wires.</p>",
       applyGlassStylingRed
     );
@@ -4151,7 +4183,7 @@ async function scenePool() {
     }, 1000);
 
     // Change background image
-    gameContainer.style.backgroundImage = "url(img/little-girl.jpg)";
+    gameContainer.style.backgroundImage = "url(img/12-little-girl.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // Clear text container
@@ -5885,7 +5917,7 @@ async function sceneResidential() {
   // SCENE HOUSE RUNDOWN
   async function sceneHouseRundown() {
     let gameContainer = document.querySelector(".container");
-    gameContainer.style.backgroundImage = "url(img/111rundown-house.png)"; // Add BG image
+    gameContainer.style.backgroundImage = "url(img/13-rundown-house.png)"; // Add BG image
     gameContainer.style.transition = "background-image 4s ease-in-out";
 
     let userControlsContainer = document.querySelector(
