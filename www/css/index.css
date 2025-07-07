@@ -146,6 +146,22 @@ body::-webkit-scrollbar {
   margin-top: 106px;
 }
 
+.journal-overlay div {
+  margin-bottom: 20px;
+  padding: 15px;
+}
+
+.journal-overlay h3 {
+  margin-bottom: 10px;
+  color: #fff;
+  font-size: 1.2em;
+}
+
+.journal-overlay p {
+  color: #ccc;
+  line-height: 1.5;
+}
+
 /* Create a text container element that takes up 80% of the viewport height and has a scrollable overflow */
 .text-container {
   position: relative;

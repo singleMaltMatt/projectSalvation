@@ -221,7 +221,18 @@ let journalBtn = document.getElementById("header-button-2");
       } else {
         JOURNAL.forEach((entry) => {
           const entryContainer = document.createElement("div");
-          // ... rest of your journal entry creation code ...
+
+          // Create and add title
+          const entryTitle = document.createElement("h3");
+          entryTitle.textContent = entry.title;
+          entryContainer.appendChild(entryTitle);
+
+          // Create and add text
+          const entryText = document.createElement("p");
+          entryText.textContent = entry.text;
+          entryContainer.appendChild(entryText);
+
+          applyGlassStylingGrey(entryContainer);
           journalOverlay.appendChild(entryContainer);
         });
       }
@@ -463,7 +474,7 @@ async function sceneOne() {
   
   textContainer.innerHTML = "";
 
-  gameContainer.style.backgroundImage = "url(img/01.jpg)";
+  gameContainer.style.backgroundImage = "url(img/04-forest-path.png)";
   gameContainer.style.transition = "background-image 3s ease-in-out";
 
   await typeTextItalic(
@@ -1028,6 +1039,7 @@ async function sceneCottage() {
     COTTAGE_LETTER = true;
 
     INVENTORY.push({ name: "Letter", description: "A letter you found at the cottage" });
+    JOURNAL.push({ title: "The Cottage", text: "While wandering to town I stumbled upon a cottage and found a letter addressed 'Astrid'. I took it with me. I should find someone in Gammelstad who could post it for Filip." });
 
     await sleep(1500);
 
@@ -1154,6 +1166,8 @@ async function sceneCottage() {
     await pause();
 
     textContainer.innerHTML = "";
+      
+    JOURNAL.push({ title: "The Cottage", text: "I saw the dead body of an old man. He must have been the write of the letter I found. I should report this to someone in Gammelstad..." });
 
       sceneThree();
     } else {
@@ -1186,7 +1200,7 @@ async function sceneCottage() {
 
 async function sceneThree() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/town-in-the-distance.png)";
+  gameContainer.style.backgroundImage = "url(img/09-town-in-the-distance.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
   let userControlsContainer = document.querySelector(
     ".user-controls-container"
@@ -6084,6 +6098,9 @@ async function sceneResidential() {
 
         await pause();
         textContainer.innerHTML = "";
+        // change bg
+        gameContainer.style.backgroundImage = "url(img/14-rundown-house-upstairs.png)";
+        gameContainer.style.transition = "background-image 4s ease-in-out";
 
         await typeText(
           textContainer,
@@ -6143,6 +6160,10 @@ async function sceneResidential() {
 
       // Clear text container
       textContainer.innerHTML = "";
+
+      // change bg
+      gameContainer.style.backgroundImage = "url(img/15-rundown-house-closed-door.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       
       // remove button from user controls container
       closedDoorBtn.remove();
@@ -6201,6 +6222,10 @@ async function sceneResidential() {
 
       // Clear text container
       textContainer.innerHTML = "";
+
+      // change bg
+      gameContainer.style.backgroundImage = "url(img/16-rundown-house-main-bedroom.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
 
       // remove button from user controls container
       closedDoorBtn.remove();
@@ -6291,6 +6316,10 @@ async function sceneResidential() {
 
       // Clear text container
       textContainer.innerHTML = "";
+
+      // change bg
+      gameContainer.style.backgroundImage = "url(img/17-rundown-house-desk-room.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
 
       // remove button from user controls container
       closedDoorBtn.remove();
@@ -6398,7 +6427,7 @@ async function sceneResidential() {
 
   async function sceneHouseFlag() {
     let gameContainer = document.querySelector(".container");
-    gameContainer.style.backgroundImage = "url(img/111flag-house.png)";
+    gameContainer.style.backgroundImage = "url(img/18-house-with-flag.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
 
     let userControlsContainer = document.querySelector(
