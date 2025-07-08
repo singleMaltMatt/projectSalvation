@@ -360,6 +360,151 @@ function pause() {
 
 }
 
+// GAME STATE MANAGEMENT
+
+function getGameState() {
+  return {
+    currentScene: currentSceneTitle,
+    sceneFlags: {
+      //sceneOne
+      FOREST_LEG,
+      FOREST_LOOK,
+      //sceneTwo
+      FOREST_RIGHT,
+      // sceneCottage
+      COTTAGE_LETTER,
+      COTTAGE_ROOM,
+      COTTAGE_DEAD_BODY,
+      // sceneThree
+      TOWN_MARKET,
+      // sceneSwimmingPool
+      SWIMMING_POOL_GIRL,
+      // sceneInn
+      INN_SAD,
+      INN_LETTER_GIVEN,
+      INN_WHERE,
+      INN_SURVIVE,
+      INN_LETTER_PICKED,
+      INN_FILIP_PICKED,
+      INN_ADVICE,
+      // sceneResidentail
+      // sceneHouseRundown
+      HOUSE_RUNDOWN_EXPLORED,
+      HOUSE_RUNDOWN_ASCENDED,
+      HOUSE_RUNDOWN_ONE,
+      HOUSE_RUNDOWN_ONE_AGAIN,
+      HOUSE_RUNDOWN_TWO,
+      HOUSE_RUNDOWN_TWO_AGAIN,
+      HOUSE_RUNDOWN_THREE,
+      HOUSE_RUNDOWN_THREE_AGAIN,
+      HOUSE_RUNDOWN_FOUR,
+      HOUSE_RUNDOWN_FOUR_AGAIN,
+      // sceneHouseFlag
+      HOUSE_FLAG_FREQUENCY,
+      HOUSE_FLAG_ONE,
+      HOUSE_FLAG_TWO,
+      HOUSE_FLAG_COORDINATES,
+      // sceneHouseLarge
+      LARGE_HOUSE_LIVING_ROOM,
+      LARGE_HOUSE_PHOTOS_VIEWED,
+      LARGE_HOUSE_BOOK_VIEWED,
+      LARGE_HOUSE_FIRST_ROOM_RIGHT,
+      LARGE_HOUSE_FIRST_ROOM_LEFT,
+      LARGE_HOUSE_FIRST_ROOM_LEFT_VIEWED_AGAIN,
+      LARGE_HOUSE_SECOND_ROOM_RIGHT,
+      LARGE_HOUSE_SECOND_ROOM_RIGHT_VIEWED_AGAIN,
+      LARGE_HOUSE_BODY_SEEN,
+      LARGE_HOUSE_ENTERING_SECOND_TIME,
+      LARGE_HOUSE_MAYOR_KEY,
+      LARGE_HOUSE_DESK_VIEWED,
+      LARGE_HOUSE_SAFE_FOUND,
+      LARGE_HOUSE_MAP,
+      LARGE_HOUSE_MAYOR_LETTER_READ,
+      LARGE_HOUSE_NO_SENDER_LETTER_READ,
+      // sceneHouseOvergrown
+      HOUSE_OVERGROWN_STERIODS_USED,
+      HOUSE_OVERGROWN_CAT_TOY,
+      HOUSE_OVERGROWN_EXPLORED,
+      // sceneHouseWhite
+      HOUSE_WHITE_EXPLORED,
+      HOUSE_WHITE_SNAKE_BITE,
+      //sceneChurch
+      CHURCH_STORY,
+      CHURCH_INFORMATION,
+      CHURCH_DISMISS,
+      CHURCH_DESTINATION,
+      // sceneClinic
+      CLINIC_KEY, // check this when you get there
+      CLINIC_KEY_USED,
+      CLINIC_STEROIDS,
+      CLINIC_LIGHT,
+      CLINIC_BASEMENT,
+      CLINIC_ROBOT_SEEN,
+      CLINIC_RESEARCH_SAVED,
+      CLINIC_SECRET_DOOR,
+      CLINIC_LOCKED_IN,
+      CLINIC_DOOR_LEFT,
+      CLINIC_DOOR_RIGHT,
+      //sceneHall
+      HALL_KEY,
+      HALL_WEAPONS,
+    },
+    inventory: INVENTORY,
+    journal: JOURNAL,
+  };
+}
+
+function saveGame() {
+  const gameState = getGameState();
+  localStorage.setItem('projectSalvationSave', JSON.stringify(gameState));
+
+  //Show save notification
+  const notification = document.createElement('div');
+  notification.textContent = 'Game Saved';
+  notification.style.position = 'fixed';
+  notification.style.bottom = '20px';
+  notification.style.left = '50%';
+  notification.style.transform = 'translateX(-50%)';
+  notification.style.padding = '10px 20px';
+  notification.style.backgroundColor = 'rgba(0,0,0,0.7)';
+  notification.style.color = 'white';
+  notification.style.borderRadius = '5px';
+  notification.style.zIndex = '100';
+
+  document.body.appendChild(notification);
+
+  setTimeout(() => {
+    notification.remove();
+  }, 2000);
+}
+
+function loadGame() {
+  const saveData = localStorage.getItem('projectSalvationSave');
+  if (!saveData) return false;
+
+  const gameState = JSON.parse(saveData);
+
+  // Restore game state
+  currentSceneTitle = gameState.currentScene;
+  INVENTORY = gameState.inventory || [];
+  JOURNAL = gameState.journal || [];
+
+  // Restore flags
+  Object.keys(gameState.sceneFlags).forEach(flag => {
+    window[flag] = gameState.sceneFlags[flag];
+  });
+
+  return true;
+}
+
+// Initialize save button
+document.getElementById('header-button-3').addEventListener('pointerup', saveGame);
+
+// Show/Hide save button
+function toggleSaveButton() {
+  document.getElementById('header-button-3').style.display = show ? 'block' : 'none';
+}
+
 //|SCENE ZERO
 function sceneZero() {
     let gameContainer = document.querySelector(".container");
@@ -368,6 +513,11 @@ function sceneZero() {
     let textContainer = document.querySelector(".text-container");
     let userControlsContainer = document.querySelector(".user-controls-container");
 
+    applyTypingCss(textContainer);
+    
+    // Check for saved game
+    const hasSave = loadGame();
+  
     applyTypingCss(textContainer);
     typeText(
       textContainer,
@@ -378,6 +528,30 @@ function sceneZero() {
     // create button
     let wakeUpButton = document.createElement("button");
     let townButton = document.createElement("button");
+    let continueBtn = null;
+  
+  if (hasSave) {
+    continueBtn = document.createElement("button");
+    continueBtn.textContent = "Continue";
+    applyGlassStylingGreyBtn(continueBtn);
+    userControlsContainer.appendChild(continueBtn);
+    continueBtn.addEventListener("pointerup", function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+      // Clear text container
+      textContainer.innerHTML = "";
+      // remove button from user controls container
+      userControlsContainer.removeChild(wakeUpButton);
+      userControlsContainer.removeChild(townButton);
+      userControlsContainer.removeChild(continueBtn);
+      // start SceneOne
+      sceneOne();
+    });
+  }
 
     // set button text
     wakeUpButton.textContent = "Wake up";
@@ -1417,6 +1591,7 @@ async function sceneThree() {
 //|SCENE TOWN SQUARE
 
 async function sceneTownSquare() {
+  toggleSaveButton(true);
   let gameContainer = document.querySelector(".container");
   gameContainer.style.backgroundImage = "url(img/11-town-square.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
