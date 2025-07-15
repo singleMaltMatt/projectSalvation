@@ -241,7 +241,6 @@ let journalBtn = document.getElementById("header-button-2");
   
 });
 
-
 //| GLOBAL BOOLEANS
 //sceneOne
 let FOREST_LEG = false;
@@ -305,13 +304,11 @@ let HOUSE_OVERGROWN_EXPLORED = false;
 // sceneHouseWhite
 let HOUSE_WHITE_EXPLORED = false;
 let HOUSE_WHITE_SNAKE_BITE = false;
-//
 //sceneChurch
 let CHURCH_STORY = false;
 let CHURCH_INFORMATION = false;
 let CHURCH_DISMISS = false;
 let CHURCH_DESTINATION = false;
-
 // sceneClinic
 let CLINIC_KEY = false; // check this when you get there
 let CLINIC_KEY_USED = false;
@@ -324,7 +321,6 @@ let CLINIC_SECRET_DOOR = false;
 let CLINIC_LOCKED_IN = false;
 let CLINIC_DOOR_LEFT = false;
 let CLINIC_DOOR_RIGHT = false;
-
 //sceneHall
 let HALL_KEY = false;
 let HALL_WEAPONS = false;
@@ -501,9 +497,31 @@ function loadGame() {
 document.getElementById('header-button-3').addEventListener('pointerup', saveGame);
 
 // Show/Hide save button
-function toggleSaveButton() {
+function toggleSaveButton(show) {
   document.getElementById('header-button-3').style.display = show ? 'block' : 'none';
 }
+
+// SCENE REGISTRY
+const SCENE_REGISTRY = {
+  "Church": sceneChurch,
+  "Clinic": sceneClinic,
+  "The Cottage": sceneCottage,
+  "Town Hall": sceneHall,
+  "House with the Flag": sceneHouseFlag,
+  "The Large House": sceneHouseLarge,
+  "The Overgrown House": sceneHouseOvergrown,
+  "The Rundown House": sceneHouseRundown,
+  "The White House": sceneHouseWhite,
+  "Norrsund Inn": sceneInn,
+  "Deep in the Forest": sceneOne,
+  "Swimming Pool": scenePool,
+  "Residential Area": sceneResidential,
+  "Store": sceneStore,
+  "Forest Path to Town": sceneThree,
+  "Town Square": sceneTownSquare,
+  "Fork in the Road": sceneTwo,
+  "Project: Salvation": sceneZero
+};
 
 //|SCENE ZERO
 function sceneZero() {
@@ -535,6 +553,7 @@ function sceneZero() {
     continueBtn.textContent = "Continue";
     applyGlassStylingGreyBtn(continueBtn);
     userControlsContainer.appendChild(continueBtn);
+
     continueBtn.addEventListener("pointerup", function () {
       // Button click check
       if (isTyping || btnRecentlyClicked) return;
@@ -545,11 +564,12 @@ function sceneZero() {
       // Clear text container
       textContainer.innerHTML = "";
       // remove button from user controls container
-      userControlsContainer.removeChild(wakeUpButton);
-      userControlsContainer.removeChild(townButton);
-      userControlsContainer.removeChild(continueBtn);
+      userControlsContainer.innerHTML = "";
+
+      // Get the scene function from registry
+      const sceneFunction = SCENE_REGISTRY[currentSceneTitle] || sceneOne;
       // start SceneOne
-      sceneOne();
+      sceneFunction();
     });
   }
 
@@ -595,7 +615,7 @@ function sceneZero() {
     userControlsContainer.removeChild(wakeUpButton);
     userControlsContainer.removeChild(townButton);
     // start SceneOne
-    sceneResidential();
+    sceneHouseLarge();
   });
 }
 
@@ -796,7 +816,7 @@ async function sceneOne() {
 }
 
 //|SCENE TWO
-  async function sceneTwo() {
+async function sceneTwo() {
     let gameContainer = document.querySelector(".container");
     gameContainer.style.backgroundImage = "url(img/03-fork-in-the-road.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
@@ -1035,10 +1055,226 @@ async function sceneOne() {
       investigateBtn.remove();
       sceneThree();
     });
-  }
+}
+
+//|SCENE THREE
+async function sceneThree() {
+  let gameContainer = document.querySelector(".container");
+  gameContainer.style.backgroundImage = "url(img/09-town-in-the-distance.png)";
+  gameContainer.style.transition = "background-image 4s ease-in-out";
+  let userControlsContainer = document.querySelector(
+    ".user-controls-container"
+  );
+
+  let textContainer = document.querySelector(".text-container");
+  applyTypingCss(textContainer);
+
+  // header title
+  setCurrentSceneTitle("Forest Path to Town");
+  document.getElementById("header-title").textContent = getCurrentSceneTitle();
+
+  // create button
+  let lookBtn = document.createElement("button");
+  let townSquareBtn = document.createElement("button");
+  let marketBtn = document.createElement("button");
+  let leftBtn = document.createElement("button");
+  let walkBtn = document.createElement("button");
+
+  // set button text
+  lookBtn.textContent = "Look around";
+  townSquareBtn.textContent = "Go to town square";
+  marketBtn.textContent = "Go to market";
+  leftBtn.textContent = "Investigate forest path";
+  walkBtn.textContent = "Walk further";
+
+  // add styling for button
+  applyGlassStylingGreyBtn(lookBtn);
+  applyGlassStylingGreyBtn(townSquareBtn);
+  applyGlassStylingGreyBtn(marketBtn);
+  applyGlassStylingGreyBtn(leftBtn);
+  applyGlassStylingGreyBtn(walkBtn);
+
+  await typeTextItalic(
+    textContainer,
+    "<p>... The picturesque town sits in eerie silence, it appears most of the townsfolk has locked their doors and went... somewhere... The air is filled with a haunting stillness, broken only by the occasional whispering breeze that rustles the leaves...</p>",
+    applyGlassStylingRed
+  );
+
+  await pause();
+
+  textContainer.innerHTML = "";
+  gameContainer.style.backgroundImage = "url(img/town-entrance.jpg)";
+  gameContainer.style.transition = "background-image 4s ease-in-out";
+
+  await typeTextItalic(
+    textContainer,
+    "<p>What happened here?</p>",
+    applyGlassStylingGreen
+  );
+
+  // append button to user controls container
+  userControlsContainer.appendChild(lookBtn);
+
+  lookBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    gameContainer.style.backgroundImage = "url(img/11-town-square.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    lookBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>In front of you is the town square, a few food carts can be seen off to the right, the market appears awfully quiet today.<br><br>To your left is another forest path heading towards the hills.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn);
+    userControlsContainer.appendChild(marketBtn);
+    userControlsContainer.appendChild(leftBtn);
+  });
+
+  townSquareBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    townSquareBtn.remove();
+    marketBtn.remove();
+    leftBtn.remove();
+
+    // await sleep(1500);
+
+    sceneTownSquare();
+  });
+
+  marketBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    marketBtn.remove();
+    townSquareBtn.remove();
+    leftBtn.remove();
+
+    // market once off
+    TOWN_MARKET = true;
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You browse through the tiny market. You see crusty loaves of bread, now fated for pigeon feed. None of the other carts display any items of value.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn);
+    userControlsContainer.appendChild(leftBtn);
+  });
+
+  leftBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    //BG
+    gameContainer.style.backgroundImage = "url(img/forest-path-tyre-tracks.jpg)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    leftBtn.remove();
+    marketBtn.remove();
+    townSquareBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>This path is much wider than the one you walked on while coming to town. It appears to be a path used by vehicles. You can see some tracks heading towards the hills.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(walkBtn);
+    userControlsContainer.appendChild(townSquareBtn);
+    if (TOWN_MARKET == false) {
+      userControlsContainer.appendChild(marketBtn);
+    }
+  });
+
+  walkBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    gameContainer.style.backgroundImage = "url(img/forest-path-tyre-tracks.jpg)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    walkBtn.remove();
+    townSquareBtn.remove();
+    marketBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>Bad idea, I might get lost up there... Perhaps I should try to find out where this leads first.</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn);
+    if (TOWN_MARKET == false) {
+      userControlsContainer.appendChild(marketBtn);
+    }
+  });
+}
 
 //|SCENE COTTAGE
-  
 async function sceneCottage() {
   let gameContainer = document.querySelector(".container");
   gameContainer.style.backgroundImage = "url(img/05-cottage.png)";
@@ -1370,226 +1606,7 @@ async function sceneCottage() {
 
 }
 
-//|SCENE THREE
-
-async function sceneThree() {
-  let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/09-town-in-the-distance.png)";
-  gameContainer.style.transition = "background-image 4s ease-in-out";
-  let userControlsContainer = document.querySelector(
-    ".user-controls-container"
-  );
-
-  let textContainer = document.querySelector(".text-container");
-  applyTypingCss(textContainer);
-
-  // header title
-  setCurrentSceneTitle("Forest Path to Town");
-  document.getElementById("header-title").textContent = getCurrentSceneTitle();
-
-  // create button
-  let lookBtn = document.createElement("button");
-  let townSquareBtn = document.createElement("button");
-  let marketBtn = document.createElement("button");
-  let leftBtn = document.createElement("button");
-  let walkBtn = document.createElement("button");
-
-  // set button text
-  lookBtn.textContent = "Look around";
-  townSquareBtn.textContent = "Go to town square";
-  marketBtn.textContent = "Go to market";
-  leftBtn.textContent = "Investigate forest path";
-  walkBtn.textContent = "Walk further";
-
-  // add styling for button
-  applyGlassStylingGreyBtn(lookBtn);
-  applyGlassStylingGreyBtn(townSquareBtn);
-  applyGlassStylingGreyBtn(marketBtn);
-  applyGlassStylingGreyBtn(leftBtn);
-  applyGlassStylingGreyBtn(walkBtn);
-
-  await typeTextItalic(
-    textContainer,
-    "<p>... The picturesque town sits in eerie silence, it appears most of the townsfolk has locked their doors and went... somewhere... The air is filled with a haunting stillness, broken only by the occasional whispering breeze that rustles the leaves...</p>",
-    applyGlassStylingRed
-  );
-
-  await pause();
-
-  textContainer.innerHTML = "";
-  gameContainer.style.backgroundImage = "url(img/town-entrance.jpg)";
-  gameContainer.style.transition = "background-image 4s ease-in-out";
-
-  await typeTextItalic(
-    textContainer,
-    "<p>What happened here?</p>",
-    applyGlassStylingGreen
-  );
-
-  // append button to user controls container
-  userControlsContainer.appendChild(lookBtn);
-
-  lookBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    gameContainer.style.backgroundImage = "url(img/11-town-square.png)";
-    gameContainer.style.transition = "background-image 4s ease-in-out";
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    lookBtn.remove();
-
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>In front of you is the town square, a few food carts can be seen off to the right, the market appears awfully quiet today.<br><br>To your left is another forest path heading towards the hills.</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    // append new button
-    userControlsContainer.appendChild(townSquareBtn);
-    userControlsContainer.appendChild(marketBtn);
-    userControlsContainer.appendChild(leftBtn);
-  });
-
-  townSquareBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    townSquareBtn.remove();
-    marketBtn.remove();
-    leftBtn.remove();
-
-    // await sleep(1500);
-
-    sceneTownSquare();
-  });
-
-  marketBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    marketBtn.remove();
-    townSquareBtn.remove();
-    leftBtn.remove();
-
-    // market once off
-    TOWN_MARKET = true;
-
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>You browse through the tiny market. You see crusty loaves of bread, now fated for pigeon feed. None of the other carts display any items of value.</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    // append new button
-    userControlsContainer.appendChild(townSquareBtn);
-    userControlsContainer.appendChild(leftBtn);
-  });
-
-  leftBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    //BG
-    gameContainer.style.backgroundImage = "url(img/forest-path-tyre-tracks.jpg)";
-    gameContainer.style.transition = "background-image 4s ease-in-out";
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    leftBtn.remove();
-    marketBtn.remove();
-    townSquareBtn.remove();
-
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>This path is much wider than the one you walked on while coming to town. It appears to be a path used by vehicles. You can see some tracks heading towards the hills.</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    // append new button
-    userControlsContainer.appendChild(walkBtn);
-    userControlsContainer.appendChild(townSquareBtn);
-    if (TOWN_MARKET == false) {
-      userControlsContainer.appendChild(marketBtn);
-    }
-  });
-
-  walkBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    gameContainer.style.backgroundImage = "url(img/forest-path-tyre-tracks.jpg)";
-    gameContainer.style.transition = "background-image 4s ease-in-out";
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    walkBtn.remove();
-    townSquareBtn.remove();
-    marketBtn.remove();
-
-    // write new text
-    await typeTextItalic(
-      textContainer,
-      "<p>Bad idea, I might get lost up there... Perhaps I should try to find out where this leads first.</p>",
-      applyGlassStylingGreen
-    );
-
-    await sleep(1500);
-
-    // append new button
-    userControlsContainer.appendChild(townSquareBtn);
-    if (TOWN_MARKET == false) {
-      userControlsContainer.appendChild(marketBtn);
-    }
-  });
-}
-
 //|SCENE TOWN SQUARE
-
 async function sceneTownSquare() {
   toggleSaveButton(true);
   let gameContainer = document.querySelector(".container");
@@ -1823,8 +1840,1005 @@ async function sceneTownSquare() {
 
 }
 
-// ******************** |ZONES| *********************************
-//| SCENE CLINIC
+//|SCENE CHURCH
+async function sceneChurch() {
+  let gameContainer = document.querySelector(".container");
+  gameContainer.style.backgroundImage = "url(img/000church.png)";
+  gameContainer.style.transition = "background-image 4s ease-in-out";
+
+  let userControlsContainer = document.querySelector(
+    ".user-controls-container"
+  );
+  let textContainer = document.querySelector(".text-container");
+  applyTypingCss(textContainer);
+
+  // header title
+  setCurrentSceneTitle("Church");
+  document.getElementById("header-title").textContent = getCurrentSceneTitle();
+
+  // create button
+  let townSquareBtn = document.createElement("button"); // create buttons for scene
+  let enterChurchBtn = document.createElement("button");
+  let badLeaveBtn = document.createElement("button");
+  let walkManBtn = document.createElement("button");
+  let clearThroatBtn = document.createElement("button");
+  let tellPriestBtn = document.createElement("button");
+  let explainBtn = document.createElement("button");
+  let priestOldManBtn = document.createElement("button");
+  let resistanceBtn = document.createElement("button");
+  let leaveBtn = document.createElement("button");
+  let problemBtn = document.createElement("button");
+  let prayBtn = document.createElement("button");
+  let mapBtn = document.createElement("button");
+  let noMapBtn = document.createElement("button");
+  let leaveChurchBtn = document.createElement("button");
+  let continueBtn = document.createElement("button")
+
+  // set button text
+  townSquareBtn.textContent = "Go to town square";
+  enterChurchBtn.textContent = "Enter the Church";
+  badLeaveBtn.textContent = "Leave. This place gives you a bad feeling";
+  walkManBtn.textContent = "Walk up to the man";
+  clearThroatBtn.textContent = "Clear your throat loudly...";
+  tellPriestBtn.textContent = "Go tell the priest Ingrid sent you";
+  explainBtn.textContent = "Explain your presence to the Priest";
+  priestOldManBtn.textContent = "Tell the Priest about the old man in the cottage";
+  resistanceBtn.textContent = "Could you tell me about the resistance?";
+  leaveBtn.textContent = "Leave";
+  problemBtn.textContent = "I believe that we should solve our own problems, and not look to divine intervention";
+  prayBtn.textContent = "Yes, I pray that we will be saved";
+  mapBtn.textContent = "Give the map to Father Jakob";
+  noMapBtn.textContent = "No, I don't have a map right now";
+  leaveChurchBtn.textContent = "Leave the church and head back to town";
+  continueBtn.textContent = "Continue";
+
+  // add styling for button
+  applyGlassStylingGreyBtn(townSquareBtn);
+  applyGlassStylingGreyBtn(enterChurchBtn);
+  applyGlassStylingGreyBtn(badLeaveBtn);
+  applyGlassStylingGreyBtn(walkManBtn);
+  applyGlassStylingGreyBtn(clearThroatBtn);
+  applyGlassStylingGreyBtn(tellPriestBtn);
+  applyGlassStylingGreyBtn(explainBtn);
+  applyGlassStylingGreyBtn(priestOldManBtn);
+  applyGlassStylingGreyBtn(resistanceBtn);
+  applyGlassStylingGreyBtn(leaveBtn);
+  applyGlassStylingGreyBtn(problemBtn);
+  applyGlassStylingGreyBtn(prayBtn);
+  applyGlassStylingGreyBtn(mapBtn);
+  applyGlassStylingGreyBtn(noMapBtn);
+  applyGlassStylingGreyBtn(leaveChurchBtn);
+  applyGlassStylingGreyBtn(continueBtn);
+
+  // local conditionals
+  //   let ONCEOFF = false;
+
+  await typeText(
+    textContainer,
+    "<p>You follow the direction of the signpost that points towards the church, however when you reach the imposing structure, you almost think that you have reached the wrong building.</p>",
+    applyGlassStylingRed
+  );
+
+  await sleep(2000);
+
+  textContainer.innerHTML = "";
+
+  await typeText(
+    textContainer,
+    "<p>The church is unexpectedly tall, made completely of wood, and pitch black with very slanted rooves. It also looks like it could be hundreds of years old.<br>The high pointed roof tops are adorned with odd shapes that remind you of snakes or dragons.<br>There is also a small cemetery on the right side of the building.<br><br>The narrow door stands open, but you feel almost afraid to go inside...</p>",
+    applyGlassStylingRed
+  );
+
+  // append button to user controls container
+  userControlsContainer.appendChild(enterChurchBtn);
+  userControlsContainer.appendChild(badLeaveBtn);
+
+  enterChurchBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+  enterChurchBtn.remove(); // remove relevant buttons
+  badLeaveBtn.remove();
+
+  // write new text
+  await typeText(
+    textContainer,
+    "<p>You walk into the church and pause... The building looks even bigger on the inside.<br><br>There is no ceiling, only old looking chandeliers that reach higher and higher towards the roof. There is red carpet that leads between rows of pews towards the far end of the vast room, where you see a priest standing behind a pulpit, his face in his hands.</p>",
+    applyGlassStylingRed
+  );
+
+  await sleep(1500);
+    
+  await typeText(
+    textContainer,
+    "<p>He hasn't noticed you.</p>",
+    applyGlassStylingRed
+  );
+
+  await sleep(1500);
+
+  // append new button
+  userControlsContainer.appendChild(walkManBtn); // append relevant buttons
+  userControlsContainer.appendChild(clearThroatBtn);
+  });
+  
+  walkManBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+  walkManBtn.remove(); // remove relevant buttons
+  clearThroatBtn.remove();
+
+  // write new text
+  await typeText(
+    textContainer,
+    "<p>As you approach him, he starts to speak as he looks up.</p>",
+    applyGlassStylingRed
+  );
+
+  await pause();
+  
+  textContainer.innerHTML = "";
+    
+  await typeText(
+    textContainer,
+    "<p>I'm sorry but there will be no confessional today, I...<br><br>Oh... you're not from here. What do you want?</p>",
+    applyGlassStylingBlue
+  );
+
+  await pause();  
+  textContainer.innerHTML = "";
+    
+  if (INN_ADVICE == true) {
+    await typeTextItalic(
+    textContainer,
+    "<p>Are you Father Jakob? Ingrid said you might be able help me with some coordinates I have? I need to find out where they lead.</p>",
+    applyGlassStylingGreen
+    );
+    
+    await pause();
+    textContainer.innerHTML = "";
+    
+    await typeText(
+      textContainer,
+      "<p>Oh did she now? I sometimes wonder if I should have stayed in the military rather than join the clergy, that's all people seem to need me for in these times of trouble, my military experience.<br><br>Well then let me have a look...</p>",
+      applyGlassStylingBlue
+      );
+      
+    await pause();
+      textContainer.innerHTML = "";
+      
+    await typeText(
+      textContainer,
+      "<p>You show Father Jakob the coordinates you wrote down, he pauses and looks up, thinking...</p>",
+      applyGlassStylingRed
+      );
+      
+    await sleep(2000);
+    
+    await typeText(
+    textContainer,
+      "<p>Of course, you found the coordinates to the resistance's headquarters.<br><br>Do you really plan to go there?<br><br>Join their fight?</p>",
+    applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    if (CHURCH_STORY == true && LARGE_HOUSE_MAP == true) {
+      userControlsContainer.appendChild(mapBtn);
+    }
+
+    //|what the hell happens here if you don't have the map?
+  }
+
+  // append new button
+    userControlsContainer.appendChild(explainBtn); // append relevant buttons
+    if (COTTAGE_DEAD_BODY == true) {
+      userControlsContainer.appendChild(priestOldManBtn);
+    }
+  });
+  
+  priestOldManBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+    CHURCH_INFORMATION = true;
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+  explainBtn.remove(); // remove relevant buttons
+  priestOldManBtn.remove();
+
+  // write new text
+  await typeTextItalic(
+    textContainer,
+    "<p>I found the body of an old man in a cottage outside of town.<br>I thought you might want to know...<br>He must be dead a week by now...</p>",
+    applyGlassStylingGreen
+  );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+
+    await typeText(
+      textContainer,
+      "<p>The priest gives a long sigh, and mutters a prayer under his breath.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>Poor Filip. Astrid will be devastated. Thank you, I will try to find some help to give him a proper burial at least. And I will let Ingrid know.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>Was there anything else?</p>",
+      applyGlassStylingBlue
+    )
+
+  // append new button
+  userControlsContainer.appendChild(explainBtn); // append relevant buttons
+  });
+
+  clearThroatBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+  clearThroatBtn.remove(); // remove relevant buttons
+
+  // write new text
+  await typeText(
+    textContainer,
+    "<p>The priest looks up, startled.</p>",
+    applyGlassStylingRed
+  );
+
+  await sleep(1500);
+  
+  await typeText(
+    textContainer,
+    "<p>Who are you? If you're another 'recruiter', you can just leave now, there's no one left to join you, and I haven't got time for this.</p>",
+    applyGlassStylingBlue
+  );
+
+  await sleep(1500);
+
+  // append new button
+  userControlsContainer.appendChild(explainBtn); // append relevant buttons
+  });
+
+  explainBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+  explainBtn.remove(); // remove relevant buttons
+
+  // write new text
+  await typeTextItalic(
+    textContainer,
+    "<p>I'm not a recruiter, I'm actually not even sure where I am.<br><br>I just woke up this morning in the forest nearby, with only hazy memories and I stumbled on this town.<br><br>Do you know what happened here? Where is everyone?</p>",
+    applyGlassStylingGreen
+  );
+
+  await pause();
+    
+  textContainer.innerHTML = "";
+  
+  // write new text
+  await typeText(
+    textContainer,
+    "<p>The priest looks you up and down suspiciously.</p>",
+    applyGlassStylingRed
+  );
+
+  await sleep(1500);
+  
+  await typeText(
+    textContainer,
+    "<p>Everyone fled. Either to get away from here, or to join this 'resistance'...<br>But how is it you don't know this? The world has gone to hell in the span of a week. People have lost their faith in God and that is why our world is as rotten and corrupt as it is.<br><br>I am Father Jakob, and this is my church. I refuse to leave my town and my flock because of fear.<br><br>My faith protects me, even though most of my congregation has clearly lost their own faith. So Tell me, do you still have faith?</p>",
+    applyGlassStylingBlue
+  );
+
+  await sleep(1500);
+
+  // append new button
+  userControlsContainer.appendChild(prayBtn); // append relevant buttons
+  userControlsContainer.appendChild(problemBtn);
+  });
+
+  
+  problemBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  CHURCH_DISMISS = true;
+  
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+  prayBtn.remove(); // remove relevant buttons
+  problemBtn.remove();
+
+  // write new text
+  await typeText(
+    textContainer,
+    "<p>Well then I have nothing more to say to you. Please leave me to my thoughts. And God help you.</p>",
+    applyGlassStylingRed
+  );
+
+  await sleep(1500);
+
+  // append new button
+  userControlsContainer.appendChild(leaveBtn); // append relevant buttons
+  });
+
+  
+  prayBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+  buttonNameBtn.remove(); // remove relevant buttons
+
+  // write new text
+  await typeText(
+    textContainer,
+    "<p>Then may the Lord bless and keep you my child. Was there anything else?</p>",
+    applyGlassStylingBlue
+  );
+
+  await sleep(1500);
+
+  // append new button
+  userControlsContainer.appendChild(resistanceBtn); // append relevant buttons
+  });
+
+  
+  resistanceBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+  buttonNameBtn.remove(); // remove relevant buttons
+
+  // write new text
+  await typeText(
+    textContainer,
+    "<p>Perhaps I have said too much already... but the resistance is a group of people, from this town and some others, who are trying to save humanity from this threat.<br><br>Foolish if you ask me, they should rather be praying for strength and forgiveness. So they might enter heaven when the time comes.</p>",
+    applyGlassStylingBlue
+  );
+
+  await pause();
+  
+  textContainer.innerHTML = "";
+    
+  // write new text
+  await typeTextItalic(
+    textContainer,
+    "<p>I'm sorry father, but my memories are very faint. What is this threat? What are they trying to save humanity from?</p>",
+    applyGlassStylingGreen
+    );
+    
+  await pause();
+  
+  textContainer.innerHTML = "";
+    
+  await typeText(
+    textContainer,
+    "<p>... From Salvation ...</p>",
+    applyGlassStylingBlue
+    );
+
+  await sleep(1500);
+
+  await typeText(
+    textContainer,
+    "<p>The priest chuckles.</p>",
+    applyGlassStylingBlue
+    );
+
+  await sleep(1500);
+    
+    await typeText(
+      textContainer,
+      "<p>Ironic isn't it? That it should have a name like that. Project Salvation is a military program that was engineered by the government's top scientists in Artificial Intelligence. He motivated that AI could run the country's military security without failure, without human tendencies like corruption or greed or malice. It seemed like the project was a success, despite our neighboring countries warning of the dangers of AI.</p>",
+      applyGlassStylingBlue
+    );
+    
+  await pause();
+
+  textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Our military expanded the operation and procured massive budgets to give the AI system more power, and further reach. It has access to automated weapons, airstrikes, and even nuclear weapons.<br><br>Everyone was convinced that our country is the safest and most secure in the world, and it seems they were right.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>But if the country is safe and secure, what is the threat? Why is everyone fleeing? Isn't it safer to stay in the towns and cities?</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(1500);
+    
+    await typeText(
+      textContainer,
+      "<p>Well, the country is very safe and secure as long as project Salvation is operational...<br>But what if it was shut down?<br>What if our entire country's military power disappears over night?<br>Could you imagine what that would mean to the government and the military heads?</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Well we would be open to all kinds of threats and attacks... but I don't understand, why would they shut it down?<br>No one would disable their entire country's defense?</p>",
+      applyGlassStylingGreen
+    )
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>I believe you are right, however ask yourself...<br><br>If Project Salvation could be shut down, if there was one threat that could stop it and remove it's ability to protect it's country...<br><br>What would that threat be?</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Slowly the realisation comes to you</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>... Us... Humans...</p>",
+      applyGlassStylingGreen
+    );
+
+    await typeText(
+      textContainer,
+      "<p>Precisely! Our neighbors warned us against AI because they knew it would get too intelligent for its, or OUR own good. But the military commanders were too concerned about making more money to expand the military, they even thought of selling the system to other countries once it was perfected. But for some reason the Chief scientist halted the project.<br><br>No one knows for sure what happened to him since he was no longer mentioned in the news.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>But I digress. The bottom line of this story is that Project Salvation has identified humans as a threat to it's continued existence, so in order for it to keep doing it's job, and keep our people safe, is by removing our people's ability to disable it... by  removing our people...</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>The priest chuckles again, it almost grows into a hearty laugh.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>Suddenly it all dawns on you...<br><br>The reason why the town is empty; the reason why everyone has fled...<br><br>They are fleeing from extermination...</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Father Jakob stops laughing and looks sternly at you.</p>",
+      applyGlassStylingRed
+    )
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>So there you have it my child. All the country's military power is now focused on it's own people. Where people are fleeing to I do not know. And when Project Salvation will eventually strike is anyone's guess.<br><br>What we do know from inside the military compound is that Project Salvation has identified humans as a threat to eliminate. And that is why the resistance was formed. They are trying to find a way into the military compound where The Core of Project Salvation is located, and deactivate it.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Some prominent experts have joined the resistance. I know this because they came to me as recruiters, because I know most of the people in town and I have a military background, I might have had some advise for them... but the only advice I have to offer now is to pray that the worst doesn't happen.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+  // append new button
+  userControlsContainer.appendChild(continueBtn); // append relevant buttons
+  });
+
+  continueBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  CHURCH_STORY = true;
+
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+  continueBtn.remove(); // remove relevant buttons
+
+  // write new text
+    if (INN_ADVICE == true) { // need to do the longer one now
+      await typeTextItalic(
+      textContainer,
+      "<p>Father Jakob, will you be able to show me where to find the resistance with those coordinates? I feel that I need to find them and perhaps help them if I can, in any way possible..</p>",
+      applyGlassStylingGreen
+    );
+  
+      await pause();
+      textContainer.innerHTML = "";
+
+      
+      await typeText(
+      textContainer,
+      "<p>Well my child, either you are very foolish, or very brave... but yes. I can show you where to find them. Do you have a map that I can mark for you?</p>",
+      applyGlassStylingBlue
+    );
+  
+    await sleep(1500);
+  
+    // append new button
+      if (LARGE_HOUSE_MAP == true) {
+        userControlsContainer.appendChild(mapBtn);
+      } else {
+        userControlsContainer.appendChild(noMapBtn);
+      }
+    } else {
+      await typeTextItalic(
+        textContainer,
+        "<p>Father Jakob will you be able to show me where to find the resistance? I feel that I need to find them and perhaps help them if I can, in any way possible...</p>",
+        applyGlassStylingGreen
+      );
+    
+      await pause();
+
+      textContainer.innerHTML = "";
+
+      await typeText(
+        textContainer,
+        "<p>Well my child, either you are very foolish, or very brave... but unfortunately I don't know where they are located. They wanted to keep it quiet, lest the AI is able to pinpoint their whereabouts...<br><br>However if you are able to find any information about where they are, come back and I might be able to help you.</p>",
+        applyGlassStylingBlue
+      )
+
+      await sleep(1500);
+    
+      // append new button
+      userControlsContainer.appendChild(leaveChurchBtn); // append relevant buttons
+  }
+  });
+  
+  noMapBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+  noMapBtn.remove(); // remove relevant buttons
+  mapBtn.remove();
+
+  // write new text
+  await typeText(
+    textContainer,
+    "<p>You're going to need to find their headquarters. Come back once you have a map and I will mark it for you</p>",
+    applyGlassStylingBlue
+  );
+
+  await sleep(1500);
+
+  // append new button
+  userControlsContainer.appendChild(leaveChurchBtn); // append relevant buttons
+  });
+  
+  mapBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  CHURCH_DESTINATION = true;
+    
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+  mapBtn.remove(); // remove relevant buttons
+  noMapBtn.remove();
+
+  // write new text
+  await typeText(
+    textContainer,
+    "<p>All right let's have a look...<br><br>Here, I have marked where you can find them if you leave town to the west and head north.<br><br>You'll find the main road to the city blocked off... safer that way.</p>",
+    applyGlassStylingBlue
+  );
+
+  await pause();
+  
+  textContainer.innerHTML = "";
+  
+  await typeText(
+    textContainer,
+    "<p>The priest hands you back the map with a big red X marked on it... You feel an odd sensation...</p>",
+    applyGlassStylingRed
+  );
+
+  await sleep(1500);
+  
+  await typeText(
+    textContainer,
+    "<p>You're a brave man. Tell me, what is your name?</p>",
+    applyGlassStylingBlue
+  );
+
+  await sleep(1500);
+  
+  await typeText(
+    textContainer,
+    "<p>You hear the priests muffled words echoing in your mind, as if spoken in a long empty hallway, you stare at the big red X as your mind starts to drift away,</p>",
+    applyGlassStylingRed
+  )
+  
+  await typeText(
+    textContainer,
+    "<p>you suddenly lose all sense of where you are...</p>",
+    applyGlassStylingRedFlicker
+    )
+    
+  await pause();
+    
+  textContainer.innerHTML = "";
+
+  await typeTextItalic(
+    textContainer,
+    "<p>Doctor, the procedure was a success, he should be regaining consciousness soon.</p>",
+    applyGlassStylingBlueFlicker
+  );
+
+  await sleep(1500)
+
+  await typeText(
+    textContainer,
+    "<p>He is waking up. Quickly, leave the room. I need to be the first person he sees.</p>",
+    applyGlassStylingBlueFlicker
+  );
+
+  await sleep(1500)
+
+  await typeText(
+    textContainer,
+    "<p>But Doctor! We have not ran any of the safety tests yet, it could be dangerous!</p>",
+    applyGlassStylingBlueFlicker
+  );
+
+  await sleep(1500)
+
+  await typeText(
+    textContainer,
+    "<p>Leave us! Now!</p>",
+    applyGlassStylingBlueFlicker
+  );
+
+  await sleep(1500)
+
+  await typeTextItalic(
+    textContainer,
+    "<p>Where... where am I?<br><br>Who are you?</p>",
+    applyGlassStylingGreenFlicker
+  );
+
+  await sleep(1500)
+
+  await typeText(
+    textContainer,
+    "<p>Ah, Xander Ignis, you are finally awake my son. I have a very important task for you...</p>",
+    applyGlassStylingRedFlicker
+    );
+    
+  await pause();
+  textContainer.innerHTML = "";
+    
+
+  await typeText(
+    textContainer,
+    "<p>You suddenly snap back. You are still in the church, still staring at the big X on the map that Father Jakob handed to you. You slowly look up at him with a perplexed look on your face.</p>",
+    applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>My name? My name is Xander....  Xander Ignis.</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>It feels strange saying your own name, until now it did not even occur to you that you have a name, and that you did not know it.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>Ignis? No relation to Dr. Ignis I hope... He is the very reason for all of this anarchy.<br><br>Ah but surely if you were related to the Government's top scientist you would have known all about this already.<br><br>Well, you have your destination now. Good luck out there Xander. I pray that you find what you seek and that God keep you.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You thank Father Jakob for his help and leave the church, heading back to the town square</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(2500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>... Dr. Ignis... is that the man I keep seeing in these memories? Could he be...<br><br>No. you can't think about this right now. You might find some more information once you reach the resistance HQ.</p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    sceneTownSquare();
+  });
+
+  leaveChurchBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+    townSquareBtn.remove(); // remove relevant buttons
+    enterChurchBtn.remove();
+    badLeaveBtn.remove();
+    walkManBtn.remove();
+    clearThroatBtn.remove();
+    tellPriestBtn.remove();
+    explainBtn.remove();
+    priestOldManBtn.remove();
+    resistanceBtn.remove();
+    leaveBtn.remove();
+    problemBtn.remove();
+    prayBtn.remove();
+    mapBtn.remove();
+    leaveChurchBtn.remove();
+
+    await typeText(
+      textContainer,
+      "<p>You return to the town square.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    sceneTownSquare();
+  });
+
+  leaveBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+    townSquareBtn.remove(); // remove relevant buttons
+    enterChurchBtn.remove();
+    badLeaveBtn.remove();
+    walkManBtn.remove();
+    clearThroatBtn.remove();
+    tellPriestBtn.remove();
+    explainBtn.remove();
+    priestOldManBtn.remove();
+    resistanceBtn.remove();
+    leaveBtn.remove();
+    problemBtn.remove();
+    prayBtn.remove();
+    mapBtn.remove();
+    leaveChurchBtn.remove();
+
+    await typeText(
+      textContainer,
+      "<p>You return to the town square.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    sceneTownSquare();
+  });
+
+  badLeaveBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  setTimeout(() => {
+    btnRecentlyClicked = false;
+  }, 1000);
+
+  // Clear text container
+  textContainer.innerHTML = "";
+
+  // remove button from user controls container
+    townSquareBtn.remove(); // remove relevant buttons
+    enterChurchBtn.remove();
+    badLeaveBtn.remove();
+    walkManBtn.remove();
+    clearThroatBtn.remove();
+    tellPriestBtn.remove();
+    explainBtn.remove();
+    priestOldManBtn.remove();
+    resistanceBtn.remove();
+    leaveBtn.remove();
+    problemBtn.remove();
+    prayBtn.remove();
+    mapBtn.remove();
+    leaveChurchBtn.remove();
+
+    sceneTownSquare();
+  });
+  
+  
+  townSquareBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    townSquareBtn.remove(); // remove relevant buttons
+    enterChurchBtn.remove();
+    badLeaveBtn.remove();
+    walkManBtn.remove();
+    clearThroatBtn.remove();
+    tellPriestBtn.remove();
+    explainBtn.remove();
+    priestOldManBtn.remove();
+    resistanceBtn.remove();
+    leaveBtn.remove();
+    problemBtn.remove();
+    prayBtn.remove();
+    mapBtn.remove();
+    leaveChurchBtn.remove();
+
+    sceneTownSquare();
+  });
+}
+
+//|SCENE CLINIC
 async function sceneClinic() {
   let gameContainer = document.querySelector(".container");
   gameContainer.style.backgroundImage = "url(img/clinic.jpg)";
@@ -4184,10 +5198,10 @@ async function sceneClinic() {
   
 }
 
-//| SCENE SWIMMING POOL
-async function scenePool() {
+//|SCENE TOWN HALL
+async function sceneHall() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/000pool.png)";
+  gameContainer.style.backgroundImage = "url(img/000town-hall.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
 
   let userControlsContainer = document.querySelector(
@@ -4197,52 +5211,398 @@ async function scenePool() {
   applyTypingCss(textContainer);
 
   // header title
-  setCurrentSceneTitle("Swimming Pool");
+  setCurrentSceneTitle("Town Hall");
   document.getElementById("header-title").textContent = getCurrentSceneTitle();
 
   // create button
-  let townSquareBtn = document.createElement("button");
-  let talkBtn = document.createElement("button");
-  let whatBtn = document.createElement("button");
-  let whereBtn = document.createElement("button");
+  let townSquareBtn = document.createElement("button"); // create buttons for scene
+  let oldKeyBtn = document.createElement("button")
+  let enterHallBtn = document.createElement("button");
+  let upstairsBtn = document.createElement("button");
+  let openDoorBtn = document.createElement("button");
+  let tryMayorKeyBtn = document.createElement("button");
+  let returnToTownBtn = document.createElement("button");
+  let investigateCratesBtn = document.createElement("button"); //[1]
+  let investigateMayorDeskBtn = document.createElement("button"); //[2]
+  let attemptBtn = document.createElement("button");
+  let leaveBtn = document.createElement("button");
 
   // set button text
-  townSquareBtn.textContent = "Go to Town Square";
-  talkBtn.textContent = "Talk to the girl";
-  whatBtn.textContent = "What are you doing here?";
-  whereBtn.textContent = "Where are your parents?";
+  townSquareBtn.textContent = "Go to town square";
+  oldKeyBtn.textContent = "Use old fashioned key on the lock";
+  enterHallBtn.textContent = "Enter the Town Hall";
+  upstairsBtn.textContent = "Go up the stairs";
+  openDoorBtn.textContent = "Open the door";
+  tryMayorKeyBtn.textContent = "Try the key found in the Mayor's safe";
+  returnToTownBtn.textContent = "Return to the Town Square";
+  investigateCratesBtn.textContent = "Investigate the crates";
+  investigateMayorDeskBtn.textContent = "Investigate the Mayor's desk";
+  attemptBtn.textContent = "Attempt to open one of the crates";
+  leaveBtn.textContent = "Leave before someone discovers you";
 
   // add styling for button
   applyGlassStylingGreyBtn(townSquareBtn);
-  applyGlassStylingGreyBtn(talkBtn);
-  applyGlassStylingGreyBtn(whatBtn);
-  applyGlassStylingGreyBtn(whereBtn);
+  applyGlassStylingGreyBtn(oldKeyBtn);
+  applyGlassStylingGreyBtn(enterHallBtn);
+  applyGlassStylingGreyBtn(upstairsBtn);
+  applyGlassStylingGreyBtn(openDoorBtn);
+  applyGlassStylingGreyBtn(tryMayorKeyBtn);
+  applyGlassStylingGreyBtn(returnToTownBtn);
+  applyGlassStylingGreyBtn(investigateCratesBtn);
+  applyGlassStylingGreyBtn(investigateMayorDeskBtn);
+  applyGlassStylingGreyBtn(attemptBtn);
+  applyGlassStylingGreyBtn(leaveBtn);
 
   // local conditionals
+  //   let ONCEOFF = false;
 
-  if (SWIMMING_POOL_GIRL == true) {
-    await typeText(
-      textContainer,
-      "<p>The area around the swimming pool is empty, there is nothing else to see here.</p>",
-      applyGlassStylingRed
-    );
-  } else {
-    await typeText(
-      textContainer,
-      "<p>Before you lies a meticulously maintained swimming pool, enclosed by a white fence. The gate, creaking on its rusty hinges, stands ajar. Adjacent to the pool, a solitary little girl, her grip tender on a time-worn stuffed toy bear, amuses herself by playfully kicking a ball against the inn's weathered wall.</p>",
-      applyGlassStylingRed
-    );
-  }
+  await typeText(
+    textContainer,
+    "<p>The doors to the town hall are chained shut. There is a notice nailed to the door <br><br>'Closed until further notice' <br><br>There is a big old fashioned lock keeping the chains together.</p>",
+    applyGlassStylingRed
+  );
 
   await sleep(1500);
 
   // append button to user controls container
-  if (SWIMMING_POOL_GIRL == true) {
-    userControlsContainer.appendChild(townSquareBtn);
-  } else {
-    userControlsContainer.appendChild(talkBtn);
+  if (HALL_KEY == true) {
+    userControlsContainer.appendChild(oldKeyBtn);
+  }
+  if (HALL_KEY == false) {
     userControlsContainer.appendChild(townSquareBtn);
   }
+
+  oldKeyBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    oldKeyBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You insert the big key into the old lock and turn it.<br>With a satisfying click, the lock pops open, and you remove the chains from the golden door handles.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(enterHallBtn); // append relevant buttons
+  });
+
+  enterHallBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    enterHallBtn.remove(); // remove relevant buttons
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>Stepping into the Town Hall you see a huge open space that is mostly dark. Beams of light coming through the high windows illuminate the rich red color of the wooden furniture in the lobby. There are potted plants here and there that are in need of some water.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You are standing in front of an ornate wooden reception desk. You can see a staircase behind the desk leading up to the first floor of the building, as well as waiting benches in neat rows around the room.<br><br>There are old fashioned wooden doors lining the sides of the ground and first floor, probably the administrative offices of the different government employees.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You notice a plaque on a door to your right which reads 'Police Station'. This strikes you as odd, but then you don't recall seeing a police building in the town. The town hall must deal with most of the issues in town , including police matters, but then where are the police officers?</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>The big double doors on the first floor landing catch your eye, though you cant make out the plaque on the wall next to the door, you are certain that must be the Mayor's Office.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(upstairsBtn); // append relevant buttons
+  });
+
+  upstairsBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    upstairsBtn.remove(); // remove relevant buttons
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>Just as you thought, the brass plaque next to the door reads 'Mayor Dennis Nilsen'. Perhaps you can find some answers about what is happening in this town inside.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(openDoorBtn); // append relevant buttons
+  });
+
+  openDoorBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    openDoorBtn.remove(); // remove relevant buttons
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>The door is locked tight.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    if (LARGE_HOUSE_MAYOR_KEY == true) {
+      userControlsContainer.appendChild(tryMayorKeyBtn); // append relevant buttons
+    }
+    if (LARGE_HOUSE_MAYOR_KEY == false) {
+      userControlsContainer.appendChild(returnToTownBtn);
+    }
+  });
+
+  tryMayorKeyBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    tryMayorKeyBtn.remove(); // remove relevant buttons
+    returnToTownBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You slide the key into the lock and the door unlocks easily. You pass through into the mayors office.<br><br>The room is pitch dark, so you feel for a light switch next to the door and flick it on. You hear the fluorescent tube light sputter to life above you, and you are startled by the sight in the office, simultaneously realizing why the office was so dark...</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>In the middle of the office is the Mayor's large and shiny solid wood desk, but lining the walls, and stacked on top of each other, covering the windows, are large metal crates, at least 50 of them you guess, varying in length and size.</p>",
+    applyGlassStylingRed
+    )
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(investigateCratesBtn); // append relevant buttons
+    userControlsContainer.appendChild(investigateMayorDeskBtn);
+  });
+
+  investigateMayorDeskBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateMayorDeskBtn.remove(); // remove relevant buttons
+    investigateCratesBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>The mayor's desk basically empty, just a calendar and some stationary on the surface. The drawers contain more stationary and some official envelopes and stamps. Nothing else of interest catches your eye.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(investigateCratesBtn); // append relevant buttons
+  });
+
+  investigateCratesBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    investigateCratesBtn.remove(); // remove relevant buttons
+    investigateMayorDeskBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>The crates seem to be made of dark grey, thin but strong metal plate. Each crate seems to have a small display screen and number pad on top, it appears they are electronically locked.<br><br>You notice there are words painted in white on the sides of the crates: 'Caution - Agricultural Fertilizer - Hazardous to humans and animals'.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Why does the mayor have all this fertilizer locked away in his office?</p>",
+      applyGlassStylingGreen
+    )
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(attemptBtn); // append relevant buttons
+    userControlsContainer.appendChild(leaveBtn);
+  });
+
+  leaveBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    leaveBtn.remove(); // remove relevant buttons
+    attemptBtn.remove(); // remove relevant buttons
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You decide to leave the Town Hall</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+
+    sceneTownSquare();
+  });
+
+  attemptBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    leaveBtn.remove(); // remove relevant buttons
+    attemptBtn.remove(); // |This is where the circuit mini game must come. somehow...
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
+  });
+
+  returnToTownBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    townSquareBtn.remove(); // remove relevant buttons
+    oldKeyBtn.remove();
+    enterHallBtn.remove();
+    upstairsBtn.remove();
+    openDoorBtn.remove();
+    tryMayorKeyBtn.remove();
+    returnToTown.remove();
+    investigateCratesBtn.remove();
+    investigateMayorDeskBtn.remove();
+    attemptBtn.remove();
+    leaveBtn.remove();
+
+    sceneTownSquare();
+  });
 
   townSquareBtn.addEventListener("pointerup", async function () {
     // Button click check
@@ -4252,185 +5612,27 @@ async function scenePool() {
       btnRecentlyClicked = false;
     }, 1000);
 
-    SWIMMING_POOL_GIRL = true;
     // Clear text container
     textContainer.innerHTML = "";
 
     // remove button from user controls container
-    townSquareBtn.remove();
-    talkBtn.remove();
-    whatBtn.remove();
+    townSquareBtn.remove(); // remove relevant buttons
+    oldKeyBtn.remove();
+    enterHallBtn.remove();
+    upstairsBtn.remove();
+    openDoorBtn.remove();
+    tryMayorKeyBtn.remove();
+    returnToTown.remove();
+    investigateCratesBtn.remove();
+    investigateMayorDeskBtn.remove();
+    attemptBtn.remove();
+    leaveBtn.remove();
 
     sceneTownSquare();
   });
-
-  talkBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    talkBtn.remove();
-    townSquareBtn.remove();
-
-    // write new text
-    await typeTextItalic(
-      textContainer,
-      "<p>Hello. What's you name?</p>",
-      applyGlassStylingGreen
-    );
-
-    await sleep(1500);
-
-    textContainer.innerHTML = "";
-
-    await typeText(
-      textContainer,
-      "<p>Without turning to face you, little girl responds...</p>",
-      applyGlassStylingRed
-    )
-
-    await sleep(1500);
-    
-    await typeTextItalic(
-      textContainer,
-      "<p>Hello mister, my name is Nora...</p>",
-      applyGlassStylingBlue
-    );
-
-    await sleep(1500);
-
-    await typeText(
-      textContainer,
-      "<p>Nora continues to kick her ball against the wall.</p>",
-      applyGlassStylingRed
-    );
-
-    // append new button
-    userControlsContainer.appendChild(whatBtn);
-    userControlsContainer.appendChild(townSquareBtn);
-  });
-
-  whatBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    whatBtn.remove();
-    townSquareBtn.remove();
-
-    // write new text
-    await typeTextItalic(
-      textContainer,
-      "<p>May I ask what you are doing here all by yourself?</p>",
-      applyGlassStylingGreen
-    );
-
-    await sleep(1500);
-
-    textContainer.innerHTML = "";
-
-    await typeText(
-      textContainer,
-      "<p>Still not acknowledging you, Nora responds...</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-    
-    await typeTextItalic(
-      textContainer,
-      "<p>I'm visiting Auntie Ingrid. She owns the Inn. She's busy now and can't come out to play with me...</p>",
-      applyGlassStylingBlue
-    );
-
-    await sleep(1500);
-
-    // append new button
-    userControlsContainer.appendChild(whereBtn);
-  });
-
-  whereBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Change background image
-    gameContainer.style.backgroundImage = "url(img/12-little-girl.png)";
-    gameContainer.style.transition = "background-image 4s ease-in-out";
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    whereBtn.remove();
-
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>Nora kicks the ball, it thuds against the wall and bounces back past her legs.<br><br>She turns to face you, a sullen expression has gripped her face...</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    textContainer.innerHTML = "";
-
-    await typeTextItalic(
-      textContainer,
-      "<p>Mommy and Daddy left. They said I should stay with Grandma Astrid and Grandpa Filip for a while.<br><br>Grandma Astrid also left. Grandpa Filip went to sleep and I got bored...<br><br>I came to ask Auntie Ingrid if she would play with me... </p>",
-      applyGlassStylingBlue
-    );
-
-    await pause();
-
-    textContainer.innerHTML = "";
-    gameContainer.style.backgroundImage = "url(img/000pool.png)";
-    gameContainer.style.transition = "background-image 4s ease-in-out";
-
-    await typeText(
-      textContainer,
-      "<p>Before you could respond, Nora picked up her ball and ran through the gate. You could see tears welling up in her eyes.</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-    
-    if (COTTAGE_DEAD_BODY == true) {
-      textContainer.innerHTML = "";
-      await typeTextItalic(
-        textContainer,
-        "<p>I wonder if she knows about her grandfather?<br><br>I should speak to her aunt, Ingrid.</p>",
-        applyGlassStylingGreen
-      )
-
-      await sleep(1500);
-
-      userControlsContainer.append(townSquareBtn);
-    } else {
-      userControlsContainer.appendChild(townSquareBtn); 
-    }
-
-  });
 }
 
-//| SCENE INN
+//|SCENE INN
 async function sceneInn() {
   let gameContainer = document.querySelector(".container");
   gameContainer.style.backgroundImage = "url(img/000inn.png)";
@@ -5449,10 +6651,10 @@ async function sceneInn() {
   //more here
 }
 
-//| SCENE TOWN HALL
-async function sceneHall() {
+//|SCENE SWIMMING POOL
+async function scenePool() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/000town-hall.png)";
+  gameContainer.style.backgroundImage = "url(img/000pool.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
 
   let userControlsContainer = document.querySelector(
@@ -5462,398 +6664,277 @@ async function sceneHall() {
   applyTypingCss(textContainer);
 
   // header title
-  setCurrentSceneTitle("Town Hall");
+  setCurrentSceneTitle("Swimming Pool");
+  document.getElementById("header-title").textContent = getCurrentSceneTitle();
+
+  // create button
+  let townSquareBtn = document.createElement("button");
+  let talkBtn = document.createElement("button");
+  let whatBtn = document.createElement("button");
+  let whereBtn = document.createElement("button");
+
+  // set button text
+  townSquareBtn.textContent = "Go to Town Square";
+  talkBtn.textContent = "Talk to the girl";
+  whatBtn.textContent = "What are you doing here?";
+  whereBtn.textContent = "Where are your parents?";
+
+  // add styling for button
+  applyGlassStylingGreyBtn(townSquareBtn);
+  applyGlassStylingGreyBtn(talkBtn);
+  applyGlassStylingGreyBtn(whatBtn);
+  applyGlassStylingGreyBtn(whereBtn);
+
+  // local conditionals
+
+  if (SWIMMING_POOL_GIRL == true) {
+    await typeText(
+      textContainer,
+      "<p>The area around the swimming pool is empty, there is nothing else to see here.</p>",
+      applyGlassStylingRed
+    );
+  } else {
+    await typeText(
+      textContainer,
+      "<p>Before you lies a meticulously maintained swimming pool, enclosed by a white fence. The gate, creaking on its rusty hinges, stands ajar. Adjacent to the pool, a solitary little girl, her grip tender on a time-worn stuffed toy bear, amuses herself by playfully kicking a ball against the inn's weathered wall.</p>",
+      applyGlassStylingRed
+    );
+  }
+
+  await sleep(1500);
+
+  // append button to user controls container
+  if (SWIMMING_POOL_GIRL == true) {
+    userControlsContainer.appendChild(townSquareBtn);
+  } else {
+    userControlsContainer.appendChild(talkBtn);
+    userControlsContainer.appendChild(townSquareBtn);
+  }
+
+  townSquareBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    SWIMMING_POOL_GIRL = true;
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    townSquareBtn.remove();
+    talkBtn.remove();
+    whatBtn.remove();
+
+    sceneTownSquare();
+  });
+
+  talkBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    talkBtn.remove();
+    townSquareBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>Hello. What's you name?</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(1500);
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Without turning to face you, little girl responds...</p>",
+      applyGlassStylingRed
+    )
+
+    await sleep(1500);
+    
+    await typeTextItalic(
+      textContainer,
+      "<p>Hello mister, my name is Nora...</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>Nora continues to kick her ball against the wall.</p>",
+      applyGlassStylingRed
+    );
+
+    // append new button
+    userControlsContainer.appendChild(whatBtn);
+    userControlsContainer.appendChild(townSquareBtn);
+  });
+
+  whatBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    whatBtn.remove();
+    townSquareBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>May I ask what you are doing here all by yourself?</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(1500);
+
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Still not acknowledging you, Nora responds...</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+    
+    await typeTextItalic(
+      textContainer,
+      "<p>I'm visiting Auntie Ingrid. She owns the Inn. She's busy now and can't come out to play with me...</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(whereBtn);
+  });
+
+  whereBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Change background image
+    gameContainer.style.backgroundImage = "url(img/12-little-girl.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    whereBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>Nora kicks the ball, it thuds against the wall and bounces back past her legs.<br><br>She turns to face you, a sullen expression has gripped her face...</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Mommy and Daddy left. They said I should stay with Grandma Astrid and Grandpa Filip for a while.<br><br>Grandma Astrid also left. Grandpa Filip went to sleep and I got bored...<br><br>I came to ask Auntie Ingrid if she would play with me... </p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+
+    textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/000pool.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
+
+    await typeText(
+      textContainer,
+      "<p>Before you could respond, Nora picked up her ball and ran through the gate. You could see tears welling up in her eyes.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+    
+    if (COTTAGE_DEAD_BODY == true) {
+      textContainer.innerHTML = "";
+      await typeTextItalic(
+        textContainer,
+        "<p>I wonder if she knows about her grandfather?<br><br>I should speak to her aunt, Ingrid.</p>",
+        applyGlassStylingGreen
+      )
+
+      await sleep(1500);
+
+      userControlsContainer.append(townSquareBtn);
+    } else {
+      userControlsContainer.appendChild(townSquareBtn); 
+    }
+
+  });
+}
+
+//|SCENE STORE
+async function sceneStore() {
+  let gameContainer = document.querySelector(".container");
+  gameContainer.style.backgroundImage = "url(img/000store.png)";
+  gameContainer.style.transition = "background-image 4s ease-in-out";
+
+  let userControlsContainer = document.querySelector(
+    ".user-controls-container"
+  );
+  let textContainer = document.querySelector(".text-container");
+  applyTypingCss(textContainer);
+
+  // header title
+  setCurrentSceneTitle("Store");
   document.getElementById("header-title").textContent = getCurrentSceneTitle();
 
   // create button
   let townSquareBtn = document.createElement("button"); // create buttons for scene
-  let oldKeyBtn = document.createElement("button")
-  let enterHallBtn = document.createElement("button");
-  let upstairsBtn = document.createElement("button");
-  let openDoorBtn = document.createElement("button");
-  let tryMayorKeyBtn = document.createElement("button");
-  let returnToTownBtn = document.createElement("button");
-  let investigateCratesBtn = document.createElement("button"); //[1]
-  let investigateMayorDeskBtn = document.createElement("button"); //[2]
-  let attemptBtn = document.createElement("button");
-  let leaveBtn = document.createElement("button");
 
   // set button text
   townSquareBtn.textContent = "Go to town square";
-  oldKeyBtn.textContent = "Use old fashioned key on the lock";
-  enterHallBtn.textContent = "Enter the Town Hall";
-  upstairsBtn.textContent = "Go up the stairs";
-  openDoorBtn.textContent = "Open the door";
-  tryMayorKeyBtn.textContent = "Try the key found in the Mayor's safe";
-  returnToTownBtn.textContent = "Return to the Town Square";
-  investigateCratesBtn.textContent = "Investigate the crates";
-  investigateMayorDeskBtn.textContent = "Investigate the Mayor's desk";
-  attemptBtn.textContent = "Attempt to open one of the crates";
-  leaveBtn.textContent = "Leave before someone discovers you";
 
   // add styling for button
   applyGlassStylingGreyBtn(townSquareBtn);
-  applyGlassStylingGreyBtn(oldKeyBtn);
-  applyGlassStylingGreyBtn(enterHallBtn);
-  applyGlassStylingGreyBtn(upstairsBtn);
-  applyGlassStylingGreyBtn(openDoorBtn);
-  applyGlassStylingGreyBtn(tryMayorKeyBtn);
-  applyGlassStylingGreyBtn(returnToTownBtn);
-  applyGlassStylingGreyBtn(investigateCratesBtn);
-  applyGlassStylingGreyBtn(investigateMayorDeskBtn);
-  applyGlassStylingGreyBtn(attemptBtn);
-  applyGlassStylingGreyBtn(leaveBtn);
 
   // local conditionals
   //   let ONCEOFF = false;
 
   await typeText(
     textContainer,
-    "<p>The doors to the town hall are chained shut. There is a notice nailed to the door <br><br>'Closed until further notice' <br><br>There is a big old fashioned lock keeping the chains together.</p>",
+    "<p>As you enter, the bell chimes a whimsical tone. The shelves are sparse but there are still some items for sale here. Perhaps the storekeeper is waiting for a delivery, or the town's people stocked up for the long winter...</p>",
     applyGlassStylingRed
   );
 
   await sleep(1500);
 
   // append button to user controls container
-  if (HALL_KEY == true) {
-    userControlsContainer.appendChild(oldKeyBtn);
-  }
-  if (HALL_KEY == false) {
-    userControlsContainer.appendChild(townSquareBtn);
-  }
-
-  oldKeyBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    oldKeyBtn.remove(); // remove relevant buttons
-    townSquareBtn.remove();
-
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>You insert the big key into the old lock and turn it.<br>With a satisfying click, the lock pops open, and you remove the chains from the golden door handles.</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    // append new button
-    userControlsContainer.appendChild(enterHallBtn); // append relevant buttons
-  });
-
-  enterHallBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    enterHallBtn.remove(); // remove relevant buttons
-
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>Stepping into the Town Hall you see a huge open space that is mostly dark. Beams of light coming through the high windows illuminate the rich red color of the wooden furniture in the lobby. There are potted plants here and there that are in need of some water.</p>",
-      applyGlassStylingRed
-    );
-
-    await pause();
-
-    textContainer.innerHTML = "";
-
-    await typeText(
-      textContainer,
-      "<p>You are standing in front of an ornate wooden reception desk. You can see a staircase behind the desk leading up to the first floor of the building, as well as waiting benches in neat rows around the room.<br><br>There are old fashioned wooden doors lining the sides of the ground and first floor, probably the administrative offices of the different government employees.</p>",
-      applyGlassStylingRed
-    );
-
-    await pause();
-
-    textContainer.innerHTML = "";
-
-    await typeText(
-      textContainer,
-      "<p>You notice a plaque on a door to your right which reads 'Police Station'. This strikes you as odd, but then you don't recall seeing a police building in the town. The town hall must deal with most of the issues in town , including police matters, but then where are the police officers?</p>",
-      applyGlassStylingRed
-    );
-
-    await pause();
-
-    textContainer.innerHTML = "";
-
-    await typeText(
-      textContainer,
-      "<p>The big double doors on the first floor landing catch your eye, though you cant make out the plaque on the wall next to the door, you are certain that must be the Mayor's Office.</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    // append new button
-    userControlsContainer.appendChild(upstairsBtn); // append relevant buttons
-  });
-
-  upstairsBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    upstairsBtn.remove(); // remove relevant buttons
-
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>Just as you thought, the brass plaque next to the door reads 'Mayor Dennis Nilsen'. Perhaps you can find some answers about what is happening in this town inside.</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    // append new button
-    userControlsContainer.appendChild(openDoorBtn); // append relevant buttons
-  });
-
-  openDoorBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    openDoorBtn.remove(); // remove relevant buttons
-
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>The door is locked tight.</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    // append new button
-    if (LARGE_HOUSE_MAYOR_KEY == true) {
-      userControlsContainer.appendChild(tryMayorKeyBtn); // append relevant buttons
-    }
-    if (LARGE_HOUSE_MAYOR_KEY == false) {
-      userControlsContainer.appendChild(returnToTownBtn);
-    }
-  });
-
-  tryMayorKeyBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    tryMayorKeyBtn.remove(); // remove relevant buttons
-    returnToTownBtn.remove();
-
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>You slide the key into the lock and the door unlocks easily. You pass through into the mayors office.<br><br>The room is pitch dark, so you feel for a light switch next to the door and flick it on. You hear the fluorescent tube light sputter to life above you, and you are startled by the sight in the office, simultaneously realizing why the office was so dark...</p>",
-      applyGlassStylingRed
-    );
-
-    await pause();
-
-    textContainer.innerHTML = "";
-
-    await typeText(
-      textContainer,
-      "<p>In the middle of the office is the Mayor's large and shiny solid wood desk, but lining the walls, and stacked on top of each other, covering the windows, are large metal crates, at least 50 of them you guess, varying in length and size.</p>",
-    applyGlassStylingRed
-    )
-
-    await sleep(1500);
-
-    // append new button
-    userControlsContainer.appendChild(investigateCratesBtn); // append relevant buttons
-    userControlsContainer.appendChild(investigateMayorDeskBtn);
-  });
-
-  investigateMayorDeskBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    investigateMayorDeskBtn.remove(); // remove relevant buttons
-    investigateCratesBtn.remove();
-
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>The mayor's desk basically empty, just a calendar and some stationary on the surface. The drawers contain more stationary and some official envelopes and stamps. Nothing else of interest catches your eye.</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    // append new button
-    userControlsContainer.appendChild(investigateCratesBtn); // append relevant buttons
-  });
-
-  investigateCratesBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    investigateCratesBtn.remove(); // remove relevant buttons
-    investigateMayorDeskBtn.remove();
-
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>The crates seem to be made of dark grey, thin but strong metal plate. Each crate seems to have a small display screen and number pad on top, it appears they are electronically locked.<br><br>You notice there are words painted in white on the sides of the crates: 'Caution - Agricultural Fertilizer - Hazardous to humans and animals'.</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    await typeTextItalic(
-      textContainer,
-      "<p>Why does the mayor have all this fertilizer locked away in his office?</p>",
-      applyGlassStylingGreen
-    )
-
-    await sleep(1500);
-
-    // append new button
-    userControlsContainer.appendChild(attemptBtn); // append relevant buttons
-    userControlsContainer.appendChild(leaveBtn);
-  });
-
-  leaveBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    leaveBtn.remove(); // remove relevant buttons
-    attemptBtn.remove(); // remove relevant buttons
-
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>You decide to leave the Town Hall</p>",
-      applyGlassStylingRed
-    );
-
-    await pause();
-
-    textContainer.innerHTML = "";
-
-    sceneTownSquare();
-  });
-
-  attemptBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    leaveBtn.remove(); // remove relevant buttons
-    attemptBtn.remove(); // |This is where the circuit mini game must come. somehow...
-
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    // append new button
-    userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
-  });
-
-  returnToTownBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    townSquareBtn.remove(); // remove relevant buttons
-    oldKeyBtn.remove();
-    enterHallBtn.remove();
-    upstairsBtn.remove();
-    openDoorBtn.remove();
-    tryMayorKeyBtn.remove();
-    returnToTown.remove();
-    investigateCratesBtn.remove();
-    investigateMayorDeskBtn.remove();
-    attemptBtn.remove();
-    leaveBtn.remove();
-
-    sceneTownSquare();
-  });
+  userControlsContainer.appendChild(townSquareBtn);
 
   townSquareBtn.addEventListener("pointerup", async function () {
     // Button click check
@@ -5868,22 +6949,12 @@ async function sceneHall() {
 
     // remove button from user controls container
     townSquareBtn.remove(); // remove relevant buttons
-    oldKeyBtn.remove();
-    enterHallBtn.remove();
-    upstairsBtn.remove();
-    openDoorBtn.remove();
-    tryMayorKeyBtn.remove();
-    returnToTown.remove();
-    investigateCratesBtn.remove();
-    investigateMayorDeskBtn.remove();
-    attemptBtn.remove();
-    leaveBtn.remove();
 
     sceneTownSquare();
   });
 }
 
-//| SCENE RESIDENTAIL AREA
+//|SCENE RESIDENTIAL
 async function sceneResidential() {
   let gameContainer = document.querySelector(".container");
   gameContainer.style.backgroundImage = "url(img/000residential-area.png)";
@@ -5912,7 +6983,7 @@ async function sceneResidential() {
   townSquareBtn.textContent = "Go to town square";
   lookBtn.textContent = "Look at houses";
   rundownHouseBtn.textContent = "Enter the rundown house";
-  flagHouseBtn.textContent = "Enter house with the flag";
+  flagHouseBtn.textContent = "Enter the house with the flag";
   largeHouseBtn.textContent = "Enter the large house";
   overgrownHouseBtn.textContent = "Enter the overgrown house";
   whiteHouseBtn.textContent = "Enter the white house";
@@ -6101,506 +7172,10 @@ async function sceneResidential() {
 
     sceneHouseWhite();
   });
+}
 
-  // SCENE HOUSES
-  // SCENE HOUSE RUNDOWN
-  async function sceneHouseRundown() {
-    let gameContainer = document.querySelector(".container");
-    gameContainer.style.backgroundImage = "url(img/13-rundown-house.png)"; // Add BG image
-    gameContainer.style.transition = "background-image 4s ease-in-out";
-
-    let userControlsContainer = document.querySelector(
-      ".user-controls-container"
-    );
-    let textContainer = document.querySelector(".text-container");
-    applyTypingCss(textContainer);
-
-    // header title
-    currentSceneTitle = "Rundown House"; // Add title
-    document.getElementById("header-title").textContent = currentSceneTitle;
-
-    // create button
-    let exploreBtn = document.createElement("button");
-    let leaveBtn = document.createElement("button");
-    let ascendBtn = document.createElement("button");
-    let closedDoorBtn = document.createElement("button");
-    let hallwayBtn = document.createElement("button");
-    let openDoorBtn = document.createElement("button");
-    let goBackBtn = document.createElement("button");
-    let leaveRoomTwoBtn = document.createElement("button");
-
-    // set button text
-    exploreBtn.textContent = "Explore the house";
-    leaveBtn.textContent = "Leave house";
-    ascendBtn.textContent = "Ascend the stairs";
-    closedDoorBtn.textContent = "Open the closed door";
-    hallwayBtn.textContent = "Go down the hallway";
-    openDoorBtn.textContent = "Enter the open door";
-    goBackBtn.textContent = "Go downstairs and leave the house";
-    leaveRoomTwoBtn.textContent = "Leave";
-
-    // add styling for button
-    applyGlassStylingGreyBtn(exploreBtn);
-    applyGlassStylingGreyBtn(leaveBtn);
-    applyGlassStylingGreyBtn(ascendBtn);
-    applyGlassStylingGreyBtn(closedDoorBtn);
-    applyGlassStylingGreyBtn(hallwayBtn);
-    applyGlassStylingGreyBtn(openDoorBtn);
-    applyGlassStylingGreyBtn(goBackBtn);
-    applyGlassStylingGreyBtn(leaveRoomTwoBtn);
-
-    // local conditionals
-
-
-    if (HOUSE_RUNDOWN_ONE_AGAIN == true && HOUSE_RUNDOWN_TWO_AGAIN == true && HOUSE_RUNDOWN_THREE_AGAIN == true && HOUSE_RUNDOWN_FOUR_AGAIN == true) {
-      await typeText(
-        textContainer,
-        "<p>You have already explored this house, there is nothing of interest here.</p>",
-        applyGlassStylingRed
-      );
-
-      await sleep(1500);
-      
-      userControlsContainer.appendChild(leaveBtn);
-    } else if (HOUSE_RUNDOWN_FOUR == true) {
-      await typeText(
-        textContainer,
-        "<p>For reasons unknown, you enter the rundown house again.</p>",
-        applyGlassStylingRed
-      );
-
-      await sleep(1500);
-      // append button to user controls container
-      userControlsContainer.appendChild(exploreBtn);
-      userControlsContainer.appendChild(leaveBtn);
-     } else {
-      await typeText(
-        textContainer,
-        "<p>You try the door of the shabby looking house, and unsurprisingly it is unlocked.<br><br>As you step inside you want to call out to see if someone is home, but stop yourself. It is very evident that no one lives here.<br><br>Dried leaves litter the inside of the small house. They must have blown through the broken windows over time.</p>",
-        applyGlassStylingRed
-      );
-      
-      await sleep(1500);
-  
-      // append button to user controls container
-      userControlsContainer.appendChild(exploreBtn);
-      userControlsContainer.appendChild(leaveBtn);
-    }
-
-    exploreBtn.addEventListener("pointerup", async function () {
-      // Button click check
-      if (isTyping || btnRecentlyClicked) return;
-      btnRecentlyClicked = true;
-      setTimeout(() => {
-        btnRecentlyClicked = false;
-      }, 1000);
-
-      // Clear text container
-      textContainer.innerHTML = "";
-
-      // remove button from user controls container
-      exploreBtn.remove();
-      leaveBtn.remove();
-
-      // write new text
-      if (HOUSE_RUNDOWN_EXPLORED == false) {
-        await typeText(
-          textContainer,
-          "<p>You walk into the living room, crunching leaves as you step.<br>What little furniture is left has either rotted with damp, or fell victim to insects and rodents.<br><br>You wonder why someone would just abandon their home like this. There is nothing much to look at, but there is a staircase leading to the upper floor.</p>",
-          applyGlassStylingRed
-        );
-
-        await sleep(1500);
-
-        HOUSE_RUNDOWN_EXPLORED = true;
-
-        // append new button
-        userControlsContainer.appendChild(ascendBtn);
-        userControlsContainer.appendChild(leaveBtn);
-      } else {
-        await typeText(
-          textContainer,
-          "<p>You are standing in the living room, the state of disarray makes you feel uneasy.</p>",
-          applyGlassStylingRed
-        );
-
-        await sleep(1500);
-
-        userControlsContainer.appendChild(ascendBtn);
-        userControlsContainer.appendChild(leaveBtn);
-      }
-    });
-
-    ascendBtn.addEventListener("pointerup", async function () {
-      // Button click check
-      if (isTyping || btnRecentlyClicked) return;
-      btnRecentlyClicked = true;
-      setTimeout(() => {
-        btnRecentlyClicked = false;
-      }, 1000);
-
-      // Clear text container
-      textContainer.innerHTML = "";
-
-      // remove button from user controls container
-      ascendBtn.remove();
-      leaveBtn.remove();
-
-      // write new text
-      if (HOUSE_RUNDOWN_ASCENDED == false) {
-        await typeText(
-          textContainer,
-          "<p>You walk towards the stairs, crunching leaves as you go, when you suddenly step on something soft... You recoil in surprise.</p>",
-          applyGlassStylingRed
-        );
-
-        await sleep(1500);
-      
-        await typeText(
-          textContainer,
-          "<p>You look down to see what it is that you stepped on, and make out something furry between the leaves...<br><br>Looking closer you see that it's a dead rat...  as you step over it you notice that the rat isn't skeletal or dry... in fact there is some blood on the floor around it...</p>",
-          applyGlassStylingRed
-        );
-
-        await pause();
-        textContainer.innerHTML = "";
-
-        await typeTextItalic(
-          textContainer,
-          "<p>It looks like it was stomped on... and not too long ago either...</p>",
-          applyGlassStylingGreen
-        )
-
-        await pause();
-        textContainer.innerHTML = "";
-        // change bg
-        gameContainer.style.backgroundImage = "url(img/14-rundown-house-upstairs.png)";
-        gameContainer.style.transition = "background-image 4s ease-in-out";
-
-        await typeText(
-          textContainer,
-          "<p>You ignore the rat and step over it onto the stairs.<br><br>They creek heavily...<br><br>As you reach the top of the stairs you actually hear a loud crack as the wood strains under your weight</p>",
-          applyGlassStylingRed
-        );
-
-        await sleep(1500);
-
-        await typeText(
-          textContainer,
-          "<p>At the top of the stairs is a narrow dark hallway leading to a room at the end, with an open door to the right and a closed door to the left.</p>",
-          applyGlassStylingRed
-        )
-
-        await sleep(1500);
-
-        HOUSE_RUNDOWN_ASCENDED = true;
-        // append new button
-        if (HOUSE_RUNDOWN_ONE_AGAIN == false) {
-          userControlsContainer.appendChild(closedDoorBtn);
-        }
-        if (HOUSE_RUNDOWN_TWO_AGAIN == false) {
-          userControlsContainer.appendChild(hallwayBtn);
-        }
-        if (HOUSE_RUNDOWN_THREE_AGAIN == false) {
-          userControlsContainer.appendChild(openDoorBtn);
-        }
-        userControlsContainer.appendChild(goBackBtn);
-      } else {
-        await typeText(
-          textContainer,
-          "<p>You skillfully ascend the staircase, being careful not to step on the floor board you cracked with your previous visit.</p>",
-          applyGlassStylingRed
-        );
-
-        if (HOUSE_RUNDOWN_ONE_AGAIN == false) {
-          userControlsContainer.appendChild(closedDoorBtn);
-        }
-        if (HOUSE_RUNDOWN_TWO_AGAIN == false) {
-          userControlsContainer.appendChild(hallwayBtn);
-        }
-        if (HOUSE_RUNDOWN_THREE_AGAIN == false) {
-          userControlsContainer.appendChild(openDoorBtn);
-        }
-        userControlsContainer.appendChild(goBackBtn);
-      }
-    });
-//*********************************************************************************** */
-    closedDoorBtn.addEventListener("pointerup", async function () {
-      // Button click check
-      if (isTyping || btnRecentlyClicked) return;
-      btnRecentlyClicked = true;
-      setTimeout(() => {
-        btnRecentlyClicked = false;
-      }, 1000);
-
-      // Clear text container
-      textContainer.innerHTML = "";
-
-      // change bg
-      gameContainer.style.backgroundImage = "url(img/15-rundown-house-closed-door.png)";
-      gameContainer.style.transition = "background-image 4s ease-in-out";
-      
-      // remove button from user controls container
-      closedDoorBtn.remove();
-      hallwayBtn.remove();
-      openDoorBtn.remove();
-      goBackBtn.remove();
-      
-      // write new text
-      if (HOUSE_RUNDOWN_ONE == false) {
-        await typeText(
-          textContainer,
-          "<p>You open the door with a creak, and you are shocked to see that there is a whole wall missing in this room.<br>Instead you are looking at rustling leaves with a light breeze blowing on your face.<br><br>You couldn't see this side of the house from the road, it is clearly more decayed than it looked from the outside.<br><br>Here is nothing else in this room and you decide to leave before the floor also gives way under you.</p>",
-          applyGlassStylingRed
-        );
-
-        await sleep(1500);
-
-        HOUSE_RUNDOWN_ONE = true;
-
-        // append new button
-        if (HOUSE_RUNDOWN_TWO_AGAIN == false) {
-          userControlsContainer.appendChild(hallwayBtn);
-        }
-        if (HOUSE_RUNDOWN_THREE_AGAIN == false) {
-          userControlsContainer.appendChild(openDoorBtn);
-        }
-        userControlsContainer.appendChild(goBackBtn);
-      } else {
-        await typeTextItalic(
-          textContainer,
-          "<p>I should probably not go back in there, the floor might cave in at any moment.</p>",
-          applyGlassStylingGreen
-        );
-
-        await sleep(1500);
-
-        HOUSE_RUNDOWN_ONE_AGAIN = true;
-
-        if (HOUSE_RUNDOWN_TWO_AGAIN == false) {
-          userControlsContainer.appendChild(hallwayBtn);
-        }
-        if (HOUSE_RUNDOWN_THREE_AGAIN == false) {
-          userControlsContainer.appendChild(openDoorBtn);
-        }
-        userControlsContainer.appendChild(goBackBtn);
-      }
-    });
-
-    hallwayBtn.addEventListener("pointerup", async function () {
-      // Button click check
-      if (isTyping || btnRecentlyClicked) return;
-      btnRecentlyClicked = true;
-      setTimeout(() => {
-        btnRecentlyClicked = false;
-      }, 1000);
-
-      // Clear text container
-      textContainer.innerHTML = "";
-
-      // change bg
-      gameContainer.style.backgroundImage = "url(img/16-rundown-house-main-bedroom.png)";
-      gameContainer.style.transition = "background-image 4s ease-in-out";
-
-      // remove button from user controls container
-      closedDoorBtn.remove();
-      hallwayBtn.remove();
-      openDoorBtn.remove();
-      goBackBtn.remove();
-
-      // write new text
-      if (HOUSE_RUNDOWN_TWO == false) {
-        await typeText(
-          textContainer,
-          "<p>You walk to the end of the hallway and peer into the room there.<br>This must have been the main bedroom.<br>There is still a very badly worn bed here, with an equally worse for wear desk and bedside table, and a very worn and threadbare rug.<br><br>There is nothing else of interest.</p>",
-          applyGlassStylingRed
-        );
-
-        await sleep(1500);
-
-        HOUSE_RUNDOWN_TWO = true;
-
-        userControlsContainer.appendChild(leaveRoomTwoBtn);
-      } else {
-        await typeTextItalic(
-          textContainer,
-          "<p>I didn't see anything of value here...</p>",
-          applyGlassStylingGreen
-        );
-
-        await sleep(1500);
-
-        HOUSE_RUNDOWN_TWO_AGAIN = true;
-
-        if (HOUSE_RUNDOWN_ONE_AGAIN == false) {
-          userControlsContainer.appendChild(closedDoorBtn);
-        }
-        if (HOUSE_RUNDOWN_TWO_AGAIN == false) {
-          userControlsContainer.appendChild(hallwayBtn);
-        }
-        if (HOUSE_RUNDOWN_THREE_AGAIN == false) {
-          userControlsContainer.appendChild(openDoorBtn);
-        }
-        userControlsContainer.appendChild(goBackBtn);
-      }
-    });
-
-    leaveRoomTwoBtn.addEventListener("pointerup", async function () {
-      // Button click check
-      if (isTyping || btnRecentlyClicked) return;
-      btnRecentlyClicked = true;
-      setTimeout(() => {
-        btnRecentlyClicked = false;
-      }, 1000);
-
-      // Clear text container
-      textContainer.innerHTML = "";
-
-      // remove button from user controls container
-      leaveRoomTwoBtn.remove(); // remove relevant buttons
-
-      // write new text
-      await typeText(
-        textContainer,
-        "<p>As you turn to leave, something strikes you as odd...<br>The drawers of the desk and bedside table are scattered on the floor. It doesn't look out of place in this rundown house, but if this house was still in a good condition, it would surely look like someone ransacked this room, like they were looking for something...<br><br>You can't imagine finding anything valuable in an abandoned house. You leave the room.</p>",
-        applyGlassStylingRed
-      );
-
-      await sleep(1500);
-
-      // append new button
-      if (HOUSE_RUNDOWN_ONE_AGAIN == false) {
-        userControlsContainer.appendChild(closedDoorBtn);
-      }
-      if (HOUSE_RUNDOWN_TWO_AGAIN == false) {
-        userControlsContainer.appendChild(hallwayBtn);
-      }
-      if (HOUSE_RUNDOWN_THREE_AGAIN == false) {
-        userControlsContainer.appendChild(openDoorBtn);
-      }
-      userControlsContainer.appendChild(goBackBtn);
-    });
-
-    openDoorBtn.addEventListener("pointerup", async function () {
-      // Button click check
-      if (isTyping || btnRecentlyClicked) return;
-      btnRecentlyClicked = true;
-      setTimeout(() => {
-        btnRecentlyClicked = false;
-      }, 1000);
-
-      // Clear text container
-      textContainer.innerHTML = "";
-
-      // change bg
-      gameContainer.style.backgroundImage = "url(img/17-rundown-house-desk-room.png)";
-      gameContainer.style.transition = "background-image 4s ease-in-out";
-
-      // remove button from user controls container
-      closedDoorBtn.remove();
-      hallwayBtn.remove();
-      openDoorBtn.remove();
-      goBackBtn.remove();
-
-      // write new text
-      if (HOUSE_RUNDOWN_THREE == false) {
-        await typeText(
-          textContainer,
-          "<p>You look into the room through the open doorway and see nothing of interest.<br>There is a small desk in the room, its drawers lying on the floor with random papers scattered around.<br><br>You turn around and exit the room.</p>",
-          applyGlassStylingRed
-        );
-
-        await sleep(1500);
-
-        HOUSE_RUNDOWN_THREE = true;
-
-        if (HOUSE_RUNDOWN_ONE_AGAIN == false) {
-          userControlsContainer.appendChild(closedDoorBtn);
-        }
-        if (HOUSE_RUNDOWN_TWO_AGAIN == false) {
-          userControlsContainer.appendChild(hallwayBtn);
-        }
-        if (HOUSE_RUNDOWN_THREE_AGAIN == false) {
-          userControlsContainer.appendChild(openDoorBtn);
-        }
-        userControlsContainer.appendChild(goBackBtn);
-      } else {
-        await typeTextItalic(
-          textContainer,
-          "<p>There was nothing in there for me.</p>",
-          applyGlassStylingGreen
-        )
-
-        await sleep(1500);
-
-        HOUSE_RUNDOWN_THREE_AGAIN = true;
-        
-        if (HOUSE_RUNDOWN_ONE_AGAIN == false) {
-          userControlsContainer.appendChild(closedDoorBtn);
-        }
-        if (HOUSE_RUNDOWN_TWO_AGAIN == false) {
-          userControlsContainer.appendChild(hallwayBtn);
-        }
-        if (HOUSE_RUNDOWN_THREE_AGAIN == false) {
-          userControlsContainer.appendChild(openDoorBtn);
-        }
-        userControlsContainer.appendChild(goBackBtn);
-      }
-    });
-
-    goBackBtn.addEventListener("pointerup", async function () {
-      // Button click check
-      if (isTyping || btnRecentlyClicked) return;
-      btnRecentlyClicked = true;
-      setTimeout(() => {
-        btnRecentlyClicked = false;
-      }, 1000);
-
-      // Clear text container
-      textContainer.innerHTML = "";
-      
-      // remove button from user controls container
-      exploreBtn.remove();
-      leaveBtn.remove();
-      ascendBtn.remove();
-      closedDoorBtn.remove();
-      hallwayBtn.remove();
-      openDoorBtn.remove();
-      goBackBtn.remove();
-      leaveRoomTwoBtn.remove();
-      
-      HOUSE_RUNDOWN_FOUR = true;
-      sceneResidential();
-    });
-
-    leaveBtn.addEventListener("pointerup", async function () {
-      // Button click check
-      if (isTyping || btnRecentlyClicked) return;
-      btnRecentlyClicked = true;
-      setTimeout(() => {
-        btnRecentlyClicked = false;
-      }, 1000);
-
-      HOUSE_RUNDOWN_FOUR = true;
-      // Clear text container
-      textContainer.innerHTML = "";
-
-      // remove button from user controls container
-      exploreBtn.remove();
-      leaveBtn.remove();
-      ascendBtn.remove();
-      closedDoorBtn.remove();
-      hallwayBtn.remove();
-      openDoorBtn.remove();
-      goBackBtn.remove();
-      leaveRoomTwoBtn.remove();
-
-      sceneResidential();
-    });
-    // more here
-  }
-
-  async function sceneHouseFlag() {
+//|SCENE HOUSE FLAG
+async function sceneHouseFlag() {
     let gameContainer = document.querySelector(".container");
     gameContainer.style.backgroundImage = "url(img/18-house-with-flag.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
@@ -7197,9 +7772,10 @@ async function sceneResidential() {
 
       sceneResidential();
     });
-  }
+}
 
-  async function sceneHouseLarge() {
+//|SCENE HOUSE LARGE
+async function sceneHouseLarge() {
     let gameContainer = document.querySelector(".container");
     gameContainer.style.backgroundImage = "url(img/111large-house.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
@@ -8756,9 +9332,10 @@ async function sceneResidential() {
       }
     });
 
-  }
-  
-  async function sceneHouseOvergrown() {
+}
+
+//|SCENE HOUSE OVERGROWN
+async function sceneHouseOvergrown() {
     let gameContainer = document.querySelector(".container");
     gameContainer.style.backgroundImage = "url(img/111overgrown-house.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
@@ -9067,9 +9644,507 @@ async function sceneResidential() {
       sceneResidential();
     });
     
-  }
+}
 
-  async function sceneHouseWhite() {
+//|SCENE HOUSE RUNDOWN
+async function sceneHouseRundown() {
+    let gameContainer = document.querySelector(".container");
+    gameContainer.style.backgroundImage = "url(img/13-rundown-house.png)"; // Add BG image
+    gameContainer.style.transition = "background-image 4s ease-in-out";
+
+    let userControlsContainer = document.querySelector(
+      ".user-controls-container"
+    );
+    let textContainer = document.querySelector(".text-container");
+    applyTypingCss(textContainer);
+
+    // header title
+    currentSceneTitle = "Rundown House"; // Add title
+    document.getElementById("header-title").textContent = currentSceneTitle;
+
+    // create button
+    let exploreBtn = document.createElement("button");
+    let leaveBtn = document.createElement("button");
+    let ascendBtn = document.createElement("button");
+    let closedDoorBtn = document.createElement("button");
+    let hallwayBtn = document.createElement("button");
+    let openDoorBtn = document.createElement("button");
+    let goBackBtn = document.createElement("button");
+    let leaveRoomTwoBtn = document.createElement("button");
+
+    // set button text
+    exploreBtn.textContent = "Explore the house";
+    leaveBtn.textContent = "Leave house";
+    ascendBtn.textContent = "Ascend the stairs";
+    closedDoorBtn.textContent = "Open the closed door";
+    hallwayBtn.textContent = "Go down the hallway";
+    openDoorBtn.textContent = "Enter the open door";
+    goBackBtn.textContent = "Go downstairs and leave the house";
+    leaveRoomTwoBtn.textContent = "Leave";
+
+    // add styling for button
+    applyGlassStylingGreyBtn(exploreBtn);
+    applyGlassStylingGreyBtn(leaveBtn);
+    applyGlassStylingGreyBtn(ascendBtn);
+    applyGlassStylingGreyBtn(closedDoorBtn);
+    applyGlassStylingGreyBtn(hallwayBtn);
+    applyGlassStylingGreyBtn(openDoorBtn);
+    applyGlassStylingGreyBtn(goBackBtn);
+    applyGlassStylingGreyBtn(leaveRoomTwoBtn);
+
+    // local conditionals
+
+
+    if (HOUSE_RUNDOWN_ONE_AGAIN == true && HOUSE_RUNDOWN_TWO_AGAIN == true && HOUSE_RUNDOWN_THREE_AGAIN == true && HOUSE_RUNDOWN_FOUR_AGAIN == true) {
+      await typeText(
+        textContainer,
+        "<p>You have already explored this house, there is nothing of interest here.</p>",
+        applyGlassStylingRed
+      );
+
+      await sleep(1500);
+      
+      userControlsContainer.appendChild(leaveBtn);
+    } else if (HOUSE_RUNDOWN_FOUR == true) {
+      await typeText(
+        textContainer,
+        "<p>For reasons unknown, you enter the rundown house again.</p>",
+        applyGlassStylingRed
+      );
+
+      await sleep(1500);
+      // append button to user controls container
+      userControlsContainer.appendChild(exploreBtn);
+      userControlsContainer.appendChild(leaveBtn);
+     } else {
+      await typeText(
+        textContainer,
+        "<p>You try the door of the shabby looking house, and unsurprisingly it is unlocked.<br><br>As you step inside you want to call out to see if someone is home, but stop yourself. It is very evident that no one lives here.<br><br>Dried leaves litter the inside of the small house. They must have blown through the broken windows over time.</p>",
+        applyGlassStylingRed
+      );
+      
+      await sleep(1500);
+  
+      // append button to user controls container
+      userControlsContainer.appendChild(exploreBtn);
+      userControlsContainer.appendChild(leaveBtn);
+    }
+
+    exploreBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+
+      // remove button from user controls container
+      exploreBtn.remove();
+      leaveBtn.remove();
+
+      // write new text
+      if (HOUSE_RUNDOWN_EXPLORED == false) {
+        await typeText(
+          textContainer,
+          "<p>You walk into the living room, crunching leaves as you step.<br>What little furniture is left has either rotted with damp, or fell victim to insects and rodents.<br><br>You wonder why someone would just abandon their home like this. There is nothing much to look at, but there is a staircase leading to the upper floor.</p>",
+          applyGlassStylingRed
+        );
+
+        await sleep(1500);
+
+        HOUSE_RUNDOWN_EXPLORED = true;
+
+        // append new button
+        userControlsContainer.appendChild(ascendBtn);
+        userControlsContainer.appendChild(leaveBtn);
+      } else {
+        await typeText(
+          textContainer,
+          "<p>You are standing in the living room, the state of disarray makes you feel uneasy.</p>",
+          applyGlassStylingRed
+        );
+
+        await sleep(1500);
+
+        userControlsContainer.appendChild(ascendBtn);
+        userControlsContainer.appendChild(leaveBtn);
+      }
+    });
+
+    ascendBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+
+      // remove button from user controls container
+      ascendBtn.remove();
+      leaveBtn.remove();
+
+      // write new text
+      if (HOUSE_RUNDOWN_ASCENDED == false) {
+        await typeText(
+          textContainer,
+          "<p>You walk towards the stairs, crunching leaves as you go, when you suddenly step on something soft... You recoil in surprise.</p>",
+          applyGlassStylingRed
+        );
+
+        await sleep(1500);
+      
+        await typeText(
+          textContainer,
+          "<p>You look down to see what it is that you stepped on, and make out something furry between the leaves...<br><br>Looking closer you see that it's a dead rat...  as you step over it you notice that the rat isn't skeletal or dry... in fact there is some blood on the floor around it...</p>",
+          applyGlassStylingRed
+        );
+
+        await pause();
+        textContainer.innerHTML = "";
+
+        await typeTextItalic(
+          textContainer,
+          "<p>It looks like it was stomped on... and not too long ago either...</p>",
+          applyGlassStylingGreen
+        )
+
+        await pause();
+        textContainer.innerHTML = "";
+        // change bg
+        gameContainer.style.backgroundImage = "url(img/14-rundown-house-upstairs.png)";
+        gameContainer.style.transition = "background-image 4s ease-in-out";
+
+        await typeText(
+          textContainer,
+          "<p>You ignore the rat and step over it onto the stairs.<br><br>They creek heavily...<br><br>As you reach the top of the stairs you actually hear a loud crack as the wood strains under your weight</p>",
+          applyGlassStylingRed
+        );
+
+        await sleep(1500);
+
+        await typeText(
+          textContainer,
+          "<p>At the top of the stairs is a narrow dark hallway leading to a room at the end, with an open door to the right and a closed door to the left.</p>",
+          applyGlassStylingRed
+        )
+
+        await sleep(1500);
+
+        HOUSE_RUNDOWN_ASCENDED = true;
+        // append new button
+        if (HOUSE_RUNDOWN_ONE_AGAIN == false) {
+          userControlsContainer.appendChild(closedDoorBtn);
+        }
+        if (HOUSE_RUNDOWN_TWO_AGAIN == false) {
+          userControlsContainer.appendChild(hallwayBtn);
+        }
+        if (HOUSE_RUNDOWN_THREE_AGAIN == false) {
+          userControlsContainer.appendChild(openDoorBtn);
+        }
+        userControlsContainer.appendChild(goBackBtn);
+      } else {
+        await typeText(
+          textContainer,
+          "<p>You skillfully ascend the staircase, being careful not to step on the floor board you cracked with your previous visit.</p>",
+          applyGlassStylingRed
+        );
+
+        if (HOUSE_RUNDOWN_ONE_AGAIN == false) {
+          userControlsContainer.appendChild(closedDoorBtn);
+        }
+        if (HOUSE_RUNDOWN_TWO_AGAIN == false) {
+          userControlsContainer.appendChild(hallwayBtn);
+        }
+        if (HOUSE_RUNDOWN_THREE_AGAIN == false) {
+          userControlsContainer.appendChild(openDoorBtn);
+        }
+        userControlsContainer.appendChild(goBackBtn);
+      }
+    });
+//*********************************************************************************** */
+    closedDoorBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+
+      // change bg
+      gameContainer.style.backgroundImage = "url(img/15-rundown-house-closed-door.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
+      
+      // remove button from user controls container
+      closedDoorBtn.remove();
+      hallwayBtn.remove();
+      openDoorBtn.remove();
+      goBackBtn.remove();
+      
+      // write new text
+      if (HOUSE_RUNDOWN_ONE == false) {
+        await typeText(
+          textContainer,
+          "<p>You open the door with a creak, and you are shocked to see that there is a whole wall missing in this room.<br>Instead you are looking at rustling leaves with a light breeze blowing on your face.<br><br>You couldn't see this side of the house from the road, it is clearly more decayed than it looked from the outside.<br><br>Here is nothing else in this room and you decide to leave before the floor also gives way under you.</p>",
+          applyGlassStylingRed
+        );
+
+        await sleep(1500);
+
+        HOUSE_RUNDOWN_ONE = true;
+
+        // append new button
+        if (HOUSE_RUNDOWN_TWO_AGAIN == false) {
+          userControlsContainer.appendChild(hallwayBtn);
+        }
+        if (HOUSE_RUNDOWN_THREE_AGAIN == false) {
+          userControlsContainer.appendChild(openDoorBtn);
+        }
+        userControlsContainer.appendChild(goBackBtn);
+      } else {
+        await typeTextItalic(
+          textContainer,
+          "<p>I should probably not go back in there, the floor might cave in at any moment.</p>",
+          applyGlassStylingGreen
+        );
+
+        await sleep(1500);
+
+        HOUSE_RUNDOWN_ONE_AGAIN = true;
+
+        if (HOUSE_RUNDOWN_TWO_AGAIN == false) {
+          userControlsContainer.appendChild(hallwayBtn);
+        }
+        if (HOUSE_RUNDOWN_THREE_AGAIN == false) {
+          userControlsContainer.appendChild(openDoorBtn);
+        }
+        userControlsContainer.appendChild(goBackBtn);
+      }
+    });
+
+    hallwayBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+
+      // change bg
+      gameContainer.style.backgroundImage = "url(img/16-rundown-house-main-bedroom.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
+
+      // remove button from user controls container
+      closedDoorBtn.remove();
+      hallwayBtn.remove();
+      openDoorBtn.remove();
+      goBackBtn.remove();
+
+      // write new text
+      if (HOUSE_RUNDOWN_TWO == false) {
+        await typeText(
+          textContainer,
+          "<p>You walk to the end of the hallway and peer into the room there.<br>This must have been the main bedroom.<br>There is still a very badly worn bed here, with an equally worse for wear desk and bedside table, and a very worn and threadbare rug.<br><br>There is nothing else of interest.</p>",
+          applyGlassStylingRed
+        );
+
+        await sleep(1500);
+
+        HOUSE_RUNDOWN_TWO = true;
+
+        userControlsContainer.appendChild(leaveRoomTwoBtn);
+      } else {
+        await typeTextItalic(
+          textContainer,
+          "<p>I didn't see anything of value here...</p>",
+          applyGlassStylingGreen
+        );
+
+        await sleep(1500);
+
+        HOUSE_RUNDOWN_TWO_AGAIN = true;
+
+        if (HOUSE_RUNDOWN_ONE_AGAIN == false) {
+          userControlsContainer.appendChild(closedDoorBtn);
+        }
+        if (HOUSE_RUNDOWN_TWO_AGAIN == false) {
+          userControlsContainer.appendChild(hallwayBtn);
+        }
+        if (HOUSE_RUNDOWN_THREE_AGAIN == false) {
+          userControlsContainer.appendChild(openDoorBtn);
+        }
+        userControlsContainer.appendChild(goBackBtn);
+      }
+    });
+
+    leaveRoomTwoBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+
+      // remove button from user controls container
+      leaveRoomTwoBtn.remove(); // remove relevant buttons
+
+      // write new text
+      await typeText(
+        textContainer,
+        "<p>As you turn to leave, something strikes you as odd...<br>The drawers of the desk and bedside table are scattered on the floor. It doesn't look out of place in this rundown house, but if this house was still in a good condition, it would surely look like someone ransacked this room, like they were looking for something...<br><br>You can't imagine finding anything valuable in an abandoned house. You leave the room.</p>",
+        applyGlassStylingRed
+      );
+
+      await sleep(1500);
+
+      // append new button
+      if (HOUSE_RUNDOWN_ONE_AGAIN == false) {
+        userControlsContainer.appendChild(closedDoorBtn);
+      }
+      if (HOUSE_RUNDOWN_TWO_AGAIN == false) {
+        userControlsContainer.appendChild(hallwayBtn);
+      }
+      if (HOUSE_RUNDOWN_THREE_AGAIN == false) {
+        userControlsContainer.appendChild(openDoorBtn);
+      }
+      userControlsContainer.appendChild(goBackBtn);
+    });
+
+    openDoorBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+
+      // change bg
+      gameContainer.style.backgroundImage = "url(img/17-rundown-house-desk-room.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
+
+      // remove button from user controls container
+      closedDoorBtn.remove();
+      hallwayBtn.remove();
+      openDoorBtn.remove();
+      goBackBtn.remove();
+
+      // write new text
+      if (HOUSE_RUNDOWN_THREE == false) {
+        await typeText(
+          textContainer,
+          "<p>You look into the room through the open doorway and see nothing of interest.<br>There is a small desk in the room, its drawers lying on the floor with random papers scattered around.<br><br>You turn around and exit the room.</p>",
+          applyGlassStylingRed
+        );
+
+        await sleep(1500);
+
+        HOUSE_RUNDOWN_THREE = true;
+
+        if (HOUSE_RUNDOWN_ONE_AGAIN == false) {
+          userControlsContainer.appendChild(closedDoorBtn);
+        }
+        if (HOUSE_RUNDOWN_TWO_AGAIN == false) {
+          userControlsContainer.appendChild(hallwayBtn);
+        }
+        if (HOUSE_RUNDOWN_THREE_AGAIN == false) {
+          userControlsContainer.appendChild(openDoorBtn);
+        }
+        userControlsContainer.appendChild(goBackBtn);
+      } else {
+        await typeTextItalic(
+          textContainer,
+          "<p>There was nothing in there for me.</p>",
+          applyGlassStylingGreen
+        )
+
+        await sleep(1500);
+
+        HOUSE_RUNDOWN_THREE_AGAIN = true;
+        
+        if (HOUSE_RUNDOWN_ONE_AGAIN == false) {
+          userControlsContainer.appendChild(closedDoorBtn);
+        }
+        if (HOUSE_RUNDOWN_TWO_AGAIN == false) {
+          userControlsContainer.appendChild(hallwayBtn);
+        }
+        if (HOUSE_RUNDOWN_THREE_AGAIN == false) {
+          userControlsContainer.appendChild(openDoorBtn);
+        }
+        userControlsContainer.appendChild(goBackBtn);
+      }
+    });
+
+    goBackBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+      
+      // remove button from user controls container
+      exploreBtn.remove();
+      leaveBtn.remove();
+      ascendBtn.remove();
+      closedDoorBtn.remove();
+      hallwayBtn.remove();
+      openDoorBtn.remove();
+      goBackBtn.remove();
+      leaveRoomTwoBtn.remove();
+      
+      HOUSE_RUNDOWN_FOUR = true;
+      sceneResidential();
+    });
+
+    leaveBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      HOUSE_RUNDOWN_FOUR = true;
+      // Clear text container
+      textContainer.innerHTML = "";
+
+      // remove button from user controls container
+      exploreBtn.remove();
+      leaveBtn.remove();
+      ascendBtn.remove();
+      closedDoorBtn.remove();
+      hallwayBtn.remove();
+      openDoorBtn.remove();
+      goBackBtn.remove();
+      leaveRoomTwoBtn.remove();
+
+      sceneResidential();
+    });
+    // more here
+}
+
+//|SCENE HOUSE WHITE
+async function sceneHouseWhite() {
     let gameContainer = document.querySelector(".container");
     gameContainer.style.backgroundImage = "url(img/111white-house.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
@@ -9362,1061 +10437,4 @@ async function sceneResidential() {
 
       sceneResidential();
     });
-  }
-  // more house scenes here below }
-}
-
-//| SCENE STORE
-async function sceneStore() {
-  let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/000store.png)";
-  gameContainer.style.transition = "background-image 4s ease-in-out";
-
-  let userControlsContainer = document.querySelector(
-    ".user-controls-container"
-  );
-  let textContainer = document.querySelector(".text-container");
-  applyTypingCss(textContainer);
-
-  // header title
-  setCurrentSceneTitle("Store");
-  document.getElementById("header-title").textContent = getCurrentSceneTitle();
-
-  // create button
-  let townSquareBtn = document.createElement("button"); // create buttons for scene
-
-  // set button text
-  townSquareBtn.textContent = "Go to town square";
-
-  // add styling for button
-  applyGlassStylingGreyBtn(townSquareBtn);
-
-  // local conditionals
-  //   let ONCEOFF = false;
-
-  await typeText(
-    textContainer,
-    "<p>As you enter, the bell chimes a whimsical tone. The shelves are sparse but there are still some items for sale here. Perhaps the storekeeper is waiting for a delivery, or the town's people stocked up for the long winter...</p>",
-    applyGlassStylingRed
-  );
-
-  await sleep(1500);
-
-  // append button to user controls container
-  userControlsContainer.appendChild(townSquareBtn);
-
-  townSquareBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    townSquareBtn.remove(); // remove relevant buttons
-
-    sceneTownSquare();
-  });
-}
-
-//| SCENE CHURCH
-async function sceneChurch() {
-  let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/000church.png)";
-  gameContainer.style.transition = "background-image 4s ease-in-out";
-
-  let userControlsContainer = document.querySelector(
-    ".user-controls-container"
-  );
-  let textContainer = document.querySelector(".text-container");
-  applyTypingCss(textContainer);
-
-  // header title
-  setCurrentSceneTitle("Church");
-  document.getElementById("header-title").textContent = getCurrentSceneTitle();
-
-  // create button
-  let townSquareBtn = document.createElement("button"); // create buttons for scene
-  let enterChurchBtn = document.createElement("button");
-  let badLeaveBtn = document.createElement("button");
-  let walkManBtn = document.createElement("button");
-  let clearThroatBtn = document.createElement("button");
-  let tellPriestBtn = document.createElement("button");
-  let explainBtn = document.createElement("button");
-  let priestOldManBtn = document.createElement("button");
-  let resistanceBtn = document.createElement("button");
-  let leaveBtn = document.createElement("button");
-  let problemBtn = document.createElement("button");
-  let prayBtn = document.createElement("button");
-  let mapBtn = document.createElement("button");
-  let noMapBtn = document.createElement("button");
-  let leaveChurchBtn = document.createElement("button");
-  let continueBtn = document.createElement("button")
-
-  // set button text
-  townSquareBtn.textContent = "Go to town square";
-  enterChurchBtn.textContent = "Enter the Church";
-  badLeaveBtn.textContent = "Leave. This place gives you a bad feeling";
-  walkManBtn.textContent = "Walk up to the man";
-  clearThroatBtn.textContent = "Clear your throat loudly...";
-  tellPriestBtn.textContent = "Go tell the priest Ingrid sent you";
-  explainBtn.textContent = "Explain your presence to the Priest";
-  priestOldManBtn.textContent = "Tell the Priest about the old man in the cottage";
-  resistanceBtn.textContent = "Could you tell me about the resistance?";
-  leaveBtn.textContent = "Leave";
-  problemBtn.textContent = "I believe that we should solve our own problems, and not look to divine intervention";
-  prayBtn.textContent = "Yes, I pray that we will be saved";
-  mapBtn.textContent = "Give the map to Father Jakob";
-  noMapBtn.textContent = "No, I don't have a map right now";
-  leaveChurchBtn.textContent = "Leave the church and head back to town";
-  continueBtn.textContent = "Continue";
-
-  // add styling for button
-  applyGlassStylingGreyBtn(townSquareBtn);
-  applyGlassStylingGreyBtn(enterChurchBtn);
-  applyGlassStylingGreyBtn(badLeaveBtn);
-  applyGlassStylingGreyBtn(walkManBtn);
-  applyGlassStylingGreyBtn(clearThroatBtn);
-  applyGlassStylingGreyBtn(tellPriestBtn);
-  applyGlassStylingGreyBtn(explainBtn);
-  applyGlassStylingGreyBtn(priestOldManBtn);
-  applyGlassStylingGreyBtn(resistanceBtn);
-  applyGlassStylingGreyBtn(leaveBtn);
-  applyGlassStylingGreyBtn(problemBtn);
-  applyGlassStylingGreyBtn(prayBtn);
-  applyGlassStylingGreyBtn(mapBtn);
-  applyGlassStylingGreyBtn(noMapBtn);
-  applyGlassStylingGreyBtn(leaveChurchBtn);
-  applyGlassStylingGreyBtn(continueBtn);
-
-  // local conditionals
-  //   let ONCEOFF = false;
-
-  await typeText(
-    textContainer,
-    "<p>You follow the direction of the signpost that points towards the church, however when you reach the imposing structure, you almost think that you have reached the wrong building.</p>",
-    applyGlassStylingRed
-  );
-
-  await sleep(2000);
-
-  textContainer.innerHTML = "";
-
-  await typeText(
-    textContainer,
-    "<p>The church is unexpectedly tall, made completely of wood, and pitch black with very slanted rooves. It also looks like it could be hundreds of years old.<br>The high pointed roof tops are adorned with odd shapes that remind you of snakes or dragons.<br>There is also a small cemetery on the right side of the building.<br><br>The narrow door stands open, but you feel almost afraid to go inside...</p>",
-    applyGlassStylingRed
-  );
-
-  // append button to user controls container
-  userControlsContainer.appendChild(enterChurchBtn);
-  userControlsContainer.appendChild(badLeaveBtn);
-
-  enterChurchBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-  enterChurchBtn.remove(); // remove relevant buttons
-  badLeaveBtn.remove();
-
-  // write new text
-  await typeText(
-    textContainer,
-    "<p>You walk into the church and pause... The building looks even bigger on the inside.<br><br>There is no ceiling, only old looking chandeliers that reach higher and higher towards the roof. There is red carpet that leads between rows of pews towards the far end of the vast room, where you see a priest standing behind a pulpit, his face in his hands.</p>",
-    applyGlassStylingRed
-  );
-
-  await sleep(1500);
-    
-  await typeText(
-    textContainer,
-    "<p>He hasn't noticed you.</p>",
-    applyGlassStylingRed
-  );
-
-  await sleep(1500);
-
-  // append new button
-  userControlsContainer.appendChild(walkManBtn); // append relevant buttons
-  userControlsContainer.appendChild(clearThroatBtn);
-  });
-  
-  walkManBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-  walkManBtn.remove(); // remove relevant buttons
-  clearThroatBtn.remove();
-
-  // write new text
-  await typeText(
-    textContainer,
-    "<p>As you approach him, he starts to speak as he looks up.</p>",
-    applyGlassStylingRed
-  );
-
-  await pause();
-  
-  textContainer.innerHTML = "";
-    
-  await typeText(
-    textContainer,
-    "<p>I'm sorry but there will be no confessional today, I...<br><br>Oh... you're not from here. What do you want?</p>",
-    applyGlassStylingBlue
-  );
-
-  await pause();  
-  textContainer.innerHTML = "";
-    
-  if (INN_ADVICE == true) {
-    await typeTextItalic(
-    textContainer,
-    "<p>Are you Father Jakob? Ingrid said you might be able help me with some coordinates I have? I need to find out where they lead.</p>",
-    applyGlassStylingGreen
-    );
-    
-    await pause();
-    textContainer.innerHTML = "";
-    
-    await typeText(
-      textContainer,
-      "<p>Oh did she now? I sometimes wonder if I should have stayed in the military rather than join the clergy, that's all people seem to need me for in these times of trouble, my military experience.<br><br>Well then let me have a look...</p>",
-      applyGlassStylingBlue
-      );
-      
-    await pause();
-      textContainer.innerHTML = "";
-      
-    await typeText(
-      textContainer,
-      "<p>You show Father Jakob the coordinates you wrote down, he pauses and looks up, thinking...</p>",
-      applyGlassStylingRed
-      );
-      
-    await sleep(2000);
-    
-    await typeText(
-    textContainer,
-      "<p>Of course, you found the coordinates to the resistance's headquarters.<br><br>Do you really plan to go there?<br><br>Join their fight?</p>",
-    applyGlassStylingBlue
-    );
-
-    await sleep(1500);
-
-    if (CHURCH_STORY == true && LARGE_HOUSE_MAP == true) {
-      userControlsContainer.appendChild(mapBtn);
-    }
-
-    //|what the hell happens here if you don't have the map?
-  }
-
-  // append new button
-    userControlsContainer.appendChild(explainBtn); // append relevant buttons
-    if (COTTAGE_DEAD_BODY == true) {
-      userControlsContainer.appendChild(priestOldManBtn);
-    }
-  });
-  
-  priestOldManBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-    CHURCH_INFORMATION = true;
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-  explainBtn.remove(); // remove relevant buttons
-  priestOldManBtn.remove();
-
-  // write new text
-  await typeTextItalic(
-    textContainer,
-    "<p>I found the body of an old man in a cottage outside of town.<br>I thought you might want to know...<br>He must be dead a week by now...</p>",
-    applyGlassStylingGreen
-  );
-
-    await pause();
-    textContainer.innerHTML = "";
-
-
-    await typeText(
-      textContainer,
-      "<p>The priest gives a long sigh, and mutters a prayer under his breath.</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    await typeText(
-      textContainer,
-      "<p>Poor Filip. Astrid will be devastated. Thank you, I will try to find some help to give him a proper burial at least. And I will let Ingrid know.</p>",
-      applyGlassStylingBlue
-    );
-
-    await sleep(1500);
-
-    await typeText(
-      textContainer,
-      "<p>Was there anything else?</p>",
-      applyGlassStylingBlue
-    )
-
-  // append new button
-  userControlsContainer.appendChild(explainBtn); // append relevant buttons
-  });
-
-  clearThroatBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-  clearThroatBtn.remove(); // remove relevant buttons
-
-  // write new text
-  await typeText(
-    textContainer,
-    "<p>The priest looks up, startled.</p>",
-    applyGlassStylingRed
-  );
-
-  await sleep(1500);
-  
-  await typeText(
-    textContainer,
-    "<p>Who are you? If you're another 'recruiter', you can just leave now, there's no one left to join you, and I haven't got time for this.</p>",
-    applyGlassStylingBlue
-  );
-
-  await sleep(1500);
-
-  // append new button
-  userControlsContainer.appendChild(explainBtn); // append relevant buttons
-  });
-
-  explainBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-  explainBtn.remove(); // remove relevant buttons
-
-  // write new text
-  await typeTextItalic(
-    textContainer,
-    "<p>I'm not a recruiter, I'm actually not even sure where I am.<br><br>I just woke up this morning in the forest nearby, with only hazy memories and I stumbled on this town.<br><br>Do you know what happened here? Where is everyone?</p>",
-    applyGlassStylingGreen
-  );
-
-  await pause();
-    
-  textContainer.innerHTML = "";
-  
-  // write new text
-  await typeText(
-    textContainer,
-    "<p>The priest looks you up and down suspiciously.</p>",
-    applyGlassStylingRed
-  );
-
-  await sleep(1500);
-  
-  await typeText(
-    textContainer,
-    "<p>Everyone fled. Either to get away from here, or to join this 'resistance'...<br>But how is it you don't know this? The world has gone to hell in the span of a week. People have lost their faith in God and that is why our world is as rotten and corrupt as it is.<br><br>I am Father Jakob, and this is my church. I refuse to leave my town and my flock because of fear.<br><br>My faith protects me, even though most of my congregation has clearly lost their own faith. So Tell me, do you still have faith?</p>",
-    applyGlassStylingBlue
-  );
-
-  await sleep(1500);
-
-  // append new button
-  userControlsContainer.appendChild(prayBtn); // append relevant buttons
-  userControlsContainer.appendChild(problemBtn);
-  });
-
-  
-  problemBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  CHURCH_DISMISS = true;
-  
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-  prayBtn.remove(); // remove relevant buttons
-  problemBtn.remove();
-
-  // write new text
-  await typeText(
-    textContainer,
-    "<p>Well then I have nothing more to say to you. Please leave me to my thoughts. And God help you.</p>",
-    applyGlassStylingRed
-  );
-
-  await sleep(1500);
-
-  // append new button
-  userControlsContainer.appendChild(leaveBtn); // append relevant buttons
-  });
-
-  
-  prayBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-  buttonNameBtn.remove(); // remove relevant buttons
-
-  // write new text
-  await typeText(
-    textContainer,
-    "<p>Then may the Lord bless and keep you my child. Was there anything else?</p>",
-    applyGlassStylingBlue
-  );
-
-  await sleep(1500);
-
-  // append new button
-  userControlsContainer.appendChild(resistanceBtn); // append relevant buttons
-  });
-
-  
-  resistanceBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-  buttonNameBtn.remove(); // remove relevant buttons
-
-  // write new text
-  await typeText(
-    textContainer,
-    "<p>Perhaps I have said too much already... but the resistance is a group of people, from this town and some others, who are trying to save humanity from this threat.<br><br>Foolish if you ask me, they should rather be praying for strength and forgiveness. So they might enter heaven when the time comes.</p>",
-    applyGlassStylingBlue
-  );
-
-  await pause();
-  
-  textContainer.innerHTML = "";
-    
-  // write new text
-  await typeTextItalic(
-    textContainer,
-    "<p>I'm sorry father, but my memories are very faint. What is this threat? What are they trying to save humanity from?</p>",
-    applyGlassStylingGreen
-    );
-    
-  await pause();
-  
-  textContainer.innerHTML = "";
-    
-  await typeText(
-    textContainer,
-    "<p>... From Salvation ...</p>",
-    applyGlassStylingBlue
-    );
-
-  await sleep(1500);
-
-  await typeText(
-    textContainer,
-    "<p>The priest chuckles.</p>",
-    applyGlassStylingBlue
-    );
-
-  await sleep(1500);
-    
-    await typeText(
-      textContainer,
-      "<p>Ironic isn't it? That it should have a name like that. Project Salvation is a military program that was engineered by the government's top scientists in Artificial Intelligence. He motivated that AI could run the country's military security without failure, without human tendencies like corruption or greed or malice. It seemed like the project was a success, despite our neighboring countries warning of the dangers of AI.</p>",
-      applyGlassStylingBlue
-    );
-    
-  await pause();
-
-  textContainer.innerHTML = "";
-
-    await typeText(
-      textContainer,
-      "<p>Our military expanded the operation and procured massive budgets to give the AI system more power, and further reach. It has access to automated weapons, airstrikes, and even nuclear weapons.<br><br>Everyone was convinced that our country is the safest and most secure in the world, and it seems they were right.</p>",
-      applyGlassStylingBlue
-    );
-
-    await pause();
-    
-    textContainer.innerHTML = "";
-
-    await typeTextItalic(
-      textContainer,
-      "<p>But if the country is safe and secure, what is the threat? Why is everyone fleeing? Isn't it safer to stay in the towns and cities?</p>",
-      applyGlassStylingGreen
-    );
-
-    await sleep(1500);
-    
-    await typeText(
-      textContainer,
-      "<p>Well, the country is very safe and secure as long as project Salvation is operational...<br>But what if it was shut down?<br>What if our entire country's military power disappears over night?<br>Could you imagine what that would mean to the government and the military heads?</p>",
-      applyGlassStylingBlue
-    );
-
-    await pause();
-    
-    textContainer.innerHTML = "";
-
-    await typeTextItalic(
-      textContainer,
-      "<p>Well we would be open to all kinds of threats and attacks... but I don't understand, why would they shut it down?<br>No one would disable their entire country's defense?</p>",
-      applyGlassStylingGreen
-    )
-
-    await sleep(1500);
-
-    await typeText(
-      textContainer,
-      "<p>I believe you are right, however ask yourself...<br><br>If Project Salvation could be shut down, if there was one threat that could stop it and remove it's ability to protect it's country...<br><br>What would that threat be?</p>",
-      applyGlassStylingBlue
-    );
-
-    await pause();
-
-    textContainer.innerHTML = "";
-
-    await typeText(
-      textContainer,
-      "<p>Slowly the realisation comes to you</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    await typeTextItalic(
-      textContainer,
-      "<p>... Us... Humans...</p>",
-      applyGlassStylingGreen
-    );
-
-    await typeText(
-      textContainer,
-      "<p>Precisely! Our neighbors warned us against AI because they knew it would get too intelligent for its, or OUR own good. But the military commanders were too concerned about making more money to expand the military, they even thought of selling the system to other countries once it was perfected. But for some reason the Chief scientist halted the project.<br><br>No one knows for sure what happened to him since he was no longer mentioned in the news.</p>",
-      applyGlassStylingBlue
-    );
-
-    await pause();
-
-    textContainer.innerHTML = "";
-
-    await typeText(
-      textContainer,
-      "<p>But I digress. The bottom line of this story is that Project Salvation has identified humans as a threat to it's continued existence, so in order for it to keep doing it's job, and keep our people safe, is by removing our people's ability to disable it... by  removing our people...</p>",
-      applyGlassStylingBlue
-    );
-
-    await sleep(1500);
-
-    await typeText(
-      textContainer,
-      "<p>The priest chuckles again, it almost grows into a hearty laugh.</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    await typeText(
-      textContainer,
-      "<p>Suddenly it all dawns on you...<br><br>The reason why the town is empty; the reason why everyone has fled...<br><br>They are fleeing from extermination...</p>",
-      applyGlassStylingRed
-    );
-
-    await pause();
-
-    textContainer.innerHTML = "";
-
-    await typeText(
-      textContainer,
-      "<p>Father Jakob stops laughing and looks sternly at you.</p>",
-      applyGlassStylingRed
-    )
-
-    await sleep(1500);
-
-    await typeText(
-      textContainer,
-      "<p>So there you have it my child. All the country's military power is now focused on it's own people. Where people are fleeing to I do not know. And when Project Salvation will eventually strike is anyone's guess.<br><br>What we do know from inside the military compound is that Project Salvation has identified humans as a threat to eliminate. And that is why the resistance was formed. They are trying to find a way into the military compound where The Core of Project Salvation is located, and deactivate it.</p>",
-      applyGlassStylingBlue
-    );
-
-    await pause();
-
-    textContainer.innerHTML = "";
-
-    await typeText(
-      textContainer,
-      "<p>Some prominent experts have joined the resistance. I know this because they came to me as recruiters, because I know most of the people in town and I have a military background, I might have had some advise for them... but the only advice I have to offer now is to pray that the worst doesn't happen.</p>",
-      applyGlassStylingBlue
-    );
-
-    await sleep(1500);
-
-  // append new button
-  userControlsContainer.appendChild(continueBtn); // append relevant buttons
-  });
-
-  continueBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  CHURCH_STORY = true;
-
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-  continueBtn.remove(); // remove relevant buttons
-
-  // write new text
-    if (INN_ADVICE == true) { // need to do the longer one now
-      await typeTextItalic(
-      textContainer,
-      "<p>Father Jakob, will you be able to show me where to find the resistance with those coordinates? I feel that I need to find them and perhaps help them if I can, in any way possible..</p>",
-      applyGlassStylingGreen
-    );
-  
-      await pause();
-      textContainer.innerHTML = "";
-
-      
-      await typeText(
-      textContainer,
-      "<p>Well my child, either you are very foolish, or very brave... but yes. I can show you where to find them. Do you have a map that I can mark for you?</p>",
-      applyGlassStylingBlue
-    );
-  
-    await sleep(1500);
-  
-    // append new button
-      if (LARGE_HOUSE_MAP == true) {
-        userControlsContainer.appendChild(mapBtn);
-      } else {
-        userControlsContainer.appendChild(noMapBtn);
-      }
-    } else {
-      await typeTextItalic(
-        textContainer,
-        "<p>Father Jakob will you be able to show me where to find the resistance? I feel that I need to find them and perhaps help them if I can, in any way possible...</p>",
-        applyGlassStylingGreen
-      );
-    
-      await pause();
-
-      textContainer.innerHTML = "";
-
-      await typeText(
-        textContainer,
-        "<p>Well my child, either you are very foolish, or very brave... but unfortunately I don't know where they are located. They wanted to keep it quiet, lest the AI is able to pinpoint their whereabouts...<br><br>However if you are able to find any information about where they are, come back and I might be able to help you.</p>",
-        applyGlassStylingBlue
-      )
-
-      await sleep(1500);
-    
-      // append new button
-      userControlsContainer.appendChild(leaveChurchBtn); // append relevant buttons
-  }
-  });
-  
-  noMapBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-  noMapBtn.remove(); // remove relevant buttons
-  mapBtn.remove();
-
-  // write new text
-  await typeText(
-    textContainer,
-    "<p>You're going to need to find their headquarters. Come back once you have a map and I will mark it for you</p>",
-    applyGlassStylingBlue
-  );
-
-  await sleep(1500);
-
-  // append new button
-  userControlsContainer.appendChild(leaveChurchBtn); // append relevant buttons
-  });
-  
-  mapBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  CHURCH_DESTINATION = true;
-    
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-  mapBtn.remove(); // remove relevant buttons
-  noMapBtn.remove();
-
-  // write new text
-  await typeText(
-    textContainer,
-    "<p>All right let's have a look...<br><br>Here, I have marked where you can find them if you leave town to the west and head north.<br><br>You'll find the main road to the city blocked off... safer that way.</p>",
-    applyGlassStylingBlue
-  );
-
-  await pause();
-  
-  textContainer.innerHTML = "";
-  
-  await typeText(
-    textContainer,
-    "<p>The priest hands you back the map with a big red X marked on it... You feel an odd sensation...</p>",
-    applyGlassStylingRed
-  );
-
-  await sleep(1500);
-  
-  await typeText(
-    textContainer,
-    "<p>You're a brave man. Tell me, what is your name?</p>",
-    applyGlassStylingBlue
-  );
-
-  await sleep(1500);
-  
-  await typeText(
-    textContainer,
-    "<p>You hear the priests muffled words echoing in your mind, as if spoken in a long empty hallway, you stare at the big red X as your mind starts to drift away,</p>",
-    applyGlassStylingRed
-  )
-  
-  await typeText(
-    textContainer,
-    "<p>you suddenly lose all sense of where you are...</p>",
-    applyGlassStylingRedFlicker
-    )
-    
-  await pause();
-    
-  textContainer.innerHTML = "";
-
-  await typeTextItalic(
-    textContainer,
-    "<p>Doctor, the procedure was a success, he should be regaining consciousness soon.</p>",
-    applyGlassStylingBlueFlicker
-  );
-
-  await sleep(1500)
-
-  await typeText(
-    textContainer,
-    "<p>He is waking up. Quickly, leave the room. I need to be the first person he sees.</p>",
-    applyGlassStylingBlueFlicker
-  );
-
-  await sleep(1500)
-
-  await typeText(
-    textContainer,
-    "<p>But Doctor! We have not ran any of the safety tests yet, it could be dangerous!</p>",
-    applyGlassStylingBlueFlicker
-  );
-
-  await sleep(1500)
-
-  await typeText(
-    textContainer,
-    "<p>Leave us! Now!</p>",
-    applyGlassStylingBlueFlicker
-  );
-
-  await sleep(1500)
-
-  await typeTextItalic(
-    textContainer,
-    "<p>Where... where am I?<br><br>Who are you?</p>",
-    applyGlassStylingGreenFlicker
-  );
-
-  await sleep(1500)
-
-  await typeText(
-    textContainer,
-    "<p>Ah, Xander Ignis, you are finally awake my son. I have a very important task for you...</p>",
-    applyGlassStylingRedFlicker
-    );
-    
-  await pause();
-  textContainer.innerHTML = "";
-    
-
-  await typeText(
-    textContainer,
-    "<p>You suddenly snap back. You are still in the church, still staring at the big X on the map that Father Jakob handed to you. You slowly look up at him with a perplexed look on your face.</p>",
-    applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    await typeTextItalic(
-      textContainer,
-      "<p>My name? My name is Xander....  Xander Ignis.</p>",
-      applyGlassStylingGreen
-    );
-
-    await sleep(1500);
-
-    await typeText(
-      textContainer,
-      "<p>It feels strange saying your own name, until now it did not even occur to you that you have a name, and that you did not know it.</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(1500);
-
-    await typeText(
-      textContainer,
-      "<p>Ignis? No relation to Dr. Ignis I hope... He is the very reason for all of this anarchy.<br><br>Ah but surely if you were related to the Government's top scientist you would have known all about this already.<br><br>Well, you have your destination now. Good luck out there Xander. I pray that you find what you seek and that God keep you.</p>",
-      applyGlassStylingBlue
-    );
-
-    await pause();
-
-    textContainer.innerHTML = "";
-
-    await typeText(
-      textContainer,
-      "<p>You thank Father Jakob for his help and leave the church, heading back to the town square</p>",
-      applyGlassStylingRed
-    );
-
-    await sleep(2500);
-
-    await typeTextItalic(
-      textContainer,
-      "<p>... Dr. Ignis... is that the man I keep seeing in these memories? Could he be...<br><br>No. you can't think about this right now. You might find some more information once you reach the resistance HQ.</p>",
-      applyGlassStylingGreen
-    );
-
-    await pause();
-
-    textContainer.innerHTML = "";
-
-    sceneTownSquare();
-  });
-
-  leaveChurchBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-    townSquareBtn.remove(); // remove relevant buttons
-    enterChurchBtn.remove();
-    badLeaveBtn.remove();
-    walkManBtn.remove();
-    clearThroatBtn.remove();
-    tellPriestBtn.remove();
-    explainBtn.remove();
-    priestOldManBtn.remove();
-    resistanceBtn.remove();
-    leaveBtn.remove();
-    problemBtn.remove();
-    prayBtn.remove();
-    mapBtn.remove();
-    leaveChurchBtn.remove();
-
-    await typeText(
-      textContainer,
-      "<p>You return to the town square.</p>",
-      applyGlassStylingRed
-    );
-
-    await pause();
-
-    textContainer.innerHTML = "";
-
-    sceneTownSquare();
-  });
-
-  leaveBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-    townSquareBtn.remove(); // remove relevant buttons
-    enterChurchBtn.remove();
-    badLeaveBtn.remove();
-    walkManBtn.remove();
-    clearThroatBtn.remove();
-    tellPriestBtn.remove();
-    explainBtn.remove();
-    priestOldManBtn.remove();
-    resistanceBtn.remove();
-    leaveBtn.remove();
-    problemBtn.remove();
-    prayBtn.remove();
-    mapBtn.remove();
-    leaveChurchBtn.remove();
-
-    await typeText(
-      textContainer,
-      "<p>You return to the town square.</p>",
-      applyGlassStylingRed
-    );
-
-    await pause();
-
-    textContainer.innerHTML = "";
-
-    sceneTownSquare();
-  });
-
-  badLeaveBtn.addEventListener("pointerup", async function () {
-  // Button click check
-  if (isTyping || btnRecentlyClicked) return;
-  btnRecentlyClicked = true;
-  setTimeout(() => {
-    btnRecentlyClicked = false;
-  }, 1000);
-
-  // Clear text container
-  textContainer.innerHTML = "";
-
-  // remove button from user controls container
-    townSquareBtn.remove(); // remove relevant buttons
-    enterChurchBtn.remove();
-    badLeaveBtn.remove();
-    walkManBtn.remove();
-    clearThroatBtn.remove();
-    tellPriestBtn.remove();
-    explainBtn.remove();
-    priestOldManBtn.remove();
-    resistanceBtn.remove();
-    leaveBtn.remove();
-    problemBtn.remove();
-    prayBtn.remove();
-    mapBtn.remove();
-    leaveChurchBtn.remove();
-
-    sceneTownSquare();
-  });
-  
-  
-  townSquareBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-
-    // Clear text container
-    textContainer.innerHTML = "";
-
-    // remove button from user controls container
-    townSquareBtn.remove(); // remove relevant buttons
-    enterChurchBtn.remove();
-    badLeaveBtn.remove();
-    walkManBtn.remove();
-    clearThroatBtn.remove();
-    tellPriestBtn.remove();
-    explainBtn.remove();
-    priestOldManBtn.remove();
-    resistanceBtn.remove();
-    leaveBtn.remove();
-    problemBtn.remove();
-    prayBtn.remove();
-    mapBtn.remove();
-    leaveChurchBtn.remove();
-
-    sceneTownSquare();
-  });
 }
