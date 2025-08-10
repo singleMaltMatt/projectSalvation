@@ -104,8 +104,8 @@ export class DialLock {
 
     // Event listeners
     this.dialElement.addEventListener('pointerdown', (e) => this.startDrag(e));
-    document.addEventListener('pointermove', (e) => this.drag(e));
-    document.addEventListener('pointerup', () => this.endDrag());
+    document.addEventListener('pointermove', this.drag.bind(this));
+    document.addEventListener('pointerup', this.endDrag.bind(this));
 
     return {
       dialContainer: this.container,
@@ -119,6 +119,10 @@ export class DialLock {
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
     this.startAngle = Math.atan2(e.clientY - centerY, e.clientX - centerX) * 180 / Math.PI;
+  }
+
+  endDrag() {
+    this.isDragging = false;
   }
 
   drag(e) {
