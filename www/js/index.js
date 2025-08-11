@@ -139,6 +139,8 @@ function onDeviceReady() {
 
 //|SCENE TITLE
 let currentSceneTitle = "Project: Salvation";
+window.currentSceneTitle = currentSceneTitle;
+
 function getCurrentSceneTitle() {
   return currentSceneTitle;
 }
@@ -147,6 +149,7 @@ currentSceneTitle = value
 }
 //| INVENTORY
 let INVENTORY = [];
+window.INVENTORY = INVENTORY;
 document.addEventListener("DOMContentLoaded", function () {
   let inventoryVisible = false;
   let inventoryBtn = document.getElementById("header-button");
@@ -198,6 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //| JOURNAL
 let JOURNAL = [];
+window.JOURNAL = JOURNAL;
 let journalVisible = false;
 let journalBtn = document.getElementById("header-button-2");
   
@@ -243,89 +247,89 @@ let journalBtn = document.getElementById("header-button-2");
 
 //| GLOBAL BOOLEANS
 //sceneOne
-let FOREST_LEG = false;
-let FOREST_LOOK = false;
+window.FOREST_LEG = false;
+window.FOREST_LOOK = false;
 //sceneTwo
-let FOREST_RIGHT = false;
+window.FOREST_RIGHT = false;
 // sceneCottage
-let COTTAGE_LETTER = false;
-let COTTAGE_ROOM = false;
-let COTTAGE_DEAD_BODY = false;
+window.COTTAGE_LETTER = false;
+window.COTTAGE_ROOM = false;
+window.COTTAGE_DEAD_BODY = false;
 // sceneThree
-let TOWN_MARKET = false;
+window.TOWN_MARKET = false;
 // sceneSwimmingPool
-let SWIMMING_POOL_GIRL = false;
+window.SWIMMING_POOL_GIRL = false;
 // sceneInn
-let INN_SAD = false;
-let INN_LETTER_GIVEN = false;
-let INN_WHERE = false;
-let INN_SURVIVE = false;
-let INN_LETTER_PICKED = false;
-let INN_FILIP_PICKED = false;
-let INN_ADVICE = false;
+window.INN_SAD = false;
+window.INN_LETTER_GIVEN = false;
+window.INN_WHERE = false;
+window.INN_SURVIVE = false;
+window.INN_LETTER_PICKED = false;
+window.INN_FILIP_PICKED = false;
+window.INN_ADVICE = false;
 // sceneResidentail
 // sceneHouseRundown
-let HOUSE_RUNDOWN_EXPLORED = false;
-let HOUSE_RUNDOWN_ASCENDED = false;
-let HOUSE_RUNDOWN_ONE = false;
-let HOUSE_RUNDOWN_ONE_AGAIN = false;
-let HOUSE_RUNDOWN_TWO = false;
-let HOUSE_RUNDOWN_TWO_AGAIN = false;
-let HOUSE_RUNDOWN_THREE = false;
-let HOUSE_RUNDOWN_THREE_AGAIN = false;
-let HOUSE_RUNDOWN_FOUR = false;
-let HOUSE_RUNDOWN_FOUR_AGAIN = false;
+window.HOUSE_RUNDOWN_EXPLORED = false;
+window.HOUSE_RUNDOWN_ASCENDED = false;
+window.HOUSE_RUNDOWN_ONE = false;
+window.HOUSE_RUNDOWN_ONE_AGAIN = false;
+window.HOUSE_RUNDOWN_TWO = false;
+window.HOUSE_RUNDOWN_TWO_AGAIN = false;
+window.HOUSE_RUNDOWN_THREE = false;
+window.HOUSE_RUNDOWN_THREE_AGAIN = false;
+window.HOUSE_RUNDOWN_FOUR = false;
+window.HOUSE_RUNDOWN_FOUR_AGAIN = false;
 // sceneHouseFlag
-let HOUSE_FLAG_FREQUENCY = false;
-let HOUSE_FLAG_ONE = false;
-let HOUSE_FLAG_TWO = false;
-let HOUSE_FLAG_COORDINATES = false;
+window.HOUSE_FLAG_FREQUENCY = false;
+window.HOUSE_FLAG_ONE = false;
+window.HOUSE_FLAG_TWO = false;
+window.HOUSE_FLAG_COORDINATES = false;
 // sceneHouseLarge
-let LARGE_HOUSE_LIVING_ROOM = false;
-let LARGE_HOUSE_PHOTOS_VIEWED = false;
-let LARGE_HOUSE_BOOK_VIEWED = false;
-let LARGE_HOUSE_FIRST_ROOM_RIGHT = false;
-let LARGE_HOUSE_FIRST_ROOM_LEFT = false;
-let LARGE_HOUSE_FIRST_ROOM_LEFT_VIEWED_AGAIN = false;
-let LARGE_HOUSE_SECOND_ROOM_RIGHT = false;
-let LARGE_HOUSE_SECOND_ROOM_RIGHT_VIEWED_AGAIN = false;
-let LARGE_HOUSE_BODY_SEEN = false;
-let LARGE_HOUSE_ENTERING_SECOND_TIME = false;
-let LARGE_HOUSE_MAYOR_KEY = false; // silver key
-let LARGE_HOUSE_DESK_VIEWED = false;
-let LARGE_HOUSE_SAFE_FOUND = false;
-let LARGE_HOUSE_MAP = false; // map 
-let LARGE_HOUSE_MAYOR_LETTER_READ = false;
-let LARGE_HOUSE_NO_SENDER_LETTER_READ = false;
-let LARGE_HOUSE_LEFT_OFFICE = false;
+window.LARGE_HOUSE_LIVING_ROOM = false;
+window.LARGE_HOUSE_PHOTOS_VIEWED = false;
+window.LARGE_HOUSE_BOOK_VIEWED = false;
+window.LARGE_HOUSE_FIRST_ROOM_RIGHT = false;
+window.LARGE_HOUSE_FIRST_ROOM_LEFT = false;
+window.LARGE_HOUSE_FIRST_ROOM_LEFT_VIEWED_AGAIN = false;
+window.LARGE_HOUSE_SECOND_ROOM_RIGHT = false;
+window.LARGE_HOUSE_SECOND_ROOM_RIGHT_VIEWED_AGAIN = false;
+window.LARGE_HOUSE_BODY_SEEN = false;
+window.LARGE_HOUSE_ENTERING_SECOND_TIME = false;
+window.LARGE_HOUSE_MAYOR_KEY = false;
+window.LARGE_HOUSE_DESK_VIEWED = false;
+window.LARGE_HOUSE_SAFE_FOUND = false;
+window.LARGE_HOUSE_MAP = false;
+window.LARGE_HOUSE_MAYOR_LETTER_READ = false;
+window.LARGE_HOUSE_NO_SENDER_LETTER_READ = false;
+window.LARGE_HOUSE_LEFT_OFFICE = false;
 let currentSafeLock = null;
 // sceneHouseOvergrown
-let HOUSE_OVERGROWN_STERIODS_USED = false;
-let HOUSE_OVERGROWN_CAT_TOY = false;
-let HOUSE_OVERGROWN_EXPLORED = false;
+window.HOUSE_OVERGROWN_STERIODS_USED = false;
+window.HOUSE_OVERGROWN_CAT_TOY = false;
+window.HOUSE_OVERGROWN_EXPLORED = false;
 // sceneHouseWhite
-let HOUSE_WHITE_EXPLORED = false;
-let HOUSE_WHITE_SNAKE_BITE = false;
+window.HOUSE_WHITE_EXPLORED = false;
+window.HOUSE_WHITE_SNAKE_BITE = false;
 //sceneChurch
-let CHURCH_STORY = false;
-let CHURCH_INFORMATION = false;
-let CHURCH_DISMISS = false;
-let CHURCH_DESTINATION = false;
+window.CHURCH_STORY = false;
+window.CHURCH_INFORMATION = false;
+window.CHURCH_DISMISS = false;
+window.CHURCH_DESTINATION = false;
 // sceneClinic
-let CLINIC_KEY = false; // check this when you get there
-let CLINIC_KEY_USED = false;
-let CLINIC_STEROIDS = false;
-let CLINIC_LIGHT = false;
-let CLINIC_BASEMENT = false;
-let CLINIC_ROBOT_SEEN = false;
-let CLINIC_RESEARCH_SAVED = false;
-let CLINIC_SECRET_DOOR = false;
-let CLINIC_LOCKED_IN = false;
-let CLINIC_DOOR_LEFT = false;
-let CLINIC_DOOR_RIGHT = false;
+window.CLINIC_KEY = false;
+window.CLINIC_KEY_USED = false;
+window.CLINIC_STEROIDS = false;
+window.CLINIC_LIGHT = false;
+window.CLINIC_BASEMENT = false;
+window.CLINIC_ROBOT_SEEN = false;
+window.CLINIC_RESEARCH_SAVED = false;
+window.CLINIC_SECRET_DOOR = false;
+window.CLINIC_LOCKED_IN = false;
+window.CLINIC_DOOR_LEFT = false;
+window.CLINIC_DOOR_RIGHT = false;
 //sceneHall
-let HALL_KEY = false;
-let HALL_WEAPONS = false;
+window.HALL_KEY = false;
+window.HALL_WEAPONS = false;
 
 //|SLEEPER
 function sleep(ms) {
@@ -477,21 +481,31 @@ function saveGame() {
 }
 
 function loadGame() {
+  console.log("DEBUG: loadGame() function called");
   const saveData = localStorage.getItem('projectSalvationSave');
-  if (!saveData) return false;
+  if (!saveData)
+    return false;
+  console.log("DEBUG: No save data found in localStorage");
 
+  console.log("DEBUG: Save data found, parsing...");
   const gameState = JSON.parse(saveData);
+  console.log("DEBUG: Parsed gameState:", gameState); // Log the entire loaded state
 
   // Restore game state
+  console.log("DEBUG: Restoring currentSceneTitle from:", gameState.currentScene);
   currentSceneTitle = gameState.currentScene;
+  console.log("DEBUG: Restoring INVENTORY from:", gameState.inventory);
   INVENTORY = gameState.inventory || [];
+  console.log("DEBUG: Restoring JOURNAL from:", gameState.journal);
   JOURNAL = gameState.journal || [];
 
   // Restore flags
+  console.log("DEBUG: Restoring sceneFlags...");
   Object.keys(gameState.sceneFlags).forEach(flag => {
+    console.log(`DEBUG: Setting window['${flag}'] = ${gameState.sceneFlags[flag]}`);
     window[flag] = gameState.sceneFlags[flag];
   });
-
+  console.log("DEBUG: loadGame() completed successfully");
   return true;
 }
 
@@ -534,9 +548,11 @@ function sceneZero() {
     let userControlsContainer = document.querySelector(".user-controls-container");
 
     applyTypingCss(textContainer);
+    console.log("DEBUG: sceneZero started, about to call loadGame()");
     
     // Check for saved game
     const hasSave = loadGame();
+    console.log("DEBUG: loadGame() returned:", hasSave);
   
     applyTypingCss(textContainer);
     typeText(
@@ -551,6 +567,8 @@ function sceneZero() {
     let continueBtn = null;
   
   if (hasSave) {
+    console.log("DEBUG: Save loaded, currentSceneTitle is now:", currentSceneTitle);
+    console.log("DEBUG: HALL_KEY immediately after loadGame() in sceneZero:", HALL_KEY); // Add this line
     continueBtn = document.createElement("button");
     continueBtn.textContent = "Continue";
     applyGlassStylingGreyBtn(continueBtn);
@@ -601,7 +619,7 @@ function sceneZero() {
     userControlsContainer.removeChild(wakeUpButton);
     userControlsContainer.removeChild(townButton);
     // start SceneOne
-    continueBtn.remove();
+    if (typeof continueBtn !== "undefined" && continueBtn) continueBtn.remove();
     sceneOne();
   });
 
@@ -5267,12 +5285,15 @@ async function sceneHall() {
   );
 
   await sleep(1500);
+  console.log("DEBUG: HALL_KEY value when entering sceneHall:", HALL_KEY);
 
   // append button to user controls container
   if (HALL_KEY == true) {
+    console.log("DEBUG: Appending oldKeyBtn because HALL_KEY is true");
     userControlsContainer.appendChild(oldKeyBtn);
   }
   if (HALL_KEY == false) {
+    console.log("DEBUG: Appending townSquareBtn because HALL_KEY is false");
     userControlsContainer.appendChild(townSquareBtn);
   }
 
@@ -5571,7 +5592,7 @@ async function sceneHall() {
     //init game
     const { SlidingPuzzle } = await import("./slidingPuzzle.js");
     const puzzle = new SlidingPuzzle({
-      size: 4,
+      size: 2,
       onComplete: async () => {
         await typeText(
           textContainer,
