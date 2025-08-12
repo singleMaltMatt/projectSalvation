@@ -5591,38 +5591,97 @@ async function sceneHall() {
 
     //init game
     const { SlidingPuzzle } = await import("./slidingPuzzle.js");
+    const puzzleImageSrc = "img/crate.png";
     const puzzle = new SlidingPuzzle({
-      size: 2,
+      size: 4, // 4x4 grid
+      imageSrc: puzzleImageSrc, // Provide the image path
+      tileSize: 100, // Optional: specify tile size (default 100px)
       onComplete: async () => {
+        if (puzzleCancelButton && puzzleCancelButton.parentNode) {
+          puzzleCancelButton.remove();
+        }
+        // Clear text container if needed before showing success message
+        textContainer.innerHTML = ""; 
         await typeText(
           textContainer,
-          "<p>You have successfully unlocked the crate</p>",
+          "<p>You hear a mechanical 'Beep' followed by a loud click, you have successfully unlocked the crate!</p>",
+          applyGlassStylingRed);
+        
+        await pause();
+
+        const puzzleElement = textContainer.querySelector('.sliding-puzzle');
+        if (puzzleElement) puzzleElement.remove();
+        // Clear text container
+        textContainer.innerHTML = "";
+
+        await typeText(
+          textContainer,
+          "<p>As you open the crate, you expect a strong whiff of chemical fertilizer, but instead you smell something cold and metallic... oil?<br><br>Lifting the lid off, you see what the crates are actually filled with...</p>",
           applyGlassStylingRed
         );
+
+        await pause();
+        // Clear text container
+        textContainer.innerHTML = "";
+
+        HALL_WEAPONS = true;
+
+        await typeText(
+          textContainer,
+          "<p>Inside this small crate are neat rows of hand guns - pistols of different calibers, revolvers, and boxes of bullets.<br><br>Judging by the size of some of the other crates, there must be assault rifles and other weapons in this room as well...</p>",
+          applyGlassStylingRed
+        );
+
+        await pause();
+        // Clear text container
+        textContainer.innerHTML = "";
+
+        await typeText(
+          textContainer,
+          "<p>You take a moment to just take in your surroundings, you are in disbelief.<br><br>The Mayor was hoarding weapons in his office, and now he is dead...<br>torn to shreds...<br>you wonder if it is connected somehow.<br><br>It might be in your own best interest to keep this to yourself for now, until you can figure out why all of this is happening.</p>",
+          applyGlassStylingRed
+        );
+
+        await sleep(1500);
+
+        userControlsContainer.appendChild(returnToTownBtn);
+
       },
-      onCancel: () => {
-        userControlsContainer.appendChild(attemptBtn);
-        userControlsContainer.appendChild(leaveBtn);
-        btnRecentlyClicked = false;
+      onCancel: async () => {
+        if (puzzleCancelButton && puzzleCancelButton.parentNode) {
+        puzzleCancelButton.remove();
+        }
+        // Clear text container if needed
+        textContainer.innerHTML = "";
+        // Provide feedback that the puzzle was cancelled (optional)
+        // IMPORTANT: Remove the puzzle visuals from the text area
+        const puzzleElement = textContainer.querySelector('.sliding-puzzle'); // Find by class
+        if (puzzleElement) {
+          puzzleElement.remove();
+        }
+
+        await typeText(
+          textContainer,
+          "<p>You give up and step away from the crates.</p>",
+          applyGlassStylingRed); 
+        // Ensure the buttons for retrying or leaving are added back to userControls
+        // Make sure these buttons exist and are correctly named for this context
+        userControlsContainer.appendChild(attemptBtn); // Or whatever button lets you retry
+        userControlsContainer.appendChild(leaveBtn);   // Or whatever button lets you leave this interaction
+        btnRecentlyClicked = false; // Allow button clicks again
+        
+        // Also remove any other puzzle-related text if necessary
       }
     });
 
-    textContainer.appendChild(puzzle.init());
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
+    // Call init and get both the container and the cancel button
+    const { container: puzzleContainer, cancelButton: puzzleCancelButton } = puzzle.init();
 
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-      applyGlassStylingRed
-    );
+    // Add the puzzle board/game area to the text container (as before)
+    textContainer.appendChild(puzzleContainer);
 
-    await sleep(1500);
-
-    // append new button
-    userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
+    // Add the "Give Up" button to the user controls container (NEW)
+    userControlsContainer.appendChild(puzzleCancelButton);
   });
 
   returnToTownBtn.addEventListener("pointerup", async function () {
