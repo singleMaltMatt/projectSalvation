@@ -179,14 +179,14 @@ document.addEventListener("DOMContentLoaded", function () {
           const itemContainer = document.createElement("div");
           const itemName = document.createElement("span");
           const itemDescription = document.createElement("p");
-          const itemIcon = document.createElement("img");
-          itemIcon.src = `img/${item.name}.png`;
-          itemIcon.style.width = "32px";
-          itemIcon.style.height = "32px";
+          // const itemIcon = document.createElement("img");
+          // itemIcon.src = `img/${item.name}.png`;
+          // itemIcon.style.width = "32px";
+          // itemIcon.style.height = "32px";
           itemName.textContent = item.name;
           itemDescription.textContent = item.description;
 
-          itemContainer.appendChild(itemIcon);
+          // itemContainer.appendChild(itemIcon);
           itemContainer.appendChild(itemName);
           itemContainer.appendChild(itemDescription);
 
@@ -644,7 +644,7 @@ function sceneZero() {
 //|SCENE ONE
 async function sceneOne() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/01-starting-scene.jpg)";
+  gameContainer.style.backgroundImage = "url(img/01-starting-scene.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
   // let headerBtn = document.getElementById("header-button");
   // headerBtn.style.display = "block";
@@ -1125,7 +1125,7 @@ async function sceneThree() {
   await pause();
 
   textContainer.innerHTML = "";
-  gameContainer.style.backgroundImage = "url(img/town-entrance.jpg)";
+  gameContainer.style.backgroundImage = "url(img/10-town-entrance.jpg)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
 
   await typeTextItalic(
@@ -1144,9 +1144,6 @@ async function sceneThree() {
     setTimeout(() => {
       btnRecentlyClicked = false;
     }, 1000);
-
-    gameContainer.style.backgroundImage = "url(img/11-town-square.png)";
-    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // Clear text container
     textContainer.innerHTML = "";
@@ -1197,6 +1194,9 @@ async function sceneThree() {
     setTimeout(() => {
       btnRecentlyClicked = false;
     }, 1000);
+
+    // gameContainer.style.backgroundImage = "url(img/market.png)"; and remember to add image number
+    // gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // Clear text container
     textContainer.innerHTML = "";
@@ -1865,7 +1865,7 @@ async function sceneTownSquare() {
 //|SCENE CHURCH
 async function sceneChurch() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/000church.png)";
+  gameContainer.style.backgroundImage = "url(img/19-church.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
 
   let userControlsContainer = document.querySelector(
@@ -1965,6 +1965,8 @@ async function sceneChurch() {
 
   // Clear text container
   textContainer.innerHTML = "";
+  gameContainer.style.backgroundImage = "url(img/20-church-inside.png)";
+  gameContainer.style.transition = "background-image 4s ease-in-out";
 
   // remove button from user controls container
   enterChurchBtn.remove(); // remove relevant buttons
@@ -2174,6 +2176,8 @@ async function sceneChurch() {
 
   // Clear text container
   textContainer.innerHTML = "";
+  gameContainer.style.backgroundImage = "url(img/21-church-priest.png)";
+  gameContainer.style.transition = "background-image 4s ease-in-out";
 
   // remove button from user controls container
   explainBtn.remove(); // remove relevant buttons
@@ -2863,7 +2867,7 @@ async function sceneChurch() {
 //|SCENE CLINIC
 async function sceneClinic() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/clinic.jpg)";
+  gameContainer.style.backgroundImage = "url(img/22-clinic.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
 
   let userControlsContainer = document.querySelector(".user-controls-container");
@@ -3082,6 +3086,8 @@ async function sceneClinic() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/25-clinic-inside.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     enterBtn.remove();
@@ -3170,6 +3176,8 @@ async function sceneClinic() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/23-clinic-hallway.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     leaveBtn.remove();
@@ -3347,6 +3355,8 @@ async function sceneClinic() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/24-clinic-kitchen.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     doorLeftBtn.remove();
@@ -3535,6 +3545,8 @@ async function sceneClinic() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/23-clinic-hallway.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     continueCornerBtn.remove(); // remove relevant buttons
@@ -3563,23 +3575,27 @@ async function sceneClinic() {
 
     // Clear text container
     textContainer.innerHTML = "";
-
+    
     // remove button from user controls container
     openDoorBtn.remove(); // remove relevant buttons
-
+    
     if (CLINIC_LIGHT == false) {
-        // write new text
+      // write new text
+      gameContainer.style.backgroundImage = "url(img/26-clinic-dispensary-dark.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       await typeText(
         textContainer,
         "<p>You turn the handle and surprisingly the door is unlocked.<br>The door opens into a dark room. You see no windows, but is there is some light coming from outside the clinic through the service window.<br>There are medicine boxes and bottles lining the walls of the room, but you can't make out any of the names or labels. You notice the pain in your ankle again.</p>",
         applyGlassStylingRed
       );
-
+      
       await sleep(1500);
-
+      
       // append new button
       userControlsContainer.appendChild(findBtn); // append relevant buttons
-      } else {
+    } else {
+        gameContainer.style.backgroundImage = "url(img/27-clinic-dispensary-light.png)";
+        gameContainer.style.transition = "background-image 4s ease-in-out";
         await typeText(
           textContainer,
           "<p>You turn the handle and surprisingly the door is unlocked.<br>The door opens into the brightly lit dispensary. On this side of the service window you can see the room is old fashioned with wooden furniture and thick carpeting .<br><br>You also see a pharmacist's station with a chair, an old computer, printer and a dried and dead plant.</p>",
@@ -5223,7 +5239,7 @@ async function sceneClinic() {
 //|SCENE TOWN HALL
 async function sceneHall() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/000town-hall.png)";
+  gameContainer.style.backgroundImage = "url(img/28-town-hall-locked-door.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
 
   let userControlsContainer = document.querySelector(
@@ -5335,6 +5351,8 @@ async function sceneHall() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/29-inside-town-hall.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     enterHallBtn.remove(); // remove relevant buttons
@@ -5392,6 +5410,8 @@ async function sceneHall() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/30-mayor-office-door.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     upstairsBtn.remove(); // remove relevant buttons
@@ -5451,6 +5471,8 @@ async function sceneHall() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/31-mayor-office.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     tryMayorKeyBtn.remove(); // remove relevant buttons
@@ -5518,6 +5540,8 @@ async function sceneHall() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/32-crate-screen.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     investigateCratesBtn.remove(); // remove relevant buttons
@@ -5526,7 +5550,7 @@ async function sceneHall() {
     // write new text
     await typeText(
       textContainer,
-      "<p>The crates seem to be made of dark grey, thin but strong metal plate. Each crate seems to have a small display screen and number pad on top, it appears they are electronically locked.<br><br>You notice there are words painted in white on the sides of the crates: 'Caution - Agricultural Fertilizer - Hazardous to humans and animals'.</p>",
+      "<p>The crates seem to be made of dark grey, thin but strong metal plate. Each crate seems to have a small display screen, it appears they are electronically locked.<br><br>You notice there are words painted in white on the sides of the crates: 'Caution - Agricultural Fertilizer - Hazardous to humans and animals'.</p>",
       applyGlassStylingRed
     );
 
@@ -5591,7 +5615,7 @@ async function sceneHall() {
 
     //init game
     const { SlidingPuzzle } = await import("./slidingPuzzle.js");
-    const puzzleImageSrc = "img/crate.png";
+    const puzzleImageSrc = "img/crate.jpg";
     const puzzle = new SlidingPuzzle({
       size: 4, // 4x4 grid
       imageSrc: puzzleImageSrc, // Provide the image path
