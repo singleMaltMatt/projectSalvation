@@ -462,6 +462,7 @@ p.flicker-frame{
   align-items: center;
   gap: 20px;
   padding: 20px;
+  margin-top: 25%;
 }
 
 .puzzle-board {

@@ -284,6 +284,7 @@ window.HOUSE_FLAG_FREQUENCY = false;
 window.HOUSE_FLAG_ONE = false;
 window.HOUSE_FLAG_TWO = false;
 window.HOUSE_FLAG_COORDINATES = false;
+window.HOUSE_FLAG_BASEMENT = false;
 // sceneHouseLarge
 window.LARGE_HOUSE_LIVING_ROOM = false;
 window.LARGE_HOUSE_PHOTOS_VIEWED = false;
@@ -406,6 +407,7 @@ function getGameState() {
       HOUSE_FLAG_ONE,
       HOUSE_FLAG_TWO,
       HOUSE_FLAG_COORDINATES,
+      HOUSE_FLAG_BASEMENT,
       // sceneHouseLarge
       LARGE_HOUSE_LIVING_ROOM,
       LARGE_HOUSE_PHOTOS_VIEWED,
@@ -5598,22 +5600,34 @@ async function sceneHall() {
     sceneTownSquare();
   });
 
-  attemptBtn.addEventListener("pointerup", async function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
+attemptBtn.addEventListener("pointerup", async function () {
+  // Button click check
+  if (isTyping || btnRecentlyClicked) return;
+  btnRecentlyClicked = true;
+  // It's better to set btnRecentlyClicked to false *after* the transition delay
+  // to prevent rapid clicks during the transition. We'll handle this below.
 
-    // Clear text container
+  // Clear text container
+  textContainer.innerHTML = "";
+  
+  // Change background image and set transition
+  gameContainer.style.backgroundImage = "url(img/33-screen-01.png)";
+  gameContainer.style.transition = "background-image 2s ease-in-out";
+
+  // remove button from user controls container
+  leaveBtn.remove(); // remove relevant buttons
+  attemptBtn.remove();
+
+  // --- CHANGE: Wait for the background transition to complete ---
+  // Use setTimeout to delay the rest of the logic by 4 seconds
+  setTimeout(async () => {
+    // Now that the transition is (mostly) complete, allow button clicks again
+    btnRecentlyClicked = false;
+
+    // Re-clear text container in case anything appeared during the delay (unlikely, but safe)
     textContainer.innerHTML = "";
 
-    // remove button from user controls container
-    leaveBtn.remove(); // remove relevant buttons
-    attemptBtn.remove(); // |This is where the circuit mini game must come. somehow...
-
-    //init game
+    // Initialize the puzzle after the delay
     const { SlidingPuzzle } = await import("./slidingPuzzle.js");
     const puzzleImageSrc = "img/crate.jpg";
     const puzzle = new SlidingPuzzle({
@@ -5635,6 +5649,9 @@ async function sceneHall() {
 
         const puzzleElement = textContainer.querySelector('.sliding-puzzle');
         if (puzzleElement) puzzleElement.remove();
+
+        gameContainer.style.backgroundImage = "url(img/34-gun-crate.png)";
+        gameContainer.style.transition = "background-image 4s ease-in-out";
         // Clear text container
         textContainer.innerHTML = "";
 
@@ -5673,9 +5690,11 @@ async function sceneHall() {
       },
       onCancel: async () => {
         if (puzzleCancelButton && puzzleCancelButton.parentNode) {
-        puzzleCancelButton.remove();
+          puzzleCancelButton.remove();
         }
         // Clear text container if needed
+        gameContainer.style.backgroundImage = "url(img/32-crate-screen.png)";
+        gameContainer.style.transition = "background-image 4s ease-in-out";
         textContainer.innerHTML = "";
         // Provide feedback that the puzzle was cancelled (optional)
         // IMPORTANT: Remove the puzzle visuals from the text area
@@ -5692,7 +5711,8 @@ async function sceneHall() {
         // Make sure these buttons exist and are correctly named for this context
         userControlsContainer.appendChild(attemptBtn); // Or whatever button lets you retry
         userControlsContainer.appendChild(leaveBtn);   // Or whatever button lets you leave this interaction
-        btnRecentlyClicked = false; // Allow button clicks again
+        // Note: btnRecentlyClicked is already false from the outer setTimeout
+        // btnRecentlyClicked = false; // Allow button clicks again (not needed here)
         
         // Also remove any other puzzle-related text if necessary
       }
@@ -5701,12 +5721,15 @@ async function sceneHall() {
     // Call init and get both the container and the cancel button
     const { container: puzzleContainer, cancelButton: puzzleCancelButton } = puzzle.init();
 
-    // Add the puzzle board/game area to the text container (as before)
+    // Add the puzzle board/game area to the text container (AFTER the delay)
     textContainer.appendChild(puzzleContainer);
 
-    // Add the "Give Up" button to the user controls container (NEW)
+    // Add the "Give Up" button to the user controls container (AFTER the delay)
     userControlsContainer.appendChild(puzzleCancelButton);
-  });
+
+  }, 2000); // Delay of 4000ms (4 seconds) to match the CSS transition duration
+  // --- END CHANGE ---
+});
 
   returnToTownBtn.addEventListener("pointerup", async function () {
     // Button click check
@@ -5766,7 +5789,7 @@ async function sceneHall() {
 //|SCENE INN
 async function sceneInn() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/000inn.png)";
+  gameContainer.style.backgroundImage = "url(img/35-inn.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
 
   let userControlsContainer = document.querySelector(
@@ -5795,6 +5818,7 @@ async function sceneInn() {
   let spokeToBtn = document.createElement("button");
   let spokeNotBtn = document.createElement("button");
   let nothingBtn = document.createElement("button");
+  let enterInn = document.createElement("button");
 
   // set button text
   townSquareBtn.textContent = "Go to town square";
@@ -5809,9 +5833,10 @@ async function sceneInn() {
   fatherBtn.textContent = "Your father is dead";
   cottageBtn.textContent = "In a cottage nearby";
   filipBtn.textContent = "Tell her about filip";
-  spokeToBtn.textContent = "I spoke to father jakob";
-  spokeNotBtn.textContent = "I haven't spoken to father jacob";
+  spokeToBtn.textContent = "I spoke to father Jakob";
+  spokeNotBtn.textContent = "I haven't spoken to father Jacob";
   nothingBtn.textContent = "Nothing at the moment";
+  enterInn.textContent = "Enter the inn";
 
   // add styling for button
   applyGlassStylingGreyBtn(townSquareBtn);
@@ -5828,18 +5853,47 @@ async function sceneInn() {
   applyGlassStylingGreyBtn(spokeToBtn);
   applyGlassStylingGreyBtn(spokeNotBtn);
   applyGlassStylingGreyBtn(nothingBtn);
+  applyGlassStylingGreyBtn(enterInn);
 
   await typeText(
     textContainer,
-    "<p>The small inn exudes warmth and charm, with its polished wooden floors and cozy hearth crackling gently. Wooden chairs and tables, each bearing the mark of countless conversations and laughter, invite patrons to linger. In one corner, the inn's matriarch, an old, greying lady with a twinkle in her eye, tends to the hearth, her wisdom evident in the lines etched upon her face</p>",
+    "<p>This is some super amazing text to describe the inn</p>",
     applyGlassStylingRed
-  );
+  )
 
   await sleep(1500);
 
-  // append button to user controls container
-  userControlsContainer.appendChild(talkBtn);
-  userControlsContainer.appendChild(townSquareBtn);
+  userControlsContainer.appendChild(enterInn);
+
+    enterInn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+  
+      // Clear text container
+      gameContainer.style.backgroundImage = "url(img/36-inn-inside.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
+
+      textContainer.innerHTML = "";
+  
+      // remove button from user controls container
+      enterInn.remove(); // remove relevant buttons
+  
+      await typeText(
+        textContainer,
+        "<p>The small inn exudes warmth and charm, with its polished wooden floors and cozy hearth crackling gently. Wooden chairs and tables, each bearing the mark of countless conversations and laughter, invite patrons to linger. In one corner, the inn's matriarch, an old, greying lady with a twinkle in her eye, tends to the hearth, her wisdom evident in the lines etched upon her face</p>",
+        applyGlassStylingRed
+      );
+
+      await sleep(1500);
+    
+      // append button to user controls container
+      userControlsContainer.appendChild(talkBtn);
+      userControlsContainer.appendChild(townSquareBtn);
+    });
 
   townSquareBtn.addEventListener("pointerup", async function () {
     // Button click check
@@ -5881,6 +5935,8 @@ async function sceneInn() {
     }, 1000);
 
     // Clear text container
+    gameContainer.style.backgroundImage = "url(img/37-ingrid.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
     textContainer.innerHTML = "";
 
     // remove button from user controls container
@@ -6986,7 +7042,7 @@ async function scenePool() {
       applyGlassStylingRed
     );
 
-    await sleep(1500);
+    await pause();
 
     textContainer.innerHTML = "";
 
@@ -7024,7 +7080,6 @@ async function scenePool() {
     } else {
       userControlsContainer.appendChild(townSquareBtn); 
     }
-
   });
 }
 
@@ -7334,6 +7389,7 @@ async function sceneHouseFlag() {
     let goBackBtn = document.createElement("button");
     let leaveRoomBtn = document.createElement("button");
     let radioBtn = document.createElement("button");
+    let enterHouseBtn = document.createElement("button");
  
     // set button text
     exploreBtn.textContent = "Go through the house";
@@ -7348,6 +7404,7 @@ async function sceneHouseFlag() {
     goBackBtn.textContent = "Go back upstairs";
     leaveRoomBtn.textContent = "Leave room";
     radioBtn.textContent = "Try to use the CB radio";
+    enterHouseBtn.textContent = "Go inside the house";
 
     // add styling for button
     applyGlassStylingGreyBtn(exploreBtn);
@@ -7362,18 +7419,47 @@ async function sceneHouseFlag() {
     applyGlassStylingGreyBtn(goBackBtn);
     applyGlassStylingGreyBtn(leaveRoomBtn);
     applyGlassStylingGreyBtn(radioBtn);
+    applyGlassStylingGreyBtn(enterHouseBtn);
+  
+  await typeText(
+    textContainer,
+    "<p>Intro description for house with flag goes here.</p>",
+    applyGlassStylingRed
+  )
+  
+  await sleep(1500);
 
-    await typeText(
-      textContainer,
-      "<p>You step inside the small house. If you didn't know better, you would expect someone to be home, spending the day in the kitchen, or reading a book in the clean comfortable living room, but as you look closer you can see that there is no one home.<br><br>An untouched plate of food sits on the kitchen counter, buzzing with flies. A thin layer of dust covers the counter tops, and a tap is constantly dripping.</p>",
-      applyGlassStylingRed
-    );
+  userControlsContainer.appendChild(enterHouseBtn);
 
-    await sleep(1500); // normal wait time between texts
-
-    // append button to user controls container
-    userControlsContainer.appendChild(exploreBtn);
-    userControlsContainer.appendChild(leaveBtn);
+    enterHouseBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+  
+      // Clear text container
+      gameContainer.style.backgroundImage = "url(img/38-house-with-flag-inside.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
+      textContainer.innerHTML = "";
+  
+      // remove button from user controls container
+      enterHouseBtn.remove(); // remove relevant buttons
+  
+      // write new text
+      await typeText(
+        textContainer,
+        "<p>You step inside the small house. If you didn't know better, you would expect someone to be home, spending the day in the kitchen, or reading a book in the clean comfortable living room, but as you look closer you can see that there is no one home.<br><br>An untouched plate of food sits on the kitchen counter, buzzing with flies. A thin layer of dust covers the counter tops, and a tap is constantly dripping.</p>",
+        applyGlassStylingRed
+      );
+  
+      await sleep(1500); // normal wait time between texts
+  
+      // append button to user controls container
+      userControlsContainer.appendChild(exploreBtn);
+      userControlsContainer.appendChild(leaveBtn);
+    });
 
     exploreBtn.addEventListener("pointerup", async function () {
       // Button click check
@@ -7385,6 +7471,8 @@ async function sceneHouseFlag() {
 
       // Clear text container
       textContainer.innerHTML = "";
+      gameContainer.style.backgroundImage = "url(img/39-house-with-flag-stairs.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
 
       // remove button from user controls container
       exploreBtn.remove();
@@ -7686,26 +7774,38 @@ async function sceneHouseFlag() {
       }, 1000);
 
       // Clear text container
+      
       textContainer.innerHTML = "";
-
+      gameContainer.style.backgroundImage = "url(img/40-house-with-flag-basement.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       // remove button from user controls container
       leaveBtn.remove();
       upstairsBtn.remove();
       basementBtn.remove();
       goBackBtn.remove();
 
-      // REMEMBER TO ADD CONDITIONAL THAT BASEMENT WAS CHECKED!!!!!!!!!
-      
-      await typeText(
-        textContainer,
-        "<p>The room at the bottom of the staircase is pitch black. You can't make out anything in the room, but then you notice a single dim point of orange light in the distance.</p>",
-        applyGlassStylingRed
-      );
+      if (HOUSE_FLAG_BASEMENT == true && HOUSE_FLAG_COORDINATES == true) {
+        await typeTextItalic(
+          textContainer,
+          "<p>There is nothing here for me.</p>",
+          applyGlassStylingGreen
+        );
 
-      await sleep(1500);
+        await sleep(1500);
 
-      userControlsContainer.appendChild(lightBtn);
-      userControlsContainer.appendChild(goBackBtn);
+        userControlsContainer.appendChild(goBackBtn);
+      } else {
+        await typeText(
+          textContainer,
+          "<p>The room at the bottom of the staircase is pitch black. You can't make out anything in the room, but then you notice a single dim point of orange light in the distance.</p>",
+          applyGlassStylingRed
+        );
+  
+        await sleep(1500);
+  
+        userControlsContainer.appendChild(lightBtn);
+        userControlsContainer.appendChild(goBackBtn);
+      }
     });
 
     lightBtn.addEventListener("pointerup", async function () {
@@ -7716,6 +7816,9 @@ async function sceneHouseFlag() {
         btnRecentlyClicked = false;
       }, 1000);
 
+
+      // ADD A CONDITIONAL FOR THE LIGHT SO THAT YOU DONT HAVE TO CLICK ON THE HEAD TOWARDS THE LIGHT BUTTON AGAIN
+      
       // Clear text container
       textContainer.innerHTML = "";
 
@@ -7728,6 +7831,10 @@ async function sceneHouseFlag() {
         "<p>You slowly walk through the darkness towards the dim point of light, when suddenly something touches your face.<br><br>You swing your hands out and grab on to something and instinctually pull at it, and a lightbulb above you clicks to life.<br><br>You are startled by the sudden bright light illuminating the room, but as your eyes adjust, you see that you are in a workshop of sorts.<br><br>A few tools and spare parts lay around a workbench, with some mounted on the wall.<br>You see that the orange light you saw is coming from the microphone of a CB radio.</p>",
         applyGlassStylingRed
       );
+
+      HOUSE_FLAG_BASEMENT = true;
+
+      await sleep(1500);
 
       userControlsContainer.appendChild(radioBtn);
 
@@ -7771,7 +7878,7 @@ async function sceneHouseFlag() {
         await typeTextItalic(
           textContainer,
           "<p>'We are the last remaining citizens of Neo-Norway...<br><br>We are in an improvised bunker...<br><br>We are resisting the destruction of humanity...<br><br>Our coordinates are 59.1269 degrees North, 11.4036 degrees East...<br><br>Join us if you are able...<br><br>We are the last hope...'</p>",
-          applyGlassStylingRed
+          applyGlassStylingBlue
         );
 
         await pause();
