@@ -285,6 +285,7 @@ window.HOUSE_FLAG_ONE = false;
 window.HOUSE_FLAG_TWO = false;
 window.HOUSE_FLAG_COORDINATES = false;
 window.HOUSE_FLAG_BASEMENT = false;
+window.HOUSE_FLAG_BASEMENT_LIGHT = false;
 // sceneHouseLarge
 window.LARGE_HOUSE_LIVING_ROOM = false;
 window.LARGE_HOUSE_PHOTOS_VIEWED = false;
@@ -307,6 +308,7 @@ let currentSafeLock = null;
 // sceneHouseOvergrown
 window.HOUSE_OVERGROWN_STERIODS_USED = false;
 window.HOUSE_OVERGROWN_CAT_TOY = false;
+window.HOUSE_OVERGROWN_CAT_TOY_SEEN = false;
 window.HOUSE_OVERGROWN_EXPLORED = false;
 // sceneHouseWhite
 window.HOUSE_WHITE_EXPLORED = false;
@@ -408,6 +410,7 @@ function getGameState() {
       HOUSE_FLAG_TWO,
       HOUSE_FLAG_COORDINATES,
       HOUSE_FLAG_BASEMENT,
+      HOUSE_FLAG_BASEMENT_LIGHT,
       // sceneHouseLarge
       LARGE_HOUSE_LIVING_ROOM,
       LARGE_HOUSE_PHOTOS_VIEWED,
@@ -428,6 +431,7 @@ function getGameState() {
       // sceneHouseOvergrown
       HOUSE_OVERGROWN_STERIODS_USED,
       HOUSE_OVERGROWN_CAT_TOY,
+      HOUSE_OVERGROWN_CAT_TOY_SEEN,
       HOUSE_OVERGROWN_EXPLORED,
       // sceneHouseWhite
       HOUSE_WHITE_EXPLORED,
@@ -7168,11 +7172,11 @@ async function sceneResidential() {
   // set button text
   townSquareBtn.textContent = "Go to town square";
   lookBtn.textContent = "Look at houses";
-  rundownHouseBtn.textContent = "Enter the rundown house";
-  flagHouseBtn.textContent = "Enter the house with the flag";
-  largeHouseBtn.textContent = "Enter the large house";
-  overgrownHouseBtn.textContent = "Enter the overgrown house";
-  whiteHouseBtn.textContent = "Enter the white house";
+  rundownHouseBtn.textContent = "Go to the rundown house";
+  flagHouseBtn.textContent = "Go to the house with the flag";
+  largeHouseBtn.textContent = "Go to the large house";
+  overgrownHouseBtn.textContent = "Go to the overgrown house";
+  whiteHouseBtn.textContent = "Go to the white house";
 
   // add styling for button
   applyGlassStylingGreyBtn(townSquareBtn);
@@ -7390,6 +7394,7 @@ async function sceneHouseFlag() {
     let leaveRoomBtn = document.createElement("button");
     let radioBtn = document.createElement("button");
     let enterHouseBtn = document.createElement("button");
+    let goRadioBtn = document.createElement("button");
  
     // set button text
     exploreBtn.textContent = "Go through the house";
@@ -7405,6 +7410,7 @@ async function sceneHouseFlag() {
     leaveRoomBtn.textContent = "Leave room";
     radioBtn.textContent = "Try to use the CB radio";
     enterHouseBtn.textContent = "Go inside the house";
+    goRadioBtn.textContent = "Go to the CB radio";
 
     // add styling for button
     applyGlassStylingGreyBtn(exploreBtn);
@@ -7420,6 +7426,7 @@ async function sceneHouseFlag() {
     applyGlassStylingGreyBtn(leaveRoomBtn);
     applyGlassStylingGreyBtn(radioBtn);
     applyGlassStylingGreyBtn(enterHouseBtn);
+    applyGlassStylingGreyBtn(goRadioBtn);
   
   await typeText(
     textContainer,
@@ -7500,6 +7507,8 @@ async function sceneHouseFlag() {
       }, 1000);
 
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/41-house-with-flag-hallway.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
 
       // remove button from user controls container
@@ -7545,6 +7554,8 @@ async function sceneHouseFlag() {
       }, 1000);
 
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/44-house-with-flag-bedroom.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
 
       // remove button from user controls container
@@ -7616,6 +7627,8 @@ async function sceneHouseFlag() {
         );
 
         await pause();
+        INVENTORY.push({ name: "Note", description: "A note you found in the house with the flag. It has a frequency, '127.16 Mhz' written on it." });
+        JOURNAL.push({ title: "The House with the Flag", text: "I found a note in the main bedroom while exploring the house with the flag. I wonder if this frequency could be used on some kind of communication device in town?" });
         HOUSE_FLAG_FREQUENCY = true;
 
         await typeText(
@@ -7651,6 +7664,8 @@ async function sceneHouseFlag() {
       }, 1000);
 
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/42-house-with-flag-child-room.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
 
       // remove button from user controls container
@@ -7698,6 +7713,8 @@ async function sceneHouseFlag() {
       }, 1000);
 
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/43-house-with-flag-bathroom.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
 
       // remove button from user controls container
@@ -7745,6 +7762,8 @@ async function sceneHouseFlag() {
       }, 1000);
 
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/39-house-with-flag-stairs.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
 
       // remove button from user controls container
@@ -7802,9 +7821,14 @@ async function sceneHouseFlag() {
         );
   
         await sleep(1500);
-  
-        userControlsContainer.appendChild(lightBtn);
-        userControlsContainer.appendChild(goBackBtn);
+        
+        if (HOUSE_FLAG_BASEMENT_LIGHT == true) {
+          userControlsContainer.appendChild(goRadioBtn);
+          userControlsContainer.appendChild(goBackBtn);
+        } else {
+          userControlsContainer.appendChild(lightBtn);
+          userControlsContainer.appendChild(goBackBtn);
+        }
       }
     });
 
@@ -7816,9 +7840,6 @@ async function sceneHouseFlag() {
         btnRecentlyClicked = false;
       }, 1000);
 
-
-      // ADD A CONDITIONAL FOR THE LIGHT SO THAT YOU DONT HAVE TO CLICK ON THE HEAD TOWARDS THE LIGHT BUTTON AGAIN
-      
       // Clear text container
       textContainer.innerHTML = "";
 
@@ -7833,6 +7854,7 @@ async function sceneHouseFlag() {
       );
 
       HOUSE_FLAG_BASEMENT = true;
+      HOUSE_FLAG_BASEMENT_LIGHT = true;
 
       await sleep(1500);
 
@@ -7840,6 +7862,122 @@ async function sceneHouseFlag() {
 
     });
 
+    goRadioBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+
+      // Clear text container
+      textContainer.innerHTML = "";
+
+      // remove button from user controls container
+      goRadioBtn.remove();
+      goBackBtn.remove();
+
+      if (HOUSE_FLAG_FREQUENCY == true) {
+        await typeTextItalic(
+          textContainer,
+          "<p>I could try finding the frequency on the note I found...</p>",
+          applyGlassStylingGreen
+        );
+
+        await sleep(1500);
+
+        textContainer.innerHTML = "";
+
+        await typeText(
+          textContainer,
+          "<p>You turn the dial through the soft static until the needle reaches 127.16 Mhz...<br>and suddenly the silence is broken by a blaring sound, like a siren.<br><br>You listen to the continuous beeping for a few seconds when a garbled voice starts to speak:</p>",
+          applyGlassStylingRed
+        );
+
+        await pause();
+
+        textContainer.innerHTML = "";
+
+        await typeTextItalic(
+          textContainer,
+          "<p>'We are the last remaining citizens of Neo-Norway...<br><br>We are in an improvised bunker...<br><br>We are resisting the destruction of humanity...<br><br>Our coordinates are 59.1269 degrees North, 11.4036 degrees East...<br><br>Join us if you are able...<br><br>We are the last hope...'</p>",
+          applyGlassStylingBlue
+        );
+
+        await pause();
+        textContainer.innerHTML = "";
+
+        await typeText(
+          textContainer,
+          "<p>You grab the microphone and speak into it:</p>",
+          applyGlassStylingRed
+        );
+
+        await sleep(1500);
+
+        await typeTextItalic(
+          textContainer,
+          "<p>Hello? Can you hear me? Hello!?</p>",
+          applyGlassStylingGreen
+        );
+
+        await sleep(3500);
+        textContainer.innerHTML = "";
+
+        await typeText(
+          textContainer,
+          "<p>...but the siren sound blares again, until a few moments later the message starts repeating.<br><br>This is a broadcast. Who knows how long it has been repeating.</p>",
+          applyGlassStylingRed
+        );
+
+        await pause();
+        textContainer.innerHTML = "";
+
+        if (CHURCH_STORY == true) {
+          await typeTextItalic(
+            "<p>This must be the resistance Father Jakob Spoke about...<br>These coordinates are worth investigating...</p>",
+            applyGlassStylingGreen
+          );
+
+          userControlsContainer.appendChild(goBackBtn);
+        } else {
+          await typeText(
+            textContainer,
+            "<p>Destruction of humanity?<br>What is going on??<br>Someone must know something about this?<br>Maybe these coordinates are worth investigating...</p>",
+            applyGlassStylingGreen
+          );
+
+          HOUSE_FLAG_COORDINATES = true;
+
+          userControlsContainer.appendChild(goBackBtn);
+        }
+      } else {
+        await typeText(
+          textContainer,
+          "<p>You turn the dial on the radio between frequencies, but you hear only soft static.<br>You push the button on the microphone and say </p>",
+          applyGlassStylingRed
+        );
+
+        await typeTextItalic(
+          textContainer,
+          "<p>Hello?</p>",
+          applyGlassStylingGreen
+        );
+
+        await sleep(2500);
+
+        await typeText(
+          textContainer,
+          "<p>... ... No Response.</p>",
+          applyGlassStylingRed
+        );
+
+        await sleep(1500);
+
+        userControlsContainer.appendChild(goBackBtn);
+      }
+      });
+  
     radioBtn.addEventListener("pointerup", async function () {
       // Button click check
       if (isTyping || btnRecentlyClicked) return;
@@ -7964,11 +8102,14 @@ async function sceneHouseFlag() {
       }, 1000);
 
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/39-house-with-flag-stairs.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
 
       // remove button from user controls container
       lightBtn.remove();
       goBackBtn.remove();
+      goRadioBtn.remove();
 
       await typeText(
         textContainer,
@@ -8015,7 +8156,7 @@ async function sceneHouseFlag() {
 //|SCENE HOUSE LARGE
 async function sceneHouseLarge() {
     let gameContainer = document.querySelector(".container");
-    gameContainer.style.backgroundImage = "url(img/111large-house.png)";
+    gameContainer.style.backgroundImage = "url(img/50-large-house.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
   
     let userControlsContainer = document.querySelector(
@@ -8139,6 +8280,8 @@ async function sceneHouseLarge() {
       }, 1000);
   
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/51-large-house-door.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
   
       // remove button from user controls container
@@ -8216,6 +8359,8 @@ async function sceneHouseLarge() {
       }, 1000);
   
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/52-large-house-inside.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
   
       // remove button from user controls container
@@ -8254,6 +8399,8 @@ async function sceneHouseLarge() {
       }, 1000);
   
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/54-mayor-hallway.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
   
       // remove button from user controls container
@@ -8349,7 +8496,7 @@ async function sceneHouseLarge() {
       textContainer.innerHTML = "";
 
       //Load image
-      gameContainer.style.backgroundImage = "url(img/mantle-photo.png)";
+      gameContainer.style.backgroundImage = "url(img/53-mayor-photo.png)";
       gameContainer.style.transition = "background-image 4s ease-in-out";
   
       // remove button from user controls container
@@ -8474,6 +8621,8 @@ async function sceneHouseLarge() {
       }, 1000);
   
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/52-large-house-inside.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
   
       // remove button from user controls container
@@ -8538,6 +8687,8 @@ async function sceneHouseLarge() {
       }, 1000);
   
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/52-large-house-inside.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
   
       // remove button from user controls container
@@ -8607,6 +8758,8 @@ async function sceneHouseLarge() {
       }, 1000);
   
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/55-mayor-house-bedroom.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
   
       // remove button from user controls container
@@ -8661,6 +8814,8 @@ async function sceneHouseLarge() {
       }, 1000);
   
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/54-mayor-hallway.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
   
       // remove button from user controls container
@@ -8701,6 +8856,8 @@ async function sceneHouseLarge() {
       }, 1000);
   
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/56-mayor-trophy-room.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
   
       // remove button from user controls container
@@ -8750,6 +8907,8 @@ async function sceneHouseLarge() {
       }, 1000);
   
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/57-mayors-office.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
   
       // remove button from user controls container
@@ -8770,6 +8929,8 @@ async function sceneHouseLarge() {
         await pause();
 
         textContainer.innerHTML = "";
+        gameContainer.style.backgroundImage = "url(img/58-dead-mayor.jpg)";
+        gameContainer.style.transition = "background-image 4s ease-in-out";
 
         await typeText(
           textContainer,
@@ -8860,7 +9021,7 @@ async function sceneHouseLarge() {
 
         textContainer.innerHTML = "";
         gameContainer.removeChild(video);
-        gameContainer.style.backgroundImage = "url(img/111large-house.png)";
+        gameContainer.style.backgroundImage = "url(img/57-mayors-office.png)";
         gameContainer.style.transition = "background-image 4s ease-in-out";
 
         await typeText(
@@ -8898,6 +9059,8 @@ async function sceneHouseLarge() {
   
       // Clear text container
       textContainer.innerHTML = "";
+      gameContainer.style.backgroundImage = "url(img/58-dead-mayor.jpg)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
   
       // remove button from user controls container
       inspectBodyBtn.remove();
@@ -8973,7 +9136,7 @@ async function sceneHouseLarge() {
 
       await sleep(1500);
 
-      INVENTORY.push({name: "Old Fashioned Key", description: "An old fashioned key you found on the mayor's mutilated corpse."});
+      INVENTORY.push({name: "Old Fashioned Key", description: "An old fashioned key you found on the mutilated corpse."});
 
       // append new button
       userControlsContainer.appendChild(inspectRoomBtn); // append relevant buttons
@@ -8989,6 +9152,8 @@ async function sceneHouseLarge() {
       }, 1000);
   
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/57-mayors-office.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
   
       // remove button from user controls container
@@ -9082,6 +9247,8 @@ async function sceneHouseLarge() {
         await pause();
 
         textContainer.innerHTML = "";
+        gameContainer.style.backgroundImage = "url(img/58-mayor-safe.png)";
+        gameContainer.style.transition = "background-image 4s ease-in-out";
 
         await typeText(
           textContainer,
@@ -9331,6 +9498,8 @@ async function sceneHouseLarge() {
       }, 1000);
 
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/57-mayors-office.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
 
       // remove button from user controls container
@@ -9558,6 +9727,8 @@ async function sceneHouseLarge() {
       }, 1000);
   
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/54-mayor-hallway.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
   
       // remove button from user controls container
@@ -9664,7 +9835,7 @@ async function sceneHouseLarge() {
 //|SCENE HOUSE OVERGROWN
 async function sceneHouseOvergrown() {
     let gameContainer = document.querySelector(".container");
-    gameContainer.style.backgroundImage = "url(img/111overgrown-house.png)";
+    gameContainer.style.backgroundImage = "url(img/45-overgrown-house.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
   
     let userControlsContainer = document.querySelector(
@@ -9819,6 +9990,8 @@ async function sceneHouseOvergrown() {
       }, 1000);
   
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/46-overgrown-inside.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
   
       // remove button from user controls container
@@ -9862,7 +10035,12 @@ async function sceneHouseOvergrown() {
           applyGlassStylingRed
         );
 
+        gameContainer.style.backgroundImage = "url(img/47-cat-toy.png)";
+        gameContainer.style.transition = "background-image 4s ease-in-out";
+
         await pause();
+
+        HOUSE_OVERGROWN_CAT_TOY_SEEN = true;
 
         textContainer.innerHTML = "";
 
@@ -9966,7 +10144,9 @@ async function sceneHouseOvergrown() {
       takeToyBtn.remove();
       leaveToyBtn.remove();
 
-      HOUSE_OVERGROWN_EXPLORED = true;
+      if (HOUSE_OVERGROWN_CAT_TOY_SEEN == true) {
+        HOUSE_OVERGROWN_EXPLORED = true;
+      }
 
       sceneResidential();
     });
@@ -9998,6 +10178,7 @@ async function sceneHouseRundown() {
     let openDoorBtn = document.createElement("button");
     let goBackBtn = document.createElement("button");
     let leaveRoomTwoBtn = document.createElement("button");
+    let enterHouseBtn = document.createElement("button");
 
     // set button text
     exploreBtn.textContent = "Explore the house";
@@ -10008,6 +10189,7 @@ async function sceneHouseRundown() {
     openDoorBtn.textContent = "Enter the open door";
     goBackBtn.textContent = "Go downstairs and leave the house";
     leaveRoomTwoBtn.textContent = "Leave";
+    enterHouseBtn.textContent = "Enter the house";
 
     // add styling for button
     applyGlassStylingGreyBtn(exploreBtn);
@@ -10018,44 +10200,71 @@ async function sceneHouseRundown() {
     applyGlassStylingGreyBtn(openDoorBtn);
     applyGlassStylingGreyBtn(goBackBtn);
     applyGlassStylingGreyBtn(leaveRoomTwoBtn);
+    applyGlassStylingGreyBtn(enterHouseBtn);
 
     // local conditionals
+    await typeText(
+      textContainer,
+      "<p>Rundown house intro goes here.</p>",
+      applyGlassStylingRed
+    );
 
-
-    if (HOUSE_RUNDOWN_ONE_AGAIN == true && HOUSE_RUNDOWN_TWO_AGAIN == true && HOUSE_RUNDOWN_THREE_AGAIN == true && HOUSE_RUNDOWN_FOUR_AGAIN == true) {
-      await typeText(
-        textContainer,
-        "<p>You have already explored this house, there is nothing of interest here.</p>",
-        applyGlassStylingRed
-      );
-
-      await sleep(1500);
-      
-      userControlsContainer.appendChild(leaveBtn);
-    } else if (HOUSE_RUNDOWN_FOUR == true) {
-      await typeText(
-        textContainer,
-        "<p>For reasons unknown, you enter the rundown house again.</p>",
-        applyGlassStylingRed
-      );
-
-      await sleep(1500);
-      // append button to user controls container
-      userControlsContainer.appendChild(exploreBtn);
-      userControlsContainer.appendChild(leaveBtn);
-     } else {
-      await typeText(
-        textContainer,
-        "<p>You try the door of the shabby looking house, and unsurprisingly it is unlocked.<br><br>As you step inside you want to call out to see if someone is home, but stop yourself. It is very evident that no one lives here.<br><br>Dried leaves litter the inside of the small house. They must have blown through the broken windows over time.</p>",
-        applyGlassStylingRed
-      );
-      
-      await sleep(1500);
+    await sleep(1500);
+    
+    // append button to user controls container
+    userControlsContainer.appendChild(enterHouseBtn);
   
-      // append button to user controls container
-      userControlsContainer.appendChild(exploreBtn);
-      userControlsContainer.appendChild(leaveBtn);
-    }
+    enterHouseBtn.addEventListener("pointerup", async function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+  
+      // Clear text container
+      gameContainer.style.backgroundImage = "url(img/59-rundown-house-inside.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
+      textContainer.innerHTML = "";
+  
+      // remove button from user controls container
+      enterHouseBtn.remove(); // remove relevant buttons
+
+      if (HOUSE_RUNDOWN_ONE_AGAIN == true && HOUSE_RUNDOWN_TWO_AGAIN == true && HOUSE_RUNDOWN_THREE_AGAIN == true && HOUSE_RUNDOWN_FOUR_AGAIN == true) {
+        await typeText(
+          textContainer,
+          "<p>You have already explored this house, there is nothing of interest here.</p>",
+          applyGlassStylingRed
+        );
+  
+        await sleep(1500);
+        
+        userControlsContainer.appendChild(leaveBtn);
+      } else if (HOUSE_RUNDOWN_FOUR == true) {
+        await typeText(
+          textContainer,
+          "<p>For reasons unknown, you enter the rundown house again.</p>",
+          applyGlassStylingRed
+        );
+  
+        await sleep(1500);
+        // append button to user controls container
+        userControlsContainer.appendChild(exploreBtn);
+        userControlsContainer.appendChild(leaveBtn);
+       } else {
+        await typeText(
+          textContainer,
+          "<p>You try the door of the shabby looking house, and unsurprisingly it is unlocked.<br><br>As you step inside you want to call out to see if someone is home, but stop yourself. It is very evident that no one lives here.<br><br>Dried leaves litter the inside of the small house. They must have blown through the broken windows over time.</p>",
+          applyGlassStylingRed
+        );
+        
+        await sleep(1500);
+    
+        // append button to user controls container
+        userControlsContainer.appendChild(exploreBtn);
+        userControlsContainer.appendChild(leaveBtn);
+      }
+    });
 
     exploreBtn.addEventListener("pointerup", async function () {
       // Button click check
@@ -10066,6 +10275,8 @@ async function sceneHouseRundown() {
       }, 1000);
 
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/60-rundown-house-inside-2.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
 
       // remove button from user controls container
@@ -10125,6 +10336,8 @@ async function sceneHouseRundown() {
         );
 
         await sleep(1500);
+        gameContainer.style.backgroundImage = "url(img/61-rundown-house-robbie-rat.png)";
+        gameContainer.style.transition = "background-image 4s ease-in-out";
       
         await typeText(
           textContainer,
@@ -10324,6 +10537,8 @@ async function sceneHouseRundown() {
       }, 1000);
 
       // Clear text container
+      gameContainer.style.backgroundImage = "url(img/14-rundown-house-upstairs.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
 
       // remove button from user controls container
@@ -10464,6 +10679,7 @@ async function sceneHouseRundown() {
       openDoorBtn.remove();
       goBackBtn.remove();
       leaveRoomTwoBtn.remove();
+      enterHouseBtn.remove();
 
       sceneResidential();
     });
@@ -10473,7 +10689,7 @@ async function sceneHouseRundown() {
 //|SCENE HOUSE WHITE
 async function sceneHouseWhite() {
     let gameContainer = document.querySelector(".container");
-    gameContainer.style.backgroundImage = "url(img/111white-house.png)";
+    gameContainer.style.backgroundImage = "url(img/48-white-house.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
   
     let userControlsContainer = document.querySelector(
@@ -10628,6 +10844,8 @@ async function sceneHouseWhite() {
           applyGlassStylingRed
         );
 
+        gameContainer.style.backgroundImage = "url(img/49-salazar-snake.png)";
+        gameContainer.style.transition = "background-image 4s ease-in-out";
         await sleep(1500);
 
         userControlsContainer.appendChild(walkBtn);
