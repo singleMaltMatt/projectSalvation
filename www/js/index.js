@@ -42,6 +42,199 @@ let interruptionIndex = 0;
 let btnRecentlyClicked = false;
 let isTyping = false;
 
+// AUDIO
+// let currentMedia = null; // Holds the current cordova-plugin-media Media object
+// let currentTrackName = null; // Name of the currently playing track
+// let isMediaPlaying = false; // Flag to track if media is considered playing
+// let mediaFadeInterval = null; // To hold the interval ID for fading
+
+// // A map of track names to file paths
+// const AUDIO_TRACKS = {
+//   'intro': 'aud/intro.mp3',
+//   // 'hallway': 'audio/hallway-music.mp3',
+//   // 'ambient': 'audio/ambient-sounds.mp3',
+//   // 'tense': 'audio/tense-music.mp3'
+//   // // Add more tracks as needed
+// };
+
+// // Function to play a named track, handling stop/fade of previous track
+// async function playTrack(trackName, loop = false, fadeInDuration = 1000) {
+//   console.log(`Request to play track: ${trackName}`);
+  
+//   // Check if the requested track is already playing
+//   if (currentTrackName === trackName && isMediaPlaying) {
+//     console.log(`Track ${trackName} is already playing.`);
+//     return;
+//   }
+
+//   // Stop the currently playing track (with fade out)
+//   await stopCurrentTrack(1000); // Fade out for 1 second
+
+//   // Get the file path for the new track
+//   const trackSrc = AUDIO_TRACKS[trackName];
+//   if (!trackSrc) {
+//     console.error(`Audio track '${trackName}' not found in AUDIO_TRACKS map.`);
+//     return;
+//   }
+
+//   // Create a new Media object for the track
+//   // The successCallback runs when playback finishes or stops
+//   const successCallback = function() {
+//     console.log(`Playback finished for ${trackName}`);
+//     isMediaPlaying = false;
+//     currentMedia = null;
+//     currentTrackName = null;
+//     // If looping is desired and it finished naturally, restart it
+//     // Note: The Media plugin has a .loop property, but manual looping gives more control for fades
+//     if (loop && !isMediaPlaying) { // Check flag again to avoid restarting if manually stopped
+//          console.log(`Restarting loop for ${trackName}`);
+//          playTrack(trackName, loop, fadeInDuration); // Recursive call to restart
+//     }
+//   };
+
+//   // errorCallback runs if there's an issue
+//   const errorCallback = function(err) {
+//     console.error(`Error playing ${trackName}:`, err);
+//     isMediaPlaying = false;
+//     currentMedia = null;
+//     currentTrackName = null;
+//   };
+
+//   // Create the Media object
+//   try {
+//     // Ensure cordova.plugins.media is available (might need deviceready)
+//     if (typeof Media === 'undefined') {
+//         console.warn("cordova-plugin-media not available or not ready.");
+//         return;
+//     }
+//     currentMedia = new Media(trackSrc, successCallback, errorCallback);
+//     currentTrackName = trackName;
+//     console.log(`Created Media object for ${trackName}`);
+
+//     // Set looping if requested (using plugin's feature)
+//     // This might be simpler than manual restart in successCallback for basic loops
+//     if (loop) {
+//         currentMedia.setLooping(true); // Check plugin docs for exact method/signature
+//         console.log(`Set looping for ${trackName}`);
+//     } else {
+//         currentMedia.setLooping(false);
+//     }
+
+//     // Start playing (initial volume 0 for fade in)
+//     currentMedia.setVolume(0.0);
+//     currentMedia.play();
+//     isMediaPlaying = true;
+//     console.log(`Started playing ${trackName} (volume 0, fading in)`);
+
+//     // Fade In Logic
+//     if (fadeInDuration > 0) {
+//         const fadeSteps = 20;
+//         const fadeStepMs = fadeInDuration / fadeSteps;
+//         let currentStep = 0;
+//         const targetVolume = 1.0;
+
+//         mediaFadeInterval = setInterval(() => {
+//             currentStep++;
+//             const newVolume = (targetVolume / fadeSteps) * currentStep;
+//             if (currentMedia) {
+//                 currentMedia.setVolume(Math.min(newVolume, targetVolume));
+//             }
+//             if (currentStep >= fadeSteps) {
+//                 clearInterval(mediaFadeInterval);
+//                 mediaFadeInterval = null;
+//                 console.log(`Finished fading in ${trackName}`);
+//             }
+//         }, fadeStepMs);
+//     } else {
+//         // No fade in, set volume immediately
+//         currentMedia.setVolume(1.0);
+//         console.log(`Set volume to 1.0 for ${trackName} (no fade in)`);
+//     }
+
+
+//   } catch (e) {
+//     console.error(`Failed to create Media object for ${trackName}:`, e);
+//     isMediaPlaying = false;
+//     currentMedia = null;
+//     currentTrackName = null;
+//   }
+// }
+
+// // Function to stop the current track with fade out
+// async function stopCurrentTrack(fadeOutDuration = 1000) {
+//   console.log("Request to stop current track...");
+//   if (!currentMedia || !isMediaPlaying) {
+//     console.log("No track currently playing to stop.");
+//     return;
+//   }
+
+//   const mediaToStop = currentMedia; // Capture current media in case it changes
+//   const trackToStop = currentTrackName;
+//   isMediaPlaying = false; // Mark as stopping
+
+//   // Clear any ongoing fade in
+//   if (mediaFadeInterval) {
+//     clearInterval(mediaFadeInterval);
+//     mediaFadeInterval = null;
+//   }
+
+//   // Fade Out Logic
+//   if (fadeOutDuration > 0 && mediaToStop) {
+//     const fadeSteps = 20;
+//     const fadeStepMs = fadeOutDuration / fadeSteps;
+//     let currentStep = 0;
+//     const startVolume = mediaToStop.getCurrentVolume ? mediaToStop.getCurrentVolume() : 1.0; // Try to get current vol, fallback to 1.0
+
+//     console.log(`Starting fade out for ${trackToStop} over ${fadeOutDuration}ms`);
+//     mediaFadeInterval = setInterval(() => {
+//         currentStep++;
+//         const newVolume = startVolume - (startVolume / fadeSteps) * currentStep;
+//         if (mediaToStop) {
+//             mediaToStop.setVolume(Math.max(newVolume, 0.0));
+//         }
+//         if (currentStep >= fadeSteps || newVolume <= 0) {
+//             clearInterval(mediaFadeInterval);
+//             mediaFadeInterval = null;
+//             if (mediaToStop) {
+//                 mediaToStop.stop(); // Stop playback
+//                 mediaToStop.release(); // Release the resource
+//             }
+//             console.log(`Finished fading out and stopped ${trackToStop}`);
+//             // Clean up references only after fade/stop
+//             if (currentMedia === mediaToStop) { // Check if it's still the current one
+//                  currentMedia = null;
+//                  currentTrackName = null;
+//             }
+//         }
+//     }, fadeStepMs);
+//   } else {
+//     // No fade out, stop immediately
+//     console.log(`Stopping ${trackToStop} immediately (no fade out)`);
+//     if (mediaToStop) {
+//         mediaToStop.stop();
+//         mediaToStop.release();
+//     }
+//     currentMedia = null;
+//     currentTrackName = null;
+//   }
+// }
+
+// // Optional: Function to pause/resume
+// function pauseTrack() {
+//     if (currentMedia && isMediaPlaying) {
+//         currentMedia.pause();
+//         isMediaPlaying = false;
+//         console.log(`Paused track: ${currentTrackName}`);
+//     }
+// }
+// function resumeTrack() {
+//     if (currentMedia && !isMediaPlaying) {
+//         currentMedia.play();
+//         isMediaPlaying = true;
+//         console.log(`Resumed track: ${currentTrackName}`);
+//     }
+// }
+
 async function typeText(element, html, boxColor, delay = 30) {
   isTyping = true;
   const regex = /<[^>]*>|[^<]+/g;
@@ -123,16 +316,223 @@ function showHeaderButtons() {
   document.getElementById("header-button-2").style.display = "block";
 }
 
+// Audio Manager Class
+class AudioManager {
+  constructor() {
+    this.mediaObjects = {};
+    this.currentTrack = null;
+    this.fadeInterval = null;
+    this.fadeSteps = 20; // Number of steps for fade effect
+    this.fadeDuration = 1500; // Fade duration in milliseconds
+    this.volumeSupported = null;
+  }
+
+    // Test if volume control is supported
+  testVolumeSupport() {
+    if (this.volumeSupported !== null) return this.volumeSupported;
+    
+    try {
+      // Create a test media object to check volume support
+      const testMedia = new Media('', () => {}, () => {});
+      testMedia.setVolume(1.0);
+      testMedia.release();
+      this.volumeSupported = true;
+      console.log('Volume control supported');
+    } catch (e) {
+      this.volumeSupported = false;
+      console.log('Volume control not supported on this platform');
+    }
+    
+    return this.volumeSupported;
+  }
+
+  // Load and cache a media file
+  loadAudio(name, filePath) {
+    if (this.mediaObjects[name]) {
+      return; // Already loaded
+    }
+
+    this.mediaObjects[name] = new Media(
+      filePath,
+      () => console.log(`Audio loaded: ${name}`),
+      (err) => console.error(`Error loading ${name}: ${err.code}`),
+      (status) => console.log(`${name} status: ${status}`)
+    );
+  }
+
+  // Preload multiple audio files
+  preloadAudio(audioFiles) {
+    Object.entries(audioFiles).forEach(([name, path]) => {
+      this.loadAudio(name, path);
+    });
+  }
+
+  // Play audio with optional fade in
+  play(name, fadeIn = false) {
+    if (!this.mediaObjects[name]) {
+      console.error(`Audio file '${name}' not loaded`);
+      return;
+    }
+
+    const media = this.mediaObjects[name];
+    this.currentTrack = name;
+
+    if (fadeIn) {
+      this.fadeInAudio(media);
+    } else {
+      media.setVolume(1.0);
+      media.play();
+    }
+  }
+
+  // Stop current audio with optional fade out
+  stop(fadeOut = false, callback = null) {
+    if (!this.currentTrack || !this.mediaObjects[this.currentTrack]) {
+      if (callback) callback();
+      return;
+    }
+
+    const media = this.mediaObjects[this.currentTrack];
+
+    if (fadeOut) {
+      this.fadeOutAudio(media, () => {
+        media.stop();
+        media.release();
+        this.currentTrack = null;
+        if (callback) callback();
+      });
+    } else {
+      media.stop();
+      media.release();
+      this.currentTrack = null;
+      if (callback) callback();
+    }
+  }
+
+  // Transition between tracks with crossfade
+  transition(newTrackName, fadeOut = true, fadeIn = true) {
+    return new Promise((resolve) => {
+      this.stop(fadeOut, () => {
+        this.play(newTrackName, fadeIn);
+        resolve();
+      });
+    });
+  }
+
+  // Fade in effect (only if volume supported)
+  fadeInAudio(media) {
+    if (!this.volumeSupported) {
+      media.play();
+      return;
+    }
+
+    let volume = 0;
+    const stepSize = 1.0 / this.fadeSteps;
+    const stepDuration = this.fadeDuration / this.fadeSteps;
+
+    try {
+      media.setVolume(0);
+      media.play();
+
+      this.fadeInterval = setInterval(() => {
+        volume += stepSize;
+        if (volume >= 1.0) {
+          volume = 1.0;
+          clearInterval(this.fadeInterval);
+        }
+        media.setVolume(volume);
+      }, stepDuration);
+    } catch (e) {
+      console.log('Fade in failed, playing normally');
+      media.play();
+    }
+  }
+
+  // Fade out effect (only if volume supported)
+  fadeOutAudio(media, callback) {
+    if (!this.volumeSupported) {
+      if (callback) callback();
+      return;
+    }
+
+    let volume = 1.0;
+    const stepSize = 1.0 / this.fadeSteps;
+    const stepDuration = this.fadeDuration / this.fadeSteps;
+
+    try {
+      this.fadeInterval = setInterval(() => {
+        volume -= stepSize;
+        if (volume <= 0) {
+          volume = 0;
+          media.setVolume(0);
+          clearInterval(this.fadeInterval);
+          if (callback) callback();
+        } else {
+          media.setVolume(volume);
+        }
+      }, stepDuration);
+    } catch (e) {
+      console.log('Fade out failed, stopping immediately');
+      if (callback) callback();
+    }
+  }
+
+  // Clean up all media objects
+  cleanup() {
+    Object.values(this.mediaObjects).forEach(media => {
+      media.stop();
+      media.release();
+    });
+    this.mediaObjects = {};
+    this.currentTrack = null;
+    if (this.fadeInterval) {
+      clearInterval(this.fadeInterval);
+    }
+  }
+}
+
+// Usage in your Cordova app
+/*
+// Simple play
+audioManager.play('intro');
+
+// Play with fade in
+audioManager.play('scene1', true);
+
+// Smooth scene transition
+audioManager.transition('battle', true, true);
+
+// Stop with fade out
+audioManager.stop(true);
+*/
+let audioManager;
+
 function onDeviceReady() {
     // Cordova is now initialized. Have fun!
 
-    console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
-    document.getElementById('deviceready').classList.add('ready');
-
-  // START //
-  // document.querySelector(".text-box").addEventListener("pointerup", function () {
-  //     isUserInterrupted = true;
-  // });
+  console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
+  document.getElementById('deviceready').classList.add('ready');
+  
+  window.errorMedia = new Media(
+    'aud/error.mp3',
+    () => {console.log("Playing error sound") },
+    (err) => {console.log("Error playing error sound" + err.code) },
+  );
+  // Initialize audio manager
+  audioManager = new AudioManager();
+  
+  // Define all your audio files
+  const audioFiles = {
+    'intro': 'aud/intro.mp3',
+    'bg-music': 'aud/sound-track.mp3',
+    // 'scene2': 'aud/scene2.mp3',
+    // 'battle': 'aud/battle.mp3',
+    // 'victory': 'aud/victory.mp3'
+    // Add more as needed
+  };
+  
+  // Preload all audio files
+  audioManager.preloadAudio(audioFiles);
   
   sceneZero();
 }
@@ -333,6 +733,8 @@ window.CLINIC_DOOR_RIGHT = false;
 //sceneHall
 window.HALL_KEY = false;
 window.HALL_WEAPONS = false;
+//sceneStore
+window.STORE_VISITED = false;
 
 //|SLEEPER
 function sleep(ms) {
@@ -456,6 +858,8 @@ function getGameState() {
       //sceneHall
       HALL_KEY,
       HALL_WEAPONS,
+      //sceneStore
+      STORE_VISITED,
     },
     inventory: INVENTORY,
     journal: JOURNAL,
@@ -487,31 +891,21 @@ function saveGame() {
 }
 
 function loadGame() {
-  console.log("DEBUG: loadGame() function called");
   const saveData = localStorage.getItem('projectSalvationSave');
   if (!saveData)
     return false;
-  console.log("DEBUG: No save data found in localStorage");
 
-  console.log("DEBUG: Save data found, parsing...");
   const gameState = JSON.parse(saveData);
-  console.log("DEBUG: Parsed gameState:", gameState); // Log the entire loaded state
 
   // Restore game state
-  console.log("DEBUG: Restoring currentSceneTitle from:", gameState.currentScene);
   currentSceneTitle = gameState.currentScene;
-  console.log("DEBUG: Restoring INVENTORY from:", gameState.inventory);
   INVENTORY = gameState.inventory || [];
-  console.log("DEBUG: Restoring JOURNAL from:", gameState.journal);
   JOURNAL = gameState.journal || [];
 
   // Restore flags
-  console.log("DEBUG: Restoring sceneFlags...");
   Object.keys(gameState.sceneFlags).forEach(flag => {
-    console.log(`DEBUG: Setting window['${flag}'] = ${gameState.sceneFlags[flag]}`);
     window[flag] = gameState.sceneFlags[flag];
   });
-  console.log("DEBUG: loadGame() completed successfully");
   return true;
 }
 
@@ -553,34 +947,123 @@ function sceneZero() {
     let textContainer = document.querySelector(".text-container");
     let userControlsContainer = document.querySelector(".user-controls-container");
 
-    applyTypingCss(textContainer);
-    console.log("DEBUG: sceneZero started, about to call loadGame()");
-    
+  applyTypingCss(textContainer);
+
+  let startBtn = document.createElement("button");
+  startBtn.textContent = "Start";
+  applyGlassStylingGreyBtn(startBtn);
+  userControlsContainer.appendChild(startBtn);
+
+  startBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    startBtn.remove(); // remove relevant buttons
+
+    // Check it out if it works
+    // START MUSIC
+    audioManager.play('bg-music', true);
+      
     // Check for saved game
     const hasSave = loadGame();
-    console.log("DEBUG: loadGame() returned:", hasSave);
-  
+    
     applyTypingCss(textContainer);
-    typeText(
-      textContainer,
-      '<p>Press "wake up" to begin.</p>',
-      applyGlassStylingGrey,
-    );
-
-    // create button
-    let wakeUpButton = document.createElement("button");
-    let townButton = document.createElement("button");
-    let continueBtn = null;
+    
+      typeText(
+        textContainer,
+        '<p>Press "wake up" to begin.</p>',
+        applyGlassStylingGrey,
+      );
   
-  if (hasSave) {
-    console.log("DEBUG: Save loaded, currentSceneTitle is now:", currentSceneTitle);
-    console.log("DEBUG: HALL_KEY immediately after loadGame() in sceneZero:", HALL_KEY); // Add this line
-    continueBtn = document.createElement("button");
-    continueBtn.textContent = "Continue";
-    applyGlassStylingGreyBtn(continueBtn);
-    userControlsContainer.appendChild(continueBtn);
-
-    continueBtn.addEventListener("pointerup", function () {
+      // create button
+      let wakeUpButton = document.createElement("button");
+      let townButton = document.createElement("button");
+      let continueBtn = null;
+    
+    if (hasSave) {
+      continueBtn = document.createElement("button");
+      continueBtn.textContent = "Continue";
+      applyGlassStylingGreyBtn(continueBtn);
+      userControlsContainer.appendChild(continueBtn);
+  
+      continueBtn.addEventListener("pointerup", function () {
+        // Button click check
+        if (isTyping || btnRecentlyClicked) return;
+        btnRecentlyClicked = true;
+        setTimeout(() => {
+          btnRecentlyClicked = false;
+        }, 1000);
+        
+        // // FADE OUT AUDIO BEFORE SCENE CHANGE
+        // audioManager.transition('intro', true, true).then(() => {
+        //   // Clear text container
+        //   textContainer.innerHTML = "";
+        //   // remove button from user controls container
+        //   userControlsContainer.innerHTML = "";
+    
+        //   // Get the scene function from registry
+        //   const sceneFunction = SCENE_REGISTRY[currentSceneTitle] || sceneOne;
+        //   // start SceneOne
+        //   sceneFunction();
+        // });
+        // Clear text container
+        textContainer.innerHTML = "";
+        // remove button from user controls container
+        userControlsContainer.innerHTML = "";
+  
+        // Get the scene function from registry
+        const sceneFunction = SCENE_REGISTRY[currentSceneTitle] || sceneOne;
+        // start SceneOne
+        sceneFunction();
+        // // FADE OUT AUDIO BEFORE SCENE CHANGE
+        // audioManager.transition('intro', true, true).then(() => {
+        // });
+      });
+    }
+  
+      // set button text
+      wakeUpButton.textContent = "Wake up";
+      townButton.textContent = "Teleport to Residential Area";
+  
+      // add styling for button
+      applyGlassStylingGreyBtn(wakeUpButton);
+      applyGlassStylingGreyBtn(townButton);
+  
+      // append button to user controls container
+      userControlsContainer.appendChild(wakeUpButton);
+      userControlsContainer.appendChild(townButton);
+  
+      // CLICK
+    wakeUpButton.addEventListener("pointerup", function () {
+      // Button click check
+      if (isTyping || btnRecentlyClicked) return;
+      btnRecentlyClicked = true;
+      setTimeout(() => {
+        btnRecentlyClicked = false;
+      }, 1000);
+  
+      // Clear text container
+      textContainer.innerHTML = "";
+      // remove button from user controls container
+      userControlsContainer.removeChild(wakeUpButton);
+      userControlsContainer.removeChild(townButton);
+      // start SceneOne
+      if (typeof continueBtn !== "undefined" && continueBtn) continueBtn.remove();
+      sceneOne();
+      // // FADE OUT AUDIO BEFORE SCENE CHANGE
+      // audioManager.transition('intro', true, true).then(() => {
+      // });
+    });
+  
+    townButton.addEventListener("pointerup", function () {
       // Button click check
       if (isTyping || btnRecentlyClicked) return;
       btnRecentlyClicked = true;
@@ -590,60 +1073,15 @@ function sceneZero() {
       // Clear text container
       textContainer.innerHTML = "";
       // remove button from user controls container
-      userControlsContainer.innerHTML = "";
-
-      // Get the scene function from registry
-      const sceneFunction = SCENE_REGISTRY[currentSceneTitle] || sceneOne;
+      userControlsContainer.removeChild(wakeUpButton);
+      userControlsContainer.removeChild(townButton);
       // start SceneOne
-      sceneFunction();
+      if (continueBtn) continueBtn.remove();
+      sceneHouseLarge();
+      // // FADE OUT AUDIO BEFORE SCENE CHANGE
+      // audioManager.transition('intro', true, true).then(() => {
+      // });
     });
-  }
-
-    // set button text
-    wakeUpButton.textContent = "Wake up";
-    townButton.textContent = "Teleport to Residential Area";
-
-    // add styling for button
-    applyGlassStylingGreyBtn(wakeUpButton);
-    applyGlassStylingGreyBtn(townButton);
-
-    // append button to user controls container
-    userControlsContainer.appendChild(wakeUpButton);
-    userControlsContainer.appendChild(townButton);
-
-    // CLICK
-  wakeUpButton.addEventListener("pointerup", function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-    // Clear text container
-    textContainer.innerHTML = "";
-    // remove button from user controls container
-    userControlsContainer.removeChild(wakeUpButton);
-    userControlsContainer.removeChild(townButton);
-    // start SceneOne
-    if (typeof continueBtn !== "undefined" && continueBtn) continueBtn.remove();
-    sceneOne();
-  });
-
-  townButton.addEventListener("pointerup", function () {
-    // Button click check
-    if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true;
-    setTimeout(() => {
-      btnRecentlyClicked = false;
-    }, 1000);
-    // Clear text container
-    textContainer.innerHTML = "";
-    // remove button from user controls container
-    userControlsContainer.removeChild(wakeUpButton);
-    userControlsContainer.removeChild(townButton);
-    // start SceneOne
-    if (continueBtn) continueBtn.remove();
-    sceneHouseLarge();
   });
 }
 
@@ -3182,7 +3620,7 @@ async function sceneClinic() {
 
     // Clear text container
     textContainer.innerHTML = "";
-    gameContainer.style.backgroundImage = "url(img/23-clinic-hallway.png)";
+    gameContainer.style.backgroundImage = "url(img/26-clinic-dispensary-dark.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
@@ -3218,6 +3656,8 @@ async function sceneClinic() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/27-clinic-dispensary-light.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     continueBtn.remove();
@@ -3255,6 +3695,8 @@ async function sceneClinic() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/23-clinic-hallway.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     continueBtn.remove();
@@ -3551,7 +3993,7 @@ async function sceneClinic() {
 
     // Clear text container
     textContainer.innerHTML = "";
-    gameContainer.style.backgroundImage = "url(img/23-clinic-hallway.png)";
+    gameContainer.style.backgroundImage = "url(img/62-clinic-corner-pc.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
@@ -3587,8 +4029,8 @@ async function sceneClinic() {
     
     if (CLINIC_LIGHT == false) {
       // write new text
-      gameContainer.style.backgroundImage = "url(img/26-clinic-dispensary-dark.png)";
-      gameContainer.style.transition = "background-image 4s ease-in-out";
+      // gameContainer.style.backgroundImage = "url(img/26-clinic-dispensary-dark.png)";
+      // gameContainer.style.transition = "background-image 4s ease-in-out";
       await typeText(
         textContainer,
         "<p>You turn the handle and surprisingly the door is unlocked.<br>The door opens into a dark room. You see no windows, but is there is some light coming from outside the clinic through the service window.<br>There are medicine boxes and bottles lining the walls of the room, but you can't make out any of the names or labels. You notice the pain in your ankle again.</p>",
@@ -3600,7 +4042,7 @@ async function sceneClinic() {
       // append new button
       userControlsContainer.appendChild(findBtn); // append relevant buttons
     } else {
-        gameContainer.style.backgroundImage = "url(img/27-clinic-dispensary-light.png)";
+        gameContainer.style.backgroundImage = "url(img/63-clinic-dispensary-inside.png)";
         gameContainer.style.transition = "background-image 4s ease-in-out";
         await typeText(
           textContainer,
@@ -3723,6 +4165,8 @@ async function sceneClinic() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/64-clinic-hatch.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     investigatePlateBtn.remove(); // remove relevant buttons
@@ -3893,6 +4337,8 @@ async function sceneClinic() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/65-clinic-lab.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     investigateRoomBtn.remove(); // remove relevant buttons
@@ -3953,6 +4399,8 @@ async function sceneClinic() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/66-clinic-microscope.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     investigateCounterBtn.remove(); // remove relevant buttons
@@ -4033,6 +4481,8 @@ async function sceneClinic() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/70-clinic-lab-desk.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     investigateCounterBtn.remove(); // remove relevant buttons
@@ -4369,6 +4819,8 @@ async function sceneClinic() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/67-clinic-tanks.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     investigateCounterBtn.remove(); // remove relevant buttons
@@ -4389,6 +4841,8 @@ async function sceneClinic() {
     await pause();
 
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/68-clinic-tank-hand.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     await typeText(
       textContainer,
@@ -4417,6 +4871,8 @@ async function sceneClinic() {
     await pause();
 
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/67-clinic-tanks.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     await typeText(
       textContainer,
@@ -4463,6 +4919,8 @@ async function sceneClinic() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/69-clinic-dead-woman.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     investigateCounterBtn.remove(); // remove relevant buttons
@@ -4615,6 +5073,8 @@ async function sceneClinic() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/71-clinic-returning-to-hatch.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     investigateCounterBtn.remove(); // remove relevant buttons
@@ -4645,13 +5105,37 @@ async function sceneClinic() {
 
       await sleep(1500);
 
+      errorMedia.play();
+
       await typeText(
         textContainer,
-        "<p>You start pushing the number keys and after 4 numbers you hear a soft beep, with the word ERROR displayed on the screen. You try again; ERROR. Almost frantically you start pressing the buttons... ERROR.<br><br>You start to panic but you get a hold of yourself and climb back down the ladder.</p>",
+        "<p>You start pushing the number keys and after 4 numbers you hear a soft beep, with the word ERROR displayed on the screen.</p>",
+        applyGlassStylingRed
+      );
+      await sleep(1500);
+
+      errorMedia.play();
+
+      await typeText(
+        textContainer,
+        "<p>You try again; ERROR.</p>",
+        applyGlassStylingRed
+      );
+
+      await sleep(1500);
+      
+      errorMedia.play();
+
+      await typeText(
+        textContainer,
+        "<p>Almost frantically you start pressing the buttons... ERROR.<br><br>You start to panic but you get a hold of yourself and climb back down the ladder.</p>",
         applyGlassStylingRed
       );
   
       await pause();
+
+      errorMedia.stop();
+      errorMedia.release();
 
       await typeTextItalic(
         textContainer,
@@ -4720,6 +5204,8 @@ async function sceneClinic() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/72-clinic-secret-passage.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     investigateCounterBtn.remove(); // remove relevant buttons
@@ -4852,7 +5338,7 @@ async function sceneClinic() {
 
   // continue from try to open door paragraph
 
-  buttonNameBtn.addEventListener("pointerup", async function () {
+  tryToOpenDoorBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -4862,6 +5348,8 @@ async function sceneClinic() {
 
     // Clear text container
     textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/73-inside-white-house.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // remove button from user controls container
     investigateCounterBtn.remove(); // remove relevant buttons
@@ -5307,15 +5795,12 @@ async function sceneHall() {
   );
 
   await sleep(1500);
-  console.log("DEBUG: HALL_KEY value when entering sceneHall:", HALL_KEY);
 
   // append button to user controls container
   if (HALL_KEY == true) {
-    console.log("DEBUG: Appending oldKeyBtn because HALL_KEY is true");
     userControlsContainer.appendChild(oldKeyBtn);
   }
   if (HALL_KEY == false) {
-    console.log("DEBUG: Appending townSquareBtn because HALL_KEY is false");
     userControlsContainer.appendChild(townSquareBtn);
   }
 
@@ -7090,7 +7575,7 @@ async function scenePool() {
 //|SCENE STORE
 async function sceneStore() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/000store.png)";
+  gameContainer.style.backgroundImage = "url(img/74-store.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
 
   let userControlsContainer = document.querySelector(
@@ -7105,26 +7590,356 @@ async function sceneStore() {
 
   // create button
   let townSquareBtn = document.createElement("button"); // create buttons for scene
+  let enterBtn = document.createElement("button");
+  let speakBtn = document.createElement("button");
+  let yesBtn = document.createElement("button");
+  let aroundBtn = document.createElement("button");
+  let whyBtn = document.createElement("button");
+  let buyBtn = document.createElement("button");
+  let projectBtn = document.createElement("button");
+  let lifeBtn = document.createElement("button");
+  let fightBtn = document.createElement("button");
+  
 
   // set button text
   townSquareBtn.textContent = "Go to town square";
+  enterBtn.textContent = "Enter store";
+  speakBtn.textContent = "Speak to the store keeper";
+  yesBtn.textContent = "Yes, I am";
+  aroundBtn.textContent = "Well... I've been around...";
+  whyBtn.textContent = "I see... Why is that?";
+  buyBtn.textContent = "Could I buy something?";
+  projectBtn.textContent = "He told me about Project Salvation";
+  lifeBtn.textContent = "I'm hoping to escape with my life intact";
+  fightBtn.textContent = "Fighting seems like the only answer";
 
   // add styling for button
   applyGlassStylingGreyBtn(townSquareBtn);
-
-  // local conditionals
-  //   let ONCEOFF = false;
+  applyGlassStylingGreyBtn(enterBtn);
+  applyGlassStylingGreyBtn(speakBtn);
+  applyGlassStylingGreyBtn(yesBtn);
+  applyGlassStylingGreyBtn(aroundBtn);
+  applyGlassStylingGreyBtn(whyBtn);
+  applyGlassStylingGreyBtn(buyBtn);
+  applyGlassStylingGreyBtn(projectBtn);
+  applyGlassStylingGreyBtn(lifeBtn);
+  applyGlassStylingGreyBtn(fightBtn);
 
   await typeText(
     textContainer,
-    "<p>As you enter, the bell chimes a whimsical tone. The shelves are sparse but there are still some items for sale here. Perhaps the storekeeper is waiting for a delivery, or the town's people stocked up for the long winter...</p>",
+    "<p>You are standing before an unassuming shop, with dark shop front windows. A worn wooden sign hangs above the door, with the name 'Sven's Provisions' painted on it in an elaborate font.</p>",
     applyGlassStylingRed
-  );
+  )
 
   await sleep(1500);
 
-  // append button to user controls container
-  userControlsContainer.appendChild(townSquareBtn);
+  userControlsContainer.append(enterBtn);
+
+
+  enterBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    enterBtn.remove(); // remove relevant buttons
+    
+    if (STORE_VISITED == false) {
+      await typeText(
+        textContainer,
+        "<p>As you enter, the bell chimes a whimsical tone. The shelves are sparse but there are still some items for sale here. Perhaps the storekeeper is waiting for a delivery, or the town's people stocked up for the long winter...</p>",
+        applyGlassStylingRed
+      );
+    
+      await sleep(1500);
+
+      await typeText(
+        textContainer,
+        "<p>A grave looking man stands behind the shop counter, looking at you suspiciously.</p>",
+        applyGlassStylingRed
+      )
+    
+      // append button to user controls container
+      userControlsContainer.appendChild(speakBtn);
+      userControlsContainer.appendChild(townSquareBtn);
+    } else {
+      await typeText(
+        textContainer,
+        "<p>You enter the store again and see Sven, the storekeeper lounging behind the counter, reading a newspaper.</p>",
+        applyGlassStylingRed
+      );
+
+      await sleep(1500);
+
+      // this is where it is going to get complicated with all the conditionals. so finish up the rest first and return to this bit.
+
+      userControlsContainer.appendChild(townSquareBtn);
+    }
+  });
+
+  speakBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+    gameContainer.style.backgroundImage = "url(img/75-sven.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
+
+    // remove button from user controls container
+    speakBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove();
+
+    // write new text
+    if (STORE_VISITED == false) {
+      await typeText(
+        textContainer,
+        "<p>As you approach the shop keeper, he stands upright, looking you up and down.</p>",
+        applyGlassStylingRed
+      );
+  
+      await sleep(1500);
+  
+      await typeText(
+        textContainer,
+        "<p>Newcomer, eh?</p>",
+        applyGlassStylingBlue
+      )
+  
+      await sleep(1500);
+
+      // append new button
+      userControlsContainer.appendChild(yesBtn); // append relevant buttons
+      userControlsContainer.appendChild(aroundBtn);
+    } else {
+      await typeText(
+        textContainer,
+        "<p>Welcome back, Newcome.<br><br>Still nothing new in my shop.</p>",
+        applyGlassStylingBlue
+      )
+
+      await sleep(1500);
+
+      userControlsContainer.appendChild(aroundBtn);
+      userControlsContainer.appendChild(townSquareBtn);
+
+      // need to check where the "no not really" thing comes in, and then also check how to merge the two with the "yes i am" thing. if you say "why is that?" the "no not really" needs to trigger the why button again.
+      // alternatively, just copy and paste the why button again and change it to "no not really"
+      // then from there do the "SHOP_VISITED == true" "not really" thing.
+    }
+  });
+
+  yesBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    yesBtn.remove(); // remove relevant buttons
+    aroundBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>Welcome to Sven's provisions.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1000);
+
+    await typeText(
+      textContainer,
+      "<p>He says with an unamused smile.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1000);
+
+    await typeText(
+      textContainer,
+      "<p>As you can see, not many provisions left...</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(whyBtn); // append relevant buttons
+  });
+
+  whyBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    whyBtn.remove(); // remove relevant buttons
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>He smirks and says,</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1000);
+
+    await typeText(
+      textContainer,
+      "<p>People got spooked. All this talk of Government conspiracies and 'resistances' have people losing their minds.<br><br>And that damned priest isn't helping matters with his fear mongering, telling folk to repent and what not.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    // append new button
+    if (CHURCH_STORY == true) {
+      userControlsContainer.appendChild(projectBtn);
+    }
+    userControlsContainer.appendChild(buyBtn); // append relevant buttons
+  });
+
+  buyBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    buyBtn.remove(); // remove relevant buttons
+    projectBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>He silently stares at you for a moment, squinting...</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>Sorry, I can't afford to sell what little I have left to an outsider. Someone in town might need some supplies.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>He motions to the door, clearly having nothing more to say.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1000);
+
+    STORE_VISITED = true;
+
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
+  });
+
+  projectBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    buyBtn.remove(); // remove relevant buttons
+    projectBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>He had quite a story to tell... He told me all about the government using dangerous AI called Project Salvation, and that many town people left to join this resistance...</p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Sven's eyes light up ever so slightly. He seems interested in what an 'outsider' has to say about it.</p>",
+      applyGlassStylingRed
+    )
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>I see.<br><br>And do you make of it?<br><br>Are you also going to hide from the big scary computers?<br><br>Or are you foolish enough to risk your life trying to fight an enemy that no one has ever defeated before?</p>",
+      applyGlassStylingBlue
+    )
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(lifeBtn); // append relevant buttons
+    userControlsContainer.appendChild(fightBtn);
+  });
+
+  // buttonNameBtn.addEventListener("pointerup", async function () {
+  //   // Button click check
+  //   if (isTyping || btnRecentlyClicked) return;
+  //   btnRecentlyClicked = true;
+  //   setTimeout(() => {
+  //     btnRecentlyClicked = false;
+  //   }, 1000);
+
+  //   // Clear text container
+  //   textContainer.innerHTML = "";
+
+  //   // remove button from user controls container
+  //   buttonNameBtn.remove(); // remove relevant buttons
+
+  //   // write new text
+  //   await typeText(
+  //     textContainer,
+  //     "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
+  //     applyGlassStylingRed
+  //   );
+
+  //   await sleep(1500);
+
+  //   // append new button
+  //   userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
+  // });
 
   townSquareBtn.addEventListener("pointerup", async function () {
     // Button click check
@@ -7139,6 +7954,15 @@ async function sceneStore() {
 
     // remove button from user controls container
     townSquareBtn.remove(); // remove relevant buttons
+    enterBtn.remove();
+    speakBtn.remove();
+    yesBtn.remove();
+    aroundBtn.remove();
+    whyBtn.remove();
+    buyBtn.remove();
+    projectBtn.remove();
+    lifeBtn.remove();
+    fightBtn.remove();
 
     sceneTownSquare();
   });
