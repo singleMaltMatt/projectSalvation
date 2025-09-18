@@ -513,18 +513,46 @@ function onDeviceReady() {
   console.log('Running cordova-' + cordova.platformId + '@' + cordova.version);
   document.getElementById('deviceready').classList.add('ready');
   
+  // Sound Bites
+  /*
+  |USAGE
+    _Media.play();
+
+    _Media.stop();
+    _Media.release();
+  */
+  
   window.errorMedia = new Media(
-    'aud/error.mp3',
+    cordova.file.applicationDirectory + 'www/aud/error.mp3',
     () => {console.log("Playing error sound") },
     (err) => {console.log("Error playing error sound" + err.code) },
   );
+
+  window.radioFrequencyCoordsMedia = new Media(
+    cordova.file.applicationDirectory + 'www/aud/frequency-coordinates.mp3',
+    () => {console.log("Playing error sound") },
+    (err) => {console.log("Error playing error sound" + err.code) },
+  );
+
+  window.radioFrequencyNoResponseMedia = new Media(
+    cordova.file.applicationDirectory + 'www/aud/frequency-no-response.mp3',
+    () => {console.log("Playing error sound") },
+    (err) => {console.log("Error playing error sound" + err.code) },
+  );
+
+  window.shopKeeperBellMedia = new Media(
+    cordova.file.applicationDirectory + 'www/aud/shopkeeper-bell.mp3',
+    () => {console.log("Playing error sound") },
+    (err) => {console.log("Error playing error sound" + err.code) },
+  );
+
   // Initialize audio manager
   audioManager = new AudioManager();
   
   // Define all your audio files
   const audioFiles = {
-    'intro': 'aud/intro.mp3',
-    'bg-music': 'aud/sound-track.mp3',
+    'intro': cordova.file.applicationDirectory + 'www/aud/intro.mp3',
+    'bg-music': cordova.file.applicationDirectory + 'www/aud/sound-track.mp3',
     // 'scene2': 'aud/scene2.mp3',
     // 'battle': 'aud/battle.mp3',
     // 'victory': 'aud/victory.mp3'
@@ -7647,6 +7675,8 @@ async function sceneStore() {
     // Clear text container
     textContainer.innerHTML = "";
 
+    shopKeeperBellMedia.play();
+
     // remove button from user controls container
     enterBtn.remove(); // remove relevant buttons
     
@@ -7666,6 +7696,9 @@ async function sceneStore() {
       )
     
       // append button to user controls container
+      shopKeeperBellMedia.stop();
+      shopKeeperBellMedia.release();
+      
       userControlsContainer.appendChild(speakBtn);
       userControlsContainer.appendChild(townSquareBtn);
     } else {
@@ -7678,6 +7711,8 @@ async function sceneStore() {
       await sleep(1500);
 
       // this is where it is going to get complicated with all the conditionals. so finish up the rest first and return to this bit.
+      shopKeeperBellMedia.stop();
+      shopKeeperBellMedia.release();
 
       userControlsContainer.appendChild(townSquareBtn);
     }
@@ -8826,6 +8861,7 @@ async function sceneHouseFlag() {
         await sleep(1500);
 
         textContainer.innerHTML = "";
+        radioFrequencyCoordsMedia.play();
 
         await typeText(
           textContainer,
@@ -8844,6 +8880,10 @@ async function sceneHouseFlag() {
         );
 
         await pause();
+
+        radioFrequencyCoordsMedia.stop();
+        radioFrequencyCoordsMedia.release();
+
         textContainer.innerHTML = "";
 
         await typeText(
@@ -8891,6 +8931,9 @@ async function sceneHouseFlag() {
           userControlsContainer.appendChild(goBackBtn);
         }
       } else {
+
+        radioFrequencyNoResponseMedia.play();
+
         await typeText(
           textContainer,
           "<p>You turn the dial on the radio between frequencies, but you hear only soft static.<br>You push the button on the microphone and say </p>",
@@ -8912,6 +8955,9 @@ async function sceneHouseFlag() {
         );
 
         await sleep(1500);
+
+        radioFrequencyNoResponseMedia.stop();
+        radioFrequencyNoResponseMedia.release();
 
         userControlsContainer.appendChild(goBackBtn);
       }
@@ -9792,7 +9838,7 @@ async function sceneHouseLarge() {
         let video = document.createElement("video");
         video.src = "vid/01_large_house.mp4";
         video.autoplay = true;
-        video.muted = true;
+        video.muted = false;
         video.loop = false;
         video.style.position = "fixed";
         video.style.top = "0";
