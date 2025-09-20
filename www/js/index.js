@@ -6335,7 +6335,7 @@ async function sceneInn() {
   let spokeToBtn = document.createElement("button");
   let spokeNotBtn = document.createElement("button");
   let nothingBtn = document.createElement("button");
-  let enterInn = document.createElement("button");
+  let enterInnBtn = document.createElement("button");
 
   // set button text
   townSquareBtn.textContent = "Go to town square";
@@ -6353,7 +6353,7 @@ async function sceneInn() {
   spokeToBtn.textContent = "I spoke to father Jakob";
   spokeNotBtn.textContent = "I haven't spoken to father Jacob";
   nothingBtn.textContent = "Nothing at the moment";
-  enterInn.textContent = "Enter the inn";
+  enterInnBtn.textContent = "Enter the inn";
 
   // add styling for button
   applyGlassStylingGreyBtn(townSquareBtn);
@@ -6370,19 +6370,19 @@ async function sceneInn() {
   applyGlassStylingGreyBtn(spokeToBtn);
   applyGlassStylingGreyBtn(spokeNotBtn);
   applyGlassStylingGreyBtn(nothingBtn);
-  applyGlassStylingGreyBtn(enterInn);
+  applyGlassStylingGreyBtn(enterInnBtn);
 
   await typeText(
     textContainer,
-    "<p>This is some super amazing text to describe the inn</p>",
+    "<p>A charming inn with ornate wooden balconies and flower-laden windowsills beckons you forward.<br><br>The Norrsund Inn's sign sways gently above its arched entrance, while warm light and the promise of hot meals emanate from within.<br><br>Cobblestones worn smooth by countless boots lead to the welcoming doorway.</p>",
     applyGlassStylingRed
   )
 
   await sleep(1500);
 
-  userControlsContainer.appendChild(enterInn);
+  userControlsContainer.appendChild(enterInnBtn);
 
-    enterInn.addEventListener("pointerup", async function () {
+  enterInnBtn.addEventListener("pointerup", async function () {
       // Button click check
       if (isTyping || btnRecentlyClicked) return;
       btnRecentlyClicked = true;
@@ -6397,7 +6397,7 @@ async function sceneInn() {
       textContainer.innerHTML = "";
   
       // remove button from user controls container
-      enterInn.remove(); // remove relevant buttons
+      enterInnBtn.remove(); // remove relevant buttons
   
       await typeText(
         textContainer,
@@ -6410,7 +6410,7 @@ async function sceneInn() {
       // append button to user controls container
       userControlsContainer.appendChild(talkBtn);
       userControlsContainer.appendChild(townSquareBtn);
-    });
+  });
 
   townSquareBtn.addEventListener("pointerup", async function () {
     // Button click check
@@ -6439,6 +6439,7 @@ async function sceneInn() {
     spokeToBtn.remove();
     spokeNotBtn.remove();
     nothingBtn.remove();
+    enterInnBtn.remove();
 
     sceneTownSquare();
   });
@@ -8289,7 +8290,7 @@ async function sceneHouseFlag() {
   
   await typeText(
     textContainer,
-    "<p>Intro description for house with flag goes here.</p>",
+    "<p>Before you stands a solitary homestead, carved from the wilderness itself.<br><br>The timber cottage, with its steep-pitched roof and simple lines, seems to have grown from the very earth.<br><br>The Norwegian flag marks this remote dwelling, while a worn path through the meadow grass leads to its wooden front steps.</p>",
     applyGlassStylingRed
   )
   
@@ -11075,7 +11076,7 @@ async function sceneHouseRundown() {
     // local conditionals
     await typeText(
       textContainer,
-      "<p>Rundown house intro goes here.</p>",
+      "<p>The rundown house stands as a monument to better days, its elaborate architecture now surrendering to time and the encroaching forest.<br><br>Moss creeps along the weathered walls, and delicate tracery windows—once the pride of some long-gone craftsman—are now cracked and dim.<br><br>Wooden steps lead to a darkened doorway, while forest undergrowth slowly devours the forgotten home.</p>",
       applyGlassStylingRed
     );
 
