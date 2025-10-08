@@ -42,199 +42,6 @@ let interruptionIndex = 0;
 let btnRecentlyClicked = false;
 let isTyping = false;
 
-// AUDIO
-// let currentMedia = null; // Holds the current cordova-plugin-media Media object
-// let currentTrackName = null; // Name of the currently playing track
-// let isMediaPlaying = false; // Flag to track if media is considered playing
-// let mediaFadeInterval = null; // To hold the interval ID for fading
-
-// // A map of track names to file paths
-// const AUDIO_TRACKS = {
-//   'intro': 'aud/intro.mp3',
-//   // 'hallway': 'audio/hallway-music.mp3',
-//   // 'ambient': 'audio/ambient-sounds.mp3',
-//   // 'tense': 'audio/tense-music.mp3'
-//   // // Add more tracks as needed
-// };
-
-// // Function to play a named track, handling stop/fade of previous track
-// async function playTrack(trackName, loop = false, fadeInDuration = 1000) {
-//   console.log(`Request to play track: ${trackName}`);
-  
-//   // Check if the requested track is already playing
-//   if (currentTrackName === trackName && isMediaPlaying) {
-//     console.log(`Track ${trackName} is already playing.`);
-//     return;
-//   }
-
-//   // Stop the currently playing track (with fade out)
-//   await stopCurrentTrack(1000); // Fade out for 1 second
-
-//   // Get the file path for the new track
-//   const trackSrc = AUDIO_TRACKS[trackName];
-//   if (!trackSrc) {
-//     console.error(`Audio track '${trackName}' not found in AUDIO_TRACKS map.`);
-//     return;
-//   }
-
-//   // Create a new Media object for the track
-//   // The successCallback runs when playback finishes or stops
-//   const successCallback = function() {
-//     console.log(`Playback finished for ${trackName}`);
-//     isMediaPlaying = false;
-//     currentMedia = null;
-//     currentTrackName = null;
-//     // If looping is desired and it finished naturally, restart it
-//     // Note: The Media plugin has a .loop property, but manual looping gives more control for fades
-//     if (loop && !isMediaPlaying) { // Check flag again to avoid restarting if manually stopped
-//          console.log(`Restarting loop for ${trackName}`);
-//          playTrack(trackName, loop, fadeInDuration); // Recursive call to restart
-//     }
-//   };
-
-//   // errorCallback runs if there's an issue
-//   const errorCallback = function(err) {
-//     console.error(`Error playing ${trackName}:`, err);
-//     isMediaPlaying = false;
-//     currentMedia = null;
-//     currentTrackName = null;
-//   };
-
-//   // Create the Media object
-//   try {
-//     // Ensure cordova.plugins.media is available (might need deviceready)
-//     if (typeof Media === 'undefined') {
-//         console.warn("cordova-plugin-media not available or not ready.");
-//         return;
-//     }
-//     currentMedia = new Media(trackSrc, successCallback, errorCallback);
-//     currentTrackName = trackName;
-//     console.log(`Created Media object for ${trackName}`);
-
-//     // Set looping if requested (using plugin's feature)
-//     // This might be simpler than manual restart in successCallback for basic loops
-//     if (loop) {
-//         currentMedia.setLooping(true); // Check plugin docs for exact method/signature
-//         console.log(`Set looping for ${trackName}`);
-//     } else {
-//         currentMedia.setLooping(false);
-//     }
-
-//     // Start playing (initial volume 0 for fade in)
-//     currentMedia.setVolume(0.0);
-//     currentMedia.play();
-//     isMediaPlaying = true;
-//     console.log(`Started playing ${trackName} (volume 0, fading in)`);
-
-//     // Fade In Logic
-//     if (fadeInDuration > 0) {
-//         const fadeSteps = 20;
-//         const fadeStepMs = fadeInDuration / fadeSteps;
-//         let currentStep = 0;
-//         const targetVolume = 1.0;
-
-//         mediaFadeInterval = setInterval(() => {
-//             currentStep++;
-//             const newVolume = (targetVolume / fadeSteps) * currentStep;
-//             if (currentMedia) {
-//                 currentMedia.setVolume(Math.min(newVolume, targetVolume));
-//             }
-//             if (currentStep >= fadeSteps) {
-//                 clearInterval(mediaFadeInterval);
-//                 mediaFadeInterval = null;
-//                 console.log(`Finished fading in ${trackName}`);
-//             }
-//         }, fadeStepMs);
-//     } else {
-//         // No fade in, set volume immediately
-//         currentMedia.setVolume(1.0);
-//         console.log(`Set volume to 1.0 for ${trackName} (no fade in)`);
-//     }
-
-
-//   } catch (e) {
-//     console.error(`Failed to create Media object for ${trackName}:`, e);
-//     isMediaPlaying = false;
-//     currentMedia = null;
-//     currentTrackName = null;
-//   }
-// }
-
-// // Function to stop the current track with fade out
-// async function stopCurrentTrack(fadeOutDuration = 1000) {
-//   console.log("Request to stop current track...");
-//   if (!currentMedia || !isMediaPlaying) {
-//     console.log("No track currently playing to stop.");
-//     return;
-//   }
-
-//   const mediaToStop = currentMedia; // Capture current media in case it changes
-//   const trackToStop = currentTrackName;
-//   isMediaPlaying = false; // Mark as stopping
-
-//   // Clear any ongoing fade in
-//   if (mediaFadeInterval) {
-//     clearInterval(mediaFadeInterval);
-//     mediaFadeInterval = null;
-//   }
-
-//   // Fade Out Logic
-//   if (fadeOutDuration > 0 && mediaToStop) {
-//     const fadeSteps = 20;
-//     const fadeStepMs = fadeOutDuration / fadeSteps;
-//     let currentStep = 0;
-//     const startVolume = mediaToStop.getCurrentVolume ? mediaToStop.getCurrentVolume() : 1.0; // Try to get current vol, fallback to 1.0
-
-//     console.log(`Starting fade out for ${trackToStop} over ${fadeOutDuration}ms`);
-//     mediaFadeInterval = setInterval(() => {
-//         currentStep++;
-//         const newVolume = startVolume - (startVolume / fadeSteps) * currentStep;
-//         if (mediaToStop) {
-//             mediaToStop.setVolume(Math.max(newVolume, 0.0));
-//         }
-//         if (currentStep >= fadeSteps || newVolume <= 0) {
-//             clearInterval(mediaFadeInterval);
-//             mediaFadeInterval = null;
-//             if (mediaToStop) {
-//                 mediaToStop.stop(); // Stop playback
-//                 mediaToStop.release(); // Release the resource
-//             }
-//             console.log(`Finished fading out and stopped ${trackToStop}`);
-//             // Clean up references only after fade/stop
-//             if (currentMedia === mediaToStop) { // Check if it's still the current one
-//                  currentMedia = null;
-//                  currentTrackName = null;
-//             }
-//         }
-//     }, fadeStepMs);
-//   } else {
-//     // No fade out, stop immediately
-//     console.log(`Stopping ${trackToStop} immediately (no fade out)`);
-//     if (mediaToStop) {
-//         mediaToStop.stop();
-//         mediaToStop.release();
-//     }
-//     currentMedia = null;
-//     currentTrackName = null;
-//   }
-// }
-
-// // Optional: Function to pause/resume
-// function pauseTrack() {
-//     if (currentMedia && isMediaPlaying) {
-//         currentMedia.pause();
-//         isMediaPlaying = false;
-//         console.log(`Paused track: ${currentTrackName}`);
-//     }
-// }
-// function resumeTrack() {
-//     if (currentMedia && !isMediaPlaying) {
-//         currentMedia.play();
-//         isMediaPlaying = true;
-//         console.log(`Resumed track: ${currentTrackName}`);
-//     }
-// }
-
 async function typeText(element, html, boxColor, delay = 30) {
   isTyping = true;
   const regex = /<[^>]*>|[^<]+/g;
@@ -322,17 +129,23 @@ class AudioManager {
     this.mediaObjects = {};
     this.currentTrack = null;
     this.fadeInterval = null;
-    this.fadeSteps = 20; // Number of steps for fade effect
-    this.fadeDuration = 1500; // Fade duration in milliseconds
+    this.fadeSteps = 20;
+    this.fadeDuration = 1500;
     this.volumeSupported = null;
+    this.isBrowser = !window.cordova || cordova.platformId === 'browser';
+    this.isPaused = false;
   }
 
-    // Test if volume control is supported
   testVolumeSupport() {
     if (this.volumeSupported !== null) return this.volumeSupported;
     
+    if (this.isBrowser) {
+      this.volumeSupported = true;
+      console.log('Volume control supported (browser)');
+      return true;
+    }
+    
     try {
-      // Create a test media object to check volume support
       const testMedia = new Media('', () => {}, () => {});
       testMedia.setVolume(1.0);
       testMedia.release();
@@ -346,46 +159,131 @@ class AudioManager {
     return this.volumeSupported;
   }
 
-  // Load and cache a media file
   loadAudio(name, filePath) {
     if (this.mediaObjects[name]) {
-      return; // Already loaded
+      return;
     }
 
-    this.mediaObjects[name] = new Media(
-      filePath,
-      () => console.log(`Audio loaded: ${name}`),
-      (err) => console.error(`Error loading ${name}: ${err.code}`),
-      (status) => console.log(`${name} status: ${status}`)
-    );
+    if (this.isBrowser) {
+      // Use HTML5 Audio for browser
+      const audio = new Audio(filePath);
+      audio._looping = false;
+      audio._name = name;
+      
+      audio.addEventListener('loadeddata', () => {
+        console.log(`Audio loaded: ${name}`);
+      });
+      
+      audio.addEventListener('error', (err) => {
+        console.error(`Error loading ${name}:`, err);
+      });
+      
+      // Handle looping manually for browser
+      audio.addEventListener('ended', () => {
+        if (audio._looping && this.currentTrack === name && !this.isPaused) {
+          console.log(`Looping: ${name}`);
+          audio.currentTime = 0;
+          audio.play().catch(e => console.error('Loop play failed:', e));
+        }
+      });
+      
+      this.mediaObjects[name] = audio;
+    } else {
+      // Use Cordova Media plugin for mobile
+      const media = new Media(
+        filePath,
+        () => {
+          console.log(`Audio finished: ${name}`);
+          // Handle looping for Cordova
+          if (media._looping && this.currentTrack === name && !this.isPaused) {
+            console.log(`Looping: ${name}`);
+            media.play();
+          }
+        },
+        (err) => console.error(`Error loading ${name}: ${err.code}`),
+        (status) => {
+          console.log(`${name} status: ${status}`);
+          // Status 4 = MEDIA_STOPPED (track ended)
+          if (status === 4 && media._looping && this.currentTrack === name && !this.isPaused) {
+            console.log(`Status 4 - Restarting loop: ${name}`);
+            setTimeout(() => {
+              if (media._looping && this.currentTrack === name && !this.isPaused) {
+                media.play();
+              }
+            }, 100);
+          }
+        }
+      );
+      media._looping = false;
+      this.mediaObjects[name] = media;
+    }
   }
 
-  // Preload multiple audio files
   preloadAudio(audioFiles) {
     Object.entries(audioFiles).forEach(([name, path]) => {
       this.loadAudio(name, path);
     });
   }
 
-  // Play audio with optional fade in
-  play(name, fadeIn = false) {
+  play(name, fadeIn = false, loop = false) {
+    console.log(`Attempting to play: "${name}" (fadeIn: ${fadeIn}, loop: ${loop})`);
+    
+    if (!name || name === 'null' || name === 'undefined') {
+      console.error(`Invalid audio name: ${name}`);
+      return;
+    }
+    
     if (!this.mediaObjects[name]) {
       console.error(`Audio file '${name}' not loaded`);
+      console.log('Available tracks:', Object.keys(this.mediaObjects));
       return;
     }
 
     const media = this.mediaObjects[name];
     this.currentTrack = name;
+    this.isPaused = false;
+    media._looping = loop;
 
-    if (fadeIn) {
-      this.fadeInAudio(media);
+    if (this.isBrowser) {
+      // HTML5 Audio
+      media.loop = false; // We handle looping manually via 'ended' event
+      media.volume = fadeIn ? 0 : 1;
+      
+      media.play()
+        .then(() => console.log(`Playing: ${name}`))
+        .catch(e => console.error('Play failed:', e));
+      
+      if (fadeIn) {
+        this.fadeInAudioHTML5(media);
+      }
     } else {
-      media.setVolume(1.0);
-      media.play();
+      // Cordova Media
+      if (fadeIn && this.volumeSupported) {
+        this.fadeInAudio(media, loop);
+      } else {
+        // Don't use numberOfLoops - handle it manually in the status callback
+        media.play();
+      }
     }
   }
 
-  // Stop current audio with optional fade out
+  isLooping() {
+    if (!this.currentTrack) return false;
+    const media = this.mediaObjects[this.currentTrack];
+    return !!media._looping;
+  }
+
+  toggleLoop() {
+    if (!this.currentTrack) return;
+    const trackName = this.currentTrack;
+    const media = this.mediaObjects[trackName];
+    const wasLooping = !!media._looping;
+    
+    // Just toggle the flag, don't restart
+    media._looping = !wasLooping;
+    console.log(`Loop toggled for ${trackName}: ${media._looping}`);
+  }
+
   stop(fadeOut = false, callback = null) {
     if (!this.currentTrack || !this.mediaObjects[this.currentTrack]) {
       if (callback) callback();
@@ -393,34 +291,44 @@ class AudioManager {
     }
 
     const media = this.mediaObjects[this.currentTrack];
+    media._looping = false; // Stop looping
+    this.isPaused = false; // Reset paused state
 
     if (fadeOut) {
       this.fadeOutAudio(media, () => {
-        media.stop();
-        media.release();
+        if (this.isBrowser) {
+          media.pause();
+          media.currentTime = 0;
+        } else {
+          media.stop();
+          media.release();
+        }
         this.currentTrack = null;
         if (callback) callback();
       });
     } else {
-      media.stop();
-      media.release();
+      if (this.isBrowser) {
+        media.pause();
+        media.currentTime = 0;
+      } else {
+        media.stop();
+        media.release();
+      }
       this.currentTrack = null;
       if (callback) callback();
     }
   }
 
-  // Transition between tracks with crossfade
-  transition(newTrackName, fadeOut = true, fadeIn = true) {
+  transition(newTrackName, fadeOut = true, fadeIn = true, loop = false) {
     return new Promise((resolve) => {
       this.stop(fadeOut, () => {
-        this.play(newTrackName, fadeIn);
+        this.play(newTrackName, fadeIn, loop);
         resolve();
       });
     });
   }
 
-  // Fade in effect (only if volume supported)
-  fadeInAudio(media) {
+  fadeInAudio(media, loop = false) {
     if (!this.volumeSupported) {
       media.play();
       return;
@@ -432,7 +340,7 @@ class AudioManager {
 
     try {
       media.setVolume(0);
-      media.play();
+      media.play(); // Don't use numberOfLoops, we handle it manually
 
       this.fadeInterval = setInterval(() => {
         volume += stepSize;
@@ -448,14 +356,28 @@ class AudioManager {
     }
   }
 
-  // Fade out effect (only if volume supported)
+  fadeInAudioHTML5(media) {
+    let volume = 0;
+    const stepSize = 1.0 / this.fadeSteps;
+    const stepDuration = this.fadeDuration / this.fadeSteps;
+
+    this.fadeInterval = setInterval(() => {
+      volume += stepSize;
+      if (volume >= 1.0) {
+        volume = 1.0;
+        clearInterval(this.fadeInterval);
+      }
+      media.volume = volume;
+    }, stepDuration);
+  }
+
   fadeOutAudio(media, callback) {
     if (!this.volumeSupported) {
       if (callback) callback();
       return;
     }
 
-    let volume = 1.0;
+    let volume = this.isBrowser ? media.volume : 1.0;
     const stepSize = 1.0 / this.fadeSteps;
     const stepDuration = this.fadeDuration / this.fadeSteps;
 
@@ -464,11 +386,19 @@ class AudioManager {
         volume -= stepSize;
         if (volume <= 0) {
           volume = 0;
-          media.setVolume(0);
+          if (this.isBrowser) {
+            media.volume = 0;
+          } else {
+            media.setVolume(0);
+          }
           clearInterval(this.fadeInterval);
           if (callback) callback();
         } else {
-          media.setVolume(volume);
+          if (this.isBrowser) {
+            media.volume = volume;
+          } else {
+            media.setVolume(volume);
+          }
         }
       }, stepDuration);
     } catch (e) {
@@ -477,11 +407,59 @@ class AudioManager {
     }
   }
 
-  // Clean up all media objects
+  pause() {
+    if (!this.currentTrack || !this.mediaObjects[this.currentTrack]) {
+      console.log('No track to pause');
+      return;
+    }
+
+    const media = this.mediaObjects[this.currentTrack];
+    this.isPaused = true;
+    
+    if (this.isBrowser) {
+      media.pause();
+      console.log(`Paused: ${this.currentTrack} at ${media.currentTime}s`);
+    } else {
+      media.pause();
+      console.log(`Paused: ${this.currentTrack}`);
+    }
+  }
+
+  resume() {
+    if (!this.currentTrack || !this.mediaObjects[this.currentTrack]) {
+      console.log('No track to resume');
+      return;
+    }
+
+    if (!this.isPaused) {
+      console.log('Track was not paused');
+      return;
+    }
+
+    const media = this.mediaObjects[this.currentTrack];
+    this.isPaused = false;
+    
+    if (this.isBrowser) {
+      media.play()
+        .then(() => console.log(`Resumed: ${this.currentTrack} from ${media.currentTime}s`))
+        .catch(e => console.error('Resume failed:', e));
+    } else {
+      // For Cordova, we need to call play() to resume
+      media.play();
+      console.log(`Resumed: ${this.currentTrack}`);
+    }
+  }
+
   cleanup() {
-    Object.values(this.mediaObjects).forEach(media => {
-      media.stop();
-      media.release();
+    Object.entries(this.mediaObjects).forEach(([name, media]) => {
+      media._looping = false;
+      if (this.isBrowser) {
+        media.pause();
+        media.currentTime = 0;
+      } else {
+        media.stop();
+        media.release();
+      }
     });
     this.mediaObjects = {};
     this.currentTrack = null;
@@ -504,6 +482,23 @@ audioManager.transition('battle', true, true);
 
 // Stop with fade out
 audioManager.stop(true);
+
+// **USAGE WITH LOOPS**
+
+// Play background music and loop it
+audioManager.play('bgm_forest', false, true);
+
+// Fade in and loop
+audioManager.play('bgm_battle', true, true);
+
+// Transition to looping track
+audioManager.transition('bgm_castle', true, true, true);
+
+// Check if currently looping
+console.log(audioManager.isLooping()); // true/false
+
+// Toggle loop (restarts track)
+audioManager.toggleLoop();
 */
 let audioManager;
 
@@ -522,37 +517,52 @@ function onDeviceReady() {
     _Media.release();
   */
   
+  let audioBasePath;
+  if (cordova.platformId === 'android') {
+    audioBasePath = '/android_asset/www/aud/';
+  } else if (cordova.platformId === 'ios') {
+    audioBasePath = cordova.file.applicationDirectory + 'www/aud';
+  } else {
+    audioBasePath = 'aud/';
+  }
+
+  console.log('Audio base path: ', audioBasePath);
+
+  
   window.errorMedia = new Media(
-    cordova.file.applicationDirectory + 'www/aud/error.mp3',
+    audioBasePath + 'error.mp3',
     () => {console.log("Playing error sound") },
     (err) => {console.log("Error playing error sound" + err.code) },
   );
 
   window.radioFrequencyCoordsMedia = new Media(
-    cordova.file.applicationDirectory + 'www/aud/frequency-coordinates.mp3',
+    audioBasePath + 'frequency-coordinates.mp3',
     () => {console.log("Playing error sound") },
     (err) => {console.log("Error playing error sound" + err.code) },
   );
 
   window.radioFrequencyNoResponseMedia = new Media(
-    cordova.file.applicationDirectory + 'www/aud/frequency-no-response.mp3',
+    audioBasePath + 'frequency-no-response.mp3',
     () => {console.log("Playing error sound") },
     (err) => {console.log("Error playing error sound" + err.code) },
   );
 
   window.shopKeeperBellMedia = new Media(
-    cordova.file.applicationDirectory + 'www/aud/shopkeeper-bell.mp3',
+    audioBasePath + 'shopkeeper-bell.mp3',
     () => {console.log("Playing error sound") },
     (err) => {console.log("Error playing error sound" + err.code) },
   );
 
   // Initialize audio manager
   audioManager = new AudioManager();
+
+  // Test volume support
+  audioManager.testVolumeSupport();
   
   // Define all your audio files
   const audioFiles = {
-    'intro': cordova.file.applicationDirectory + 'www/aud/intro.mp3',
-    'bg-music': cordova.file.applicationDirectory + 'www/aud/sound-track.mp3',
+    'intro': audioBasePath + 'intro.mp3',
+    'bg-music': audioBasePath + 'sound-track.mp3',
     // 'scene2': 'aud/scene2.mp3',
     // 'battle': 'aud/battle.mp3',
     // 'victory': 'aud/victory.mp3'
@@ -561,6 +571,16 @@ function onDeviceReady() {
   
   // Preload all audio files
   audioManager.preloadAudio(audioFiles);
+
+  document.addEventListener('pause', () => {
+    console.log('app paused');
+    audioManager.pause();
+  }, false);
+
+  document.addEventListener('resume', () => {
+    console.log('App resumed');
+    audioManager.resume();
+  }, false);
   
   sceneZero();
 }
@@ -970,7 +990,7 @@ const SCENE_REGISTRY = {
 //|SCENE ZERO
 function sceneZero() {
     let gameContainer = document.querySelector(".container");
-    gameContainer.style.backgroundImage = "url(img/00.png)";
+    gameContainer.style.backgroundImage = "url(img/00-start_screen.gif)";
     gameContainer.style.backgroundAttachment = "fixed"; // this is for paralax effect. remove if it looks bad on mobile
     let textContainer = document.querySelector(".text-container");
     let userControlsContainer = document.querySelector(".user-controls-container");
@@ -998,7 +1018,7 @@ function sceneZero() {
 
     // Check it out if it works
     // START MUSIC
-    audioManager.play('bg-music', true);
+    audioManager.play('bg-music', true, true);
       
     // Check for saved game
     const hasSave = loadGame();
@@ -9852,7 +9872,7 @@ async function sceneHouseLarge() {
 
         // Video loops
         let loopCount = 0;
-        let maxLoops = 2;
+        let maxLoops = 1;
 
         // insert video as first child (background)
         gameContainer.insertBefore(video, gameContainer.firstChild);
