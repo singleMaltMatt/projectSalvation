@@ -563,7 +563,7 @@ function onDeviceReady() {
   const audioFiles = {
     'intro': audioBasePath + 'intro.mp3',
     'bg-music': audioBasePath + 'sound-track.mp3',
-    // 'scene2': 'aud/scene2.mp3',
+    'bg-town': audioBasePath + 'town-bg.mp3',
     // 'battle': 'aud/battle.mp3',
     // 'victory': 'aud/victory.mp3'
     // Add more as needed
@@ -690,8 +690,29 @@ let journalBtn = document.getElementById("header-button-2");
       }
     }
     journalVisible = !journalVisible;
-  
-});
+  });
+
+  //Show journal update notification
+  const journalNotification = document.createElement('div');
+  journalNotification.textContent = 'Journal Updated';
+  journalNotification.style.position = 'fixed';
+  journalNotification.style.bottom = '20px';
+  journalNotification.style.left = '50%';
+  journalNotification.style.transform = 'translateX(-50%)';
+  journalNotification.style.padding = '10px 20px';
+  journalNotification.style.backgroundColor = 'rgba(0,0,0,0.7)';
+  journalNotification.style.color = 'white';
+  journalNotification.style.borderRadius = '5px';
+  journalNotification.style.zIndex = '100';
+
+function removeJournalEntryByTitle(titleToRemove) {
+  //Access the golbal JOURNAL array via window.JOURNAL
+  const index = window.JOURNAL.findIndex(entry => entry.title === titleToRemove);
+  if (index !== -1) {
+    window.JOURNAL.splice(index, 1);
+    console.log(`Removed journal entry: ${titleToRemove}`);
+  }
+}
 
 //| GLOBAL BOOLEANS
 //sceneOne
@@ -1059,7 +1080,7 @@ function sceneZero() {
     
         //   // Get the scene function from registry
         //   const sceneFunction = SCENE_REGISTRY[currentSceneTitle] || sceneOne;
-        //   // start SceneOne
+        //   // start Next scene
         //   sceneFunction();
         // });
         // Clear text container
@@ -1079,7 +1100,7 @@ function sceneZero() {
   
       // set button text
       wakeUpButton.textContent = "Wake up";
-      townButton.textContent = "Teleport to Residential Area";
+      townButton.textContent = "Teleport to Town Square";
   
       // add styling for button
       applyGlassStylingGreyBtn(wakeUpButton);
@@ -1125,7 +1146,7 @@ function sceneZero() {
       userControlsContainer.removeChild(townButton);
       // start SceneOne
       if (continueBtn) continueBtn.remove();
-      sceneHouseLarge();
+      sceneTownSquare();
       // // FADE OUT AUDIO BEFORE SCENE CHANGE
       // audioManager.transition('intro', true, true).then(() => {
       // });
@@ -1964,6 +1985,8 @@ async function sceneCottage() {
 
     INVENTORY.push({ name: "Letter", description: "A letter you found at the cottage" });
     JOURNAL.push({ title: "The Cottage", text: "While wandering to town I stumbled upon a cottage and found a letter addressed 'Astrid'. I took it with me. I should find someone in Gammelstad who could post it for Filip." });
+    document.body.appendChild(journalNotification);
+    setTimeout(() => {journalNotification.remove();}, 1500);
 
     await sleep(1500);
 
@@ -2091,7 +2114,9 @@ async function sceneCottage() {
 
     textContainer.innerHTML = "";
       
-    JOURNAL.push({ title: "The Cottage", text: "I saw the dead body of an old man. He must have been the write of the letter I found. I should report this to someone in Gammelstad..." });
+      JOURNAL.push({ title: "The Cottage", text: "I saw the dead body of an old man. He must have been the write of the letter I found. I should report this to someone in Gammelstad..." });
+      document.body.appendChild(journalNotification);
+      setTimeout(() => {journalNotification.remove();}, 1500);
 
       sceneThree();
     } else {
@@ -2166,6 +2191,9 @@ async function sceneTownSquare() {
   applyGlassStylingGreyBtn(storeBtn);
   applyGlassStylingGreyBtn(churchBtn);
   applyGlassStylingGreyBtn(townSquareBtn);
+
+  // START MUSIC
+  audioManager.transition('bg-town', true, true);
 
   await typeText(
     textContainer,
@@ -3044,6 +3072,10 @@ async function sceneChurch() {
   );
 
   await sleep(1500);
+  
+  JOURNAL.push({ title: "The Church", text: "Father Jakob needs me to find a map so that he can mark the location of the resistance on it." });
+  document.body.appendChild(journalNotification);
+  setTimeout(() => { journalNotification.remove(); }, 1500);
 
   // append new button
   userControlsContainer.appendChild(leaveChurchBtn); // append relevant buttons
@@ -3084,6 +3116,17 @@ async function sceneChurch() {
   );
 
   await sleep(1500);
+  
+  function onMapFound() {
+    // Remove the old, outdated entry
+    removeJournalEntryByTitle("The Church");
+  }
+    
+    onMapFound();
+  
+  JOURNAL.push({ title: "The Map to the Resistance", text: "Father Jakob marked the headquarters of the resistance on my map. Now to figure out a way to get there." });
+  document.body.appendChild(journalNotification);
+  setTimeout(() => { journalNotification.remove(); }, 1500);
   
   await typeText(
     textContainer,
@@ -3206,6 +3249,10 @@ async function sceneChurch() {
       "<p>... Dr. Ignis... is that the man I keep seeing in these memories? Could he be...<br><br>No. you can't think about this right now. You might find some more information once you reach the resistance HQ.</p>",
       applyGlassStylingGreen
     );
+
+    JOURNAL.push({ title: "My Name", text: "My name is Xander...<br<br>Why can't I seem to remember anything more than these current events?<br>Why do I feel connected to Project Salvation and Doctor Ignis?<br>I've learned everything I could from this town, I need to find the Resistance and help where I can, and perhaps more can be revealed to me." });
+    document.body.appendChild(journalNotification);
+    setTimeout(() => { journalNotification.remove(); }, 1500);
 
     await pause();
 
@@ -3888,7 +3935,6 @@ async function sceneClinic() {
     
   });
 
-  
   locateBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
@@ -5645,6 +5691,10 @@ async function sceneClinic() {
     );
 
     await pause();
+
+    JOURNAL.push({ title: "The White House", text: "I tried to explore the white house, only to be bitten by a snake! I guess it serves me right for trying to enter someone else's property without permission.<br>Luckily I don't feel any pain from the bite." });
+    document.body.appendChild(journalNotification);
+    setTimeout(() => { journalNotification.remove(); }, 1500);
 
     textContainer.innerHTML = "";
 
@@ -7614,6 +7664,10 @@ async function scenePool() {
 
       await sleep(1500);
 
+      JOURNAL.push({ title: "The Swimming Pool", text: "I met a girl by the pool and she said that she's the niece of the Innkeeper, Ingrid. I should speak to her about what I discovered in that cottage." })
+      document.body.appendChild(journalNotification);
+      setTimeout(() => {journalNotification.remove();}, 1500);
+
       userControlsContainer.append(townSquareBtn);
     } else {
       userControlsContainer.appendChild(townSquareBtn); 
@@ -8508,7 +8562,20 @@ async function sceneHouseFlag() {
 
         await pause();
         INVENTORY.push({ name: "Note", description: "A note you found in the house with the flag. It has a frequency, '127.16 Mhz' written on it." });
-        JOURNAL.push({ title: "The House with the Flag", text: "I found a note in the main bedroom while exploring the house with the flag. I wonder if this frequency could be used on some kind of communication device in town?" });
+        JOURNAL.push({ title: "The Note", text: "I found a note in the main bedroom while exploring the house with the flag. I wonder if this frequency could be used on some kind of communication device in town?" });
+        document.body.appendChild(journalNotification);
+        setTimeout(() => { journalNotification.remove(); }, 1500);
+
+        function onRadioFound() {
+          removeJournalEntryByTitle("The House with the Flag");
+        }
+
+        onRadioFound();
+
+        JOURNAL.push({ title: "The Radio Frequency", text: "Either the owner of this house left in a hurry... or... worse...<br>I wonder why they left this frequency." });
+        document.body.appendChild(journalNotification);
+        setTimeout(() => { journalNotification.remove(); }, 1500);
+                
         HOUSE_FLAG_FREQUENCY = true;
 
         await typeText(
@@ -8939,6 +9006,16 @@ async function sceneHouseFlag() {
             applyGlassStylingGreen
           );
 
+          function onCoordsFound() {
+            removeJournalEntryByTitle("The Radio Frequency");
+          }
+
+          onCoordsFound();
+
+          JOURNAL.push({ title: "The Coordinates", text: "The resistance... I need to return to Father Jakob and inform him about my discovery. He might be able to point me in the right direction." });
+          document.body.appendChild(journalNotification);
+          setTimeout(() => { journalNotification.remove(); }, 1500);
+
           userControlsContainer.appendChild(goBackBtn);
         } else {
           await typeText(
@@ -8976,6 +9053,10 @@ async function sceneHouseFlag() {
         );
 
         await sleep(1500);
+
+        JOURNAL.push({ title: "The House with the Flag", text: "I found an old CB radio in the basement of the house with the flag. Odd place to have a radio. I wonder what they could be listening to down there?" });
+        document.body.appendChild(journalNotification);
+        setTimeout(() => { journalNotification.remove(); }, 1500);
 
         radioFrequencyNoResponseMedia.stop();
         radioFrequencyNoResponseMedia.release();
@@ -10455,6 +10536,10 @@ async function sceneHouseLarge() {
       name: "Map",
       description: "A detailed map of the town and its surroundings you found in the mayor's safe.",
     });
+      
+    JOURNAL.push({ title: "The Mayor's House", text: "The Mayor is dead.<br>I think I saw something in that office?<br>Who or what is 'Thelir Sabotører'? Are they involved with his death somehow?<br>I can't talk to anyone about this at the moment, but perhaps the answers I seek lies beyond the door of the key I found in that safe." });
+    document.body.appendChild(journalNotification);
+    setTimeout(() => { journalNotification.remove(); }, 1500);
 
     // append new button
     if (LARGE_HOUSE_MAYOR_LETTER_READ == false) {
@@ -10868,6 +10953,10 @@ async function sceneHouseOvergrown() {
           applyGlassStylingGreen
         );
 
+        JOURNAL.push({ title: "The Overgrown House", text: "I can't get into that house covered with all the vines. I need a pick-me-up.<br>I doubt there is anything useful in there though..." });
+        document.body.appendChild(journalNotification);
+        setTimeout(() => { journalNotification.remove(); }, 1500);
+
         userControlsContainer.appendChild(leaveBtn);
       }
     });
@@ -10975,6 +11064,16 @@ async function sceneHouseOvergrown() {
       );
   
       await sleep(1500);
+
+      function catToyTaken() {
+        removeJournalEntryByTitle("The Overgrown House")
+      }
+
+      catToyTaken();
+
+      JOURNAL.push({ title: "The Cat Toy", text: "I found a cat toy in that house covered with all the vines.<br>I haven't seen a cat anywhere in this town though, but maybe this toy can help me make a friend when I get lonely." });
+      document.body.appendChild(journalNotification);
+      setTimeout(() => { journalNotification.remove(); }, 1500);
   
       // append new button
       userControlsContainer.appendChild(leaveBtn);
@@ -11842,6 +11941,10 @@ async function sceneHouseWhite() {
         );
       
       await pause();
+
+      JOURNAL.push({ title: "The White House", text: "I tried to explore the white house, only to be bitten by a snake! I guess it serves me right for trying to enter someone else's property without permission.<br>Luckily I don't feel any pain from the bite." });
+      document.body.appendChild(journalNotification);
+      setTimeout(() => { journalNotification.remove(); }, 1500);
 
       HOUSE_WHITE_SNAKE_BITE = true;
 
