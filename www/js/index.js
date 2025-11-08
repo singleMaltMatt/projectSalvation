@@ -561,9 +561,15 @@ function onDeviceReady() {
   
   // Define all your audio files
   const audioFiles = {
-    'intro': audioBasePath + 'intro.mp3',
-    'bg-music': audioBasePath + 'sound-track.mp3',
-    'bg-town': audioBasePath + 'town-bg.mp3',
+    // 'intro': audioBasePath + 'intro.mp3',
+    'bg-music': audioBasePath + 'sound-track.ogg',
+    'church-music': audioBasePath + 'church-soundtrack.ogg',
+    'clinic-music': audioBasePath + 'creepy-clinic.ogg',
+    'mayor-house-music': audioBasePath + 'creepy-mayor-house.ogg',
+    'town-hall-music': audioBasePath + 'creepy-town-hall.ogg',
+    'wake-up-music': audioBasePath + 'first-forest.ogg',
+    'lab-music': audioBasePath + 'lab-soundtrack.ogg',
+    // 'bg-town': audioBasePath + 'town-bg.mp3',
     // 'battle': 'aud/battle.mp3',
     // 'victory': 'aud/victory.mp3'
     // Add more as needed
@@ -1185,6 +1191,9 @@ async function sceneOne() {
   applyGlassStylingGreyBtn(lookBtn);
   applyGlassStylingGreyBtn(helpBtn);
 
+  // START MUSIC
+  audioManager.transition('wake-up-music', true, true, true);
+
   await typeTextItalic(
     textContainer,
     "<p>Cold... drops on my face... dew? Morning. It's morning.</p>",
@@ -1528,6 +1537,8 @@ async function sceneTwo() {
 
       await pause();
 
+      gameContainer.style.backgroundImage = "url(img/79-blocked-road.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       textContainer.innerHTML = "";
 
       await typeText(
@@ -1638,7 +1649,7 @@ async function sceneThree() {
   await pause();
 
   textContainer.innerHTML = "";
-  gameContainer.style.backgroundImage = "url(img/10-town-entrance.jpg)";
+  gameContainer.style.backgroundImage = "url(img/10-town-entrance.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
 
   await typeTextItalic(
@@ -2193,7 +2204,7 @@ async function sceneTownSquare() {
   applyGlassStylingGreyBtn(townSquareBtn);
 
   // START MUSIC
-  audioManager.transition('bg-town', true, true);
+  audioManager.transition('bg-music', true, true, true);
 
   await typeText(
     textContainer,
@@ -2482,6 +2493,9 @@ async function sceneChurch() {
   setTimeout(() => {
     btnRecentlyClicked = false;
   }, 1000);
+    
+  // CHANGE MUSIC
+  audioManager.transition('church-music', true, true, true);
 
   // Clear text container
   textContainer.innerHTML = "";
@@ -3461,6 +3475,9 @@ async function sceneClinic() {
   let tryToOpenDoorBtn = document.createElement("button");
   let lookAroundBtn = document.createElement("button");
   let returnToResidentialBtn = document.createElement("button");
+  let walkSnakeBtn = document.createElement("button");
+  let scareBtn = document.createElement("button");
+  let runBtn = document.createElement("button");
 
   // set button text
   townSquareBtn.textContent = "Go to town square";
@@ -3505,7 +3522,7 @@ async function sceneClinic() {
   tryToOpenDoorBtn.textContent = "Try to open the door";
   lookAroundBtn.textContent = "Look around the house";
   returnToResidentialBtn.textContent = "Return to residential area";
-  walkBtn.textContent = "Walk around the snake";
+  walkSnakeBtn.textContent = "Walk around the snake";
   scareBtn.textContent = "Try and scare the snake away";
   runBtn.textContent = "Run past the snake!";
   
@@ -3553,7 +3570,7 @@ async function sceneClinic() {
   applyGlassStylingGreyBtn(tryToOpenDoorBtn);
   applyGlassStylingGreyBtn(lookAroundBtn);
   applyGlassStylingGreyBtn(returnToResidentialBtn);
-  applyGlassStylingGreyBtn(walkBtn);
+  applyGlassStylingGreyBtn(walkSnakeBtn);
   applyGlassStylingGreyBtn(scareBtn);
   applyGlassStylingGreyBtn(runBtn);
 
@@ -3622,6 +3639,9 @@ async function sceneClinic() {
     setTimeout(() => {
       btnRecentlyClicked = false;
     }, 1000);
+
+    // START MUSIC
+    audioManager.transition('clinic-music', true, true, true);
 
     // Clear text container
     textContainer.innerHTML = "";
@@ -4432,6 +4452,9 @@ async function sceneClinic() {
     setTimeout(() => {
       btnRecentlyClicked = false;
     }, 1000);
+
+    // START MUSIC
+    audioManager.transition('lab-music', true, true, true);
 
     // Clear text container
     textContainer.innerHTML = "";
@@ -5438,8 +5461,6 @@ async function sceneClinic() {
     userControlsContainer.appendChild(tryToOpenDoorBtn); // append relevant buttons
   });
 
-  // continue from try to open door paragraph
-
   tryToOpenDoorBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
@@ -5592,7 +5613,7 @@ async function sceneClinic() {
     }
   });
 
-  walkBtn.addEventListener("pointerup", async function () {
+  walkSnakeBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
@@ -5646,7 +5667,7 @@ async function sceneClinic() {
     enoughLeaveBtn.remove();
     openDocBtn.remove();
     openImageBtn.remove();
-    walkBtn.remove();
+    walkSnakeBtn.remove();
     scareBtn.remove();
 
     // write new text
@@ -5681,7 +5702,7 @@ async function sceneClinic() {
     enoughLeaveBtn.remove();
     openDocBtn.remove();
     openImageBtn.remove();
-    walkBtn.remove();
+    walkSnakeBtn.remove();
     scareBtn.remove();
     runBtn.remove();
 
@@ -5767,7 +5788,7 @@ async function sceneClinic() {
     tryToOpenDoorBtn.remove();
     lookAroundBtn.remove();
     returnToResidentialBtn.remove();
-    walkBtn.remove();
+    walkSnakeBtn.remove();
     scareBtn.remove();
     runBtn.remove();
 
@@ -5825,7 +5846,7 @@ async function sceneClinic() {
     enoughLeaveBtn.remove();
     openSecretDoorBtn.remove();
     lookThroughBtn.remove();
-    walkBtn.remove();
+    walkSnakeBtn.remove();
     tryToOpenDoorBtn.remove();
     lookAroundBtn.remove();
     returnToResidentialBtn.remove();
@@ -5836,8 +5857,6 @@ async function sceneClinic() {
     sceneTownSquare();
 
   });
-
-  
 }
 
 //|SCENE TOWN HALL
@@ -5949,6 +5968,9 @@ async function sceneHall() {
     setTimeout(() => {
       btnRecentlyClicked = false;
     }, 1000);
+
+    // START MUSIC
+    audioManager.transition('town-hall-music', true, true, true);
 
     // Clear text container
     textContainer.innerHTML = "";
@@ -7481,7 +7503,7 @@ async function sceneInn() {
 //|SCENE SWIMMING POOL
 async function scenePool() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/000pool.png)";
+  gameContainer.style.backgroundImage = "url(img/77-swimming-pool.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
 
   let userControlsContainer = document.querySelector(
@@ -7695,7 +7717,7 @@ async function scenePool() {
     await pause();
 
     textContainer.innerHTML = "";
-    gameContainer.style.backgroundImage = "url(img/000pool.png)";
+    gameContainer.style.backgroundImage = "url(img/77-swimming-pool.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
 
     await typeText(
@@ -8133,7 +8155,7 @@ async function sceneStore() {
 //|SCENE RESIDENTIAL
 async function sceneResidential() {
   let gameContainer = document.querySelector(".container");
-  gameContainer.style.backgroundImage = "url(img/000residential-area.png)";
+  gameContainer.style.backgroundImage = "url(img/76-residential-area.png)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
 
   let userControlsContainer = document.querySelector(
@@ -9282,6 +9304,8 @@ async function sceneHouseLarge() {
     applyGlassStylingGreyBtn(noSenderLetterBtn);
     applyGlassStylingGreyBtn(keyBtn);
     applyGlassStylingGreyBtn(silverKeyBtn);
+  
+
     
     await typeText(
       textContainer,
@@ -9381,6 +9405,9 @@ async function sceneHouseLarge() {
       setTimeout(() => {
         btnRecentlyClicked = false;
       }, 1000);
+
+      // START MUSIC
+      audioManager.transition('mayor-house-music', true, true, true);
   
       // Clear text container
       gameContainer.style.backgroundImage = "url(img/52-large-house-inside.png)";
@@ -9591,6 +9618,8 @@ async function sceneHouseLarge() {
         btnRecentlyClicked = false;
       }, 1000);
   
+      gameContainer.style.backgroundImage = "url(img/78-journal.png)";
+      gameContainer.style.transition = "background-image 4s ease-in-out";
       // Clear text container
       textContainer.innerHTML = "";
   
