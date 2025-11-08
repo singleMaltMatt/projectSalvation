@@ -1984,7 +1984,7 @@ async function sceneCottage() {
     COTTAGE_LETTER = true;
 
     INVENTORY.push({ name: "Letter", description: "A letter you found at the cottage" });
-    JOURNAL.push({ title: "The Cottage", text: "While wandering to town I stumbled upon a cottage and found a letter addressed 'Astrid'. I took it with me. I should find someone in Gammelstad who could post it for Filip." });
+    JOURNAL.push({ title: "The Letter in the Cottage", text: "The quaint little cottage in the forest housed an ugly sight of death and despair, that poor old man...<br>I should try and post the letter I found as soon as I get to the town. His family must know of his passing." });
     document.body.appendChild(journalNotification);
     setTimeout(() => {journalNotification.remove();}, 1500);
 
@@ -4045,6 +4045,10 @@ async function sceneClinic() {
 
     await sleep(1500);
 
+    JOURNAL.push({ title: "Looting the Clinic", text: "I found a syringe in the Clinic, not sure what it does... but maybe I could use it." });
+    document.body.appendChild(journalNotification);
+    setTimeout(() => { journalNotification.remove(); }, 1500);
+
     // append new button
     userControlsContainer.appendChild(closeBtn); // append relevant buttons
   });
@@ -4777,6 +4781,10 @@ async function sceneClinic() {
     );
 
     await pause();
+
+    JOURNAL.push({ title: "Clinic Research", text: "This USB drive has information on it that could either be useful or very dangerous, depending on who I give it to...<br>I should keep it safe for now." });
+    document.body.appendChild(journalNotification);
+    setTimeout(() => { journalNotification.remove(); }, 1500);
 
     textContainer.innerHTML = "";
 
@@ -5517,6 +5525,10 @@ async function sceneClinic() {
     );
 
     await pause();
+
+    JOURNAL.push({ title: "Discoveries in the Lab", text: "I found remnants of androids all over the place in the secret lab of the Clinic. There must be a connection between them and the AI technology that Father Jakob told me about.<br>The research I found should also prove useful to someone.<br>The only question that remains - were the Johansen doctors friends of foes?" });
+    document.body.appendChild(journalNotification);
+    setTimeout(() => { journalNotification.remove(); }, 1500);
 
     textContainer.innerHTML = "";
 
@@ -6971,6 +6983,10 @@ async function sceneInn() {
 
     await sleep(1500);
 
+    JOURNAL.push({ title: "Where Did Everyone Go?", text: "Ingrid told me about the Resistance and the reason that the town is empty...<br>I should try and gather more intel..." });
+    document.body.appendChild(journalNotification);
+    setTimeout(() => { journalNotification.remove(); }, 1500);
+
     await typeTextItalic(
       textContainer,
       "<p>Good luck out there, dear.</p>",
@@ -7115,6 +7131,16 @@ async function sceneInn() {
 
     await pause();
 
+    function onCoordsConvo() {
+      removeJournalEntryByTitle("Where Did Everyone Go?")
+    }
+
+    onCoordsConvo();
+
+    JOURNAL.push({ title: "Father Jakob", text: "Ingrid told me to go find Father Jakob at the church, he should be able to help me with these coordinates." });
+    document.body.appendChild(journalNotification);
+    setTimeout(() => { journalNotification.remove(); }, 1500);
+
     textContainer.innerHTML = "";
 
     await typeText(
@@ -7221,6 +7247,12 @@ async function sceneInn() {
       applyGlassStylingRed
     );
 
+    await sleep(1500);
+
+    JOURNAL.push({ title: "The Letter", text: "I gave the letter to Ingrid - she will see to it that her mother gets it." });
+    document.body.appendChild(journalNotification);
+    setTimeout(() => { journalNotification.remove(); }, 1500);
+
     if (HOUSE_FLAG_COORDINATES == true) {
       userControlsContainer.appendChild(resistanceBtn);
     }
@@ -7261,6 +7293,12 @@ async function sceneInn() {
       "<p>Ingrid thanks you for the letter and tells you that she will check up on her father tonight.</p>",
       applyGlassStylingRed
     );
+
+    await sleep(1500);
+
+    JOURNAL.push({ title: "The Letter", text: "I gave the letter to Ingrid - she will see to it that her mother gets it." });
+    document.body.appendChild(journalNotification);
+    setTimeout(() => { journalNotification.remove(); }, 1500);
 
     if (HOUSE_FLAG_COORDINATES == true) {
       userControlsContainer.appendChild(resistanceBtn);
@@ -7337,6 +7375,16 @@ async function sceneInn() {
 
     await pause();
 
+    function onLetterGiven() {
+      removeJournalEntryByTitle("The Letter in the Cottage");
+    }
+
+    onLetterGiven();
+
+    JOURNAL.push({ title: "Filip's Letter", text: "I gave the letter I found at the cottage to Ingrid... The old man was her father. She seems torn, but luckily she did not have to witness that scene with her own eyes." });
+    document.body.appendChild(journalNotification);
+    setTimeout(() => { journalNotification.remove(); }, 1500);
+
     textContainer.innerHTML = "";
 
     await typeTextItalic(
@@ -7384,6 +7432,10 @@ async function sceneInn() {
     );
 
     await pause();
+
+    JOURNAL.push({ title: "The Clinic Key", text: "Ingrid gave me the key to the Clinic, I should go there as soon as I can and tend to my injuries." });
+    document.body.appendChild(journalNotification);
+    setTimeout(() => { journalNotification.remove(); }, 1500);
 
     textContainer.innerHTML = "";
 
