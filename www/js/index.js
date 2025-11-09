@@ -1844,6 +1844,7 @@ async function sceneCottage() {
   let nextRoomBtn = document.createElement("button");
   let takeLetterBtn = document.createElement("button");
   let leaveRoomBtn = document.createElement("button");
+  let knockBtn = document.createElement("button");
   
   // set button text
   enterBtn.textContent = "Enter cottage";
@@ -1853,6 +1854,7 @@ async function sceneCottage() {
   nextRoomBtn.textContent = "Go to next room";
   takeLetterBtn.textContent = "Take letter";
   leaveRoomBtn.textContent = "Leave room";
+  knockBtn.textContent = "Knock on the door"
 
   // add styling for button
   applyGlassStylingGreyBtn(enterBtn);
@@ -1862,6 +1864,7 @@ async function sceneCottage() {
   applyGlassStylingGreyBtn(nextRoomBtn);
   applyGlassStylingGreyBtn(takeLetterBtn);
   applyGlassStylingGreyBtn(leaveRoomBtn);
+  applyGlassStylingGreyBtn(knockBtn);
 
   await typeText(
     textContainer,
@@ -1869,9 +1872,42 @@ async function sceneCottage() {
     applyGlassStylingRed
   );
 
-  // append button to user controls container
-  userControlsContainer.appendChild(enterBtn);
-  userControlsContainer.appendChild(townBtn);
+  await sleep(1500);
+
+  userControlsContainer.appendChild(knockBtn);
+
+  knockBtn.addEventListener("pointerup", async function () {
+    //Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    knockBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>You knock on the cottage for and wait for a response...</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(2000);
+
+    await typeText(
+      textContainer,
+      "<p>After a minute of waiting, it's clear that no one is home.</p>",
+      applyGlassStylingRed
+    );
+
+    userControlsContainer.appendChild(enterBtn);
+    userControlsContainer.appendChild(townBtn);
+  })
 
   enterBtn.addEventListener("pointerup", async function () {
     //Button click check
@@ -1891,6 +1927,7 @@ async function sceneCottage() {
     // remove button from user controls container
     enterBtn.remove();
     townBtn.remove();
+    knockBtn.remove();
 
     // write new text
     await typeText(
@@ -2026,6 +2063,7 @@ async function sceneCottage() {
     nextRoomBtn.remove();
     takeLetterBtn.remove();
     exitBtn.remove();
+    readLetterBtn.remove();
 
     COTTAGE_ROOM = true;
     COTTAGE_DEAD_BODY = true;
@@ -2150,6 +2188,7 @@ async function sceneCottage() {
     enterBtn.remove();
     townBtn.remove();
     leaveRoomBtn.remove();
+    knockBtn.remove();
 
     sceneThree();
   });
@@ -4501,6 +4540,10 @@ async function sceneClinic() {
     );
 
     await sleep(1500);
+
+    JOURNAL.push({ title: "The Secret Lab", text: "I entered what appears to be a secret lab underneath the clinic."})
+    document.body.appendChild(journalNotification);
+    setTimeout(() => { journalNotification.remove(); }, 1500);
 
     // append new button
     userControlsContainer.appendChild(investigateCounterBtn); // append relevant buttons
@@ -7545,7 +7588,7 @@ async function scenePool() {
   } else {
     await typeText(
       textContainer,
-      "<p>Before you lies a meticulously maintained swimming pool, enclosed by a white fence. The gate, creaking on its rusty hinges, stands ajar. Adjacent to the pool, a solitary little girl, her grip tender on a time-worn stuffed toy bear, amuses herself by playfully kicking a ball against the inn's weathered wall.</p>",
+      "<p>Before you lies a meticulously maintained swimming pool, enclosed by a white fence. The gate, creaking on its rusty hinges, stands ajar. Next to the pool, a solitary little girl, her grip tender on a time-worn stuffed toy bear, amuses herself by playfully kicking a ball against the inn's weathered wall.</p>",
       applyGlassStylingRed
     );
   }
@@ -8761,7 +8804,7 @@ async function sceneHouseFlag() {
       if (HOUSE_FLAG_TWO == false) {
         await typeText(
         textContainer,
-        "<p>You step inside a tiny white tiled room that you ascertain to be a bathroom.<br>You try to turn on the light but it seems like the light bulb is broken.</p>",
+        "<p>You step inside a tiny white tiled room that you ascertain to be a bathroom.<br>The room is spotless, nothing seems out of place.</p>",
         applyGlassStylingRed
       );
 

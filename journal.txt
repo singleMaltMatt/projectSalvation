@@ -1,0 +1,88 @@
+title: "The Letter in the Cottage",
+text: "The quaint little cottage in the forest housed an ugly sight of death and despair, that poor old man...<br>I should try and post the letter I found as soon as I get to the town. His family must know of his passing."
+
+
+title: "The Cottage", text: "I saw the dead body of an old man. He must have been the write of the letter I found. I should report this to someone in Gammelstad..."
+
+
+title: "The Church",
+text: "Father Jakob needs me to find a map so that he can mark the location of the resistance on it."
+
+
+title: "The Map to the Resistance",
+text: "Father Jakob marked the headquarters of the resistance on my map. Now to figure out a way to get there."
+
+
+title: "My Name",
+text: "My name is Xander...<br<br>Why can't I seem to remember anything more than these current events?<br>Why do I feel connected to Project Salvation and Doctor Ignis?<br>I've learned everything I could from this town, I need to find the Resistance and help where I can, and perhaps more can be revealed to me."
+
+
+title: "Looting the Clinic",
+text: "I found a syringe in the Clinic, not sure what it does... but maybe I could use it."
+
+
+title: "Clinic Research",
+text: "This USB drive has information on it that could either be useful or very dangerous, depending on who I give it to...<br>I should keep it safe for now."
+
+
+title: "Discoveries in the Lab",
+text: "I found remnants of androids all over the place in the secret lab of the Clinic. There must be a connection between them and the AI technology that Father Jakob told me about.<br>The research I found should also prove useful to someone.<br>The only question that remains - were the Johansen doctors friends of foes?"
+
+
+title: "The White House",
+text: "I tried to explore the white house, only to be bitten by a snake! I guess it serves me right for trying to enter someone else's property without permission.<br>Luckily I don't feel any pain from the bite."
+
+
+title: "Where Did Everyone Go?",
+text: "Ingrid told me about the Resistance and the reason that the town is empty...<br>I should try and gather more intel..."
+
+
+title: "Father Jakob",
+text: "Ingrid told me to go find Father Jakob at the church, he should be able to help me with these coordinates."
+
+
+title: "The Letter",
+text: "I gave the letter to Ingrid - she will see to it that her mother gets it."
+
+
+title: "The Letter",
+text: "I gave the letter to Ingrid - she will see to it that her mother gets it."
+
+
+title: "Filip's Letter",
+text: "I gave the letter I found at the cottage to Ingrid... The old man was her father. She seems torn, but luckily she did not have to witness that scene with her own eyes."
+
+
+title: "The Clinic Key",
+text: "Ingrid gave me the key to the Clinic, I should go there as soon as I can and tend to my injuries."
+
+
+title: "The Swimming Pool",
+text: "I met a girl by the pool and she said that she's the niece of the Innkeeper, Ingrid. I should speak to her about what I discovered in that cottage." })
+
+
+title: "The Note",
+ext: "I found a note in the main bedroom while exploring the house with the flag. I wonder if this frequency could be used on some kind of communication device in town?"
+
+
+title: "The Radio Frequency",
+text: "Either the owner of this house left in a hurry... or... worse...<br>I wonder why they left this frequency."
+
+
+title: "The Coordinates",
+text: "The resistance... I need to return to Father Jakob and inform him about my discovery. He might be able to point me in the right direction."
+
+
+title: "The House with the Flag",
+text: "I found an old CB radio in the basement of the house with the flag. Odd place to have a radio. I wonder what they could be listening to down there?"
+
+
+title: "The Mayor's House",
+text: "The Mayor is dead.<br>I think I saw something in that office?<br>Who or what is 'Thelir Sabotører'? Are they involved with his death somehow?<br>I can't talk to anyone about this at the moment, but perhaps the answers I seek lies beyond the door of the key I found in that safe."
+
+title: "The Overgrown House",
+text: "I can't get into that house covered with all the vines. I need a pick-me-up.<br>I doubt there is anything useful in there though..."
+
+
+title: "The Cat Toy",
+text: "I found a cat toy in that house covered with all the vines.<br>I haven't seen a cat anywhere in this town though, but maybe this toy can help me make a friend when I get lonely."
