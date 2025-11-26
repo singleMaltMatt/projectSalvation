@@ -10061,18 +10061,39 @@ async function sceneHouseLarge() {
         textContainer.innerHTML = "";
 
         // video element start
+        // let video = document.createElement("video");
+        // video.src = "vid/01_large_house.mp4";
+        // video.autoplay = true;
+        // video.muted = true;
+        // video.loop = false;
+        // video.style.position = "fixed";
+        // video.style.top = "0";
+        // video.style.left = "0";
+        // video.style.width = "100%";
+        // video.style.height = "100%";
+        // video.style.objectFit = "cover";
+        // video.style.zIndex = "0"; // above other elements
+        // video.style.pointerEvents = "none";
+
+        /* Possible fixes*/
         let video = document.createElement("video");
         video.src = "vid/01_large_house.mp4";
         video.autoplay = true;
-        video.muted = false;
+        video.muted = true;
         video.loop = false;
+        video.controls = false;
+        video.playsinline = true;
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+        // This is the key - use a transparent data URI as poster
+        video.poster = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
         video.style.position = "fixed";
         video.style.top = "0";
         video.style.left = "0";
         video.style.width = "100%";
         video.style.height = "100%";
         video.style.objectFit = "cover";
-        video.style.zIndex = "0"; // above other elements
+        video.style.zIndex = "0";
         video.style.pointerEvents = "none";
 
         // Video loops
