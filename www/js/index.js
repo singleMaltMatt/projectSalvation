@@ -8014,10 +8014,11 @@ async function scenePool() {
     );
 
     await pause();
+    textContainer.innerHTML = "";
 
     await typeText(
       textContainer,
-      "<p>No I don't know mister, but I wish they didn't have to help them.</p",
+      "<p>No I don't know mister, but I wish they didn't have to help them.</p>",
       applyGlassStylingBlue
     )
 
