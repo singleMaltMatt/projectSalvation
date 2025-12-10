@@ -110,7 +110,7 @@ async function typeTextItalic(element, html, boxColor, delay = 30) {
 }
 
 function applyTypingCss(element) {
-  let typingAnimation = "typing 2s steps(22), blink .5s step-end infinite alternate";
+  let typingAnimation = "typing 0.5s steps(22), blink .5s step-end infinite alternate";
   element.style.animation = typingAnimation;
   element.style.fontFamily = "victorMono, monospace";
   element.style.fontWeight = "normal";
@@ -726,6 +726,7 @@ window.FOREST_LEG = false;
 window.FOREST_LOOK = false;
 //sceneTwo
 window.FOREST_RIGHT = false;
+window.FOREST_ROAD_BLOCK = false;
 // sceneCottage
 window.COTTAGE_LETTER = false;
 window.COTTAGE_ROOM = false;
@@ -734,6 +735,12 @@ window.COTTAGE_DEAD_BODY = false;
 window.TOWN_MARKET = false;
 // sceneSwimmingPool
 window.SWIMMING_POOL_GIRL = false;
+window.SWIMMING_POOL_VISITED_AGAIN = false;
+window.SWIMMING_POOL_ONE = false;
+window.SWIMMING_POOL_TWO = false;
+window.SWIMMING_POOL_THREE = false;
+window.SWIMMING_POOL_FOUR = false;
+window.SWIMMING_POOL_FIVE = false;
 // sceneInn
 window.INN_SAD = false;
 window.INN_LETTER_GIVEN = false;
@@ -742,6 +749,7 @@ window.INN_SURVIVE = false;
 window.INN_LETTER_PICKED = false;
 window.INN_FILIP_PICKED = false;
 window.INN_ADVICE = false;
+window.INN_INGRID_MET = false;
 // sceneResidentail
 // sceneHouseRundown
 window.HOUSE_RUNDOWN_EXPLORED = false;
@@ -853,6 +861,7 @@ function getGameState() {
       FOREST_LOOK,
       //sceneTwo
       FOREST_RIGHT,
+      FOREST_ROAD_BLOCK,
       // sceneCottage
       COTTAGE_LETTER,
       COTTAGE_ROOM,
@@ -861,6 +870,12 @@ function getGameState() {
       TOWN_MARKET,
       // sceneSwimmingPool
       SWIMMING_POOL_GIRL,
+      SWIMMING_POOL_VISITED_AGAIN,
+      SWIMMING_POOL_ONE,
+      SWIMMING_POOL_TWO,
+      SWIMMING_POOL_THREE,
+      SWIMMING_POOL_FOUR,
+      SWIMMING_POOL_FIVE,
       // sceneInn
       INN_SAD,
       INN_LETTER_GIVEN,
@@ -869,6 +884,7 @@ function getGameState() {
       INN_LETTER_PICKED,
       INN_FILIP_PICKED,
       INN_ADVICE,
+      INN_INGRID_MET,
       // sceneResidentail
       // sceneHouseRundown
       HOUSE_RUNDOWN_EXPLORED,
@@ -1018,6 +1034,7 @@ const SCENE_REGISTRY = {
 function sceneZero() {
     let gameContainer = document.querySelector(".container");
     gameContainer.style.backgroundImage = "url(img/00-start_screen.gif)";
+    gameContainer.style.backgroundSize = "contain";
     gameContainer.style.backgroundAttachment = "fixed"; // this is for paralax effect. remove if it looks bad on mobile
     let textContainer = document.querySelector(".text-container");
     let userControlsContainer = document.querySelector(".user-controls-container");
@@ -6603,6 +6620,7 @@ async function sceneInn() {
     gameContainer.style.backgroundImage = "url(img/37-ingrid.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
     textContainer.innerHTML = "";
+    INN_INGRID_MET = true;
 
     // remove button from user controls container
     townSquareBtn.remove(); // remove relevant buttons
@@ -7564,28 +7582,63 @@ async function scenePool() {
   let talkBtn = document.createElement("button");
   let whatBtn = document.createElement("button");
   let whereBtn = document.createElement("button");
+  let talkNoraBtn = document.createElement("button");
+  let whereAuntBtn = document.createElement("button");
+  let whereParentsBtn = document.createElement("button");
+  let resistanceBtn = document.createElement("button");
+  let doctorBtn = document.createElement("button");
+  let roadBlockBtn = document.createElement("button");
+  let goBtn = document.createElement("button");
 
   // set button text
   townSquareBtn.textContent = "Go to Town Square";
   talkBtn.textContent = "Talk to the girl";
   whatBtn.textContent = "What are you doing here?";
   whereBtn.textContent = "Where are your parents?";
+  talkNoraBtn.textContent = "Talk to Nora";
+  whereAuntBtn.textContent = "Where can I find your Aunt?";
+  whereParentsBtn.textContent = "Where did your parents go?";
+  resistanceBtn.textContent = "Do you know about the resistance?";
+  doctorBtn.textContent = "Do you know the doctors?";
+  roadBlockBtn.textContent = "Do you know there is a road block";
+  goBtn.textContent = "Did they go with your parents?";
+
 
   // add styling for button
   applyGlassStylingGreyBtn(townSquareBtn);
   applyGlassStylingGreyBtn(talkBtn);
   applyGlassStylingGreyBtn(whatBtn);
   applyGlassStylingGreyBtn(whereBtn);
+  applyGlassStylingGreyBtn(talkNoraBtn);
+  applyGlassStylingGreyBtn(whereAuntBtn);
+  applyGlassStylingGreyBtn(whereParentsBtn);
+  applyGlassStylingGreyBtn(resistanceBtn);
+  applyGlassStylingGreyBtn(doctorBtn);
+  applyGlassStylingGreyBtn(roadBlockBtn);
+  applyGlassStylingGreyBtn(goBtn);
 
   // local conditionals
 
-  if (SWIMMING_POOL_GIRL == true) {
+  if (SWIMMING_POOL_GIRL == true && SWIMMING_POOL_VISITED_AGAIN == false) {
     await typeText(
       textContainer,
-      "<p>The area around the swimming pool is empty, there is nothing else to see here.</p>",
+      "<p>The area around the swimming pool is empty, there is nothing else to see here. Nora left her ball though, she might come back for it later.</p>",
       applyGlassStylingRed
     );
-  } else {
+    SWIMMING_POOL_VISITED_AGAIN = true;
+  } else if (SWIMMING_POOL_GIRL == true && SWIMMING_POOL_VISITED_AGAIN == true) {
+    await typeText(
+      textContainer,
+      "<p>Nora has returned to the swimming pool and is still playing by herself, kicking her ball against the Inn's wall repeatedly.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    userControlsContainer.appendChild(talkNoraBtn);
+    userControlsContainer.appendChild(townSquareBtn);
+  } 
+  else {
     await typeText(
       textContainer,
       "<p>Before you lies a meticulously maintained swimming pool, enclosed by a white fence. The gate, creaking on its rusty hinges, stands ajar. Next to the pool, a solitary little girl, her grip tender on a time-worn stuffed toy bear, amuses herself by playfully kicking a ball against the inn's weathered wall.</p>",
@@ -7619,6 +7672,13 @@ async function scenePool() {
     townSquareBtn.remove();
     talkBtn.remove();
     whatBtn.remove();
+    talkNoraBtn.remove();
+    whereAuntBtn.remove();
+    whereParentsBtn.remove();
+    resistanceBtn.remove();
+    doctorBtn.remove();
+    roadBlockBtn.remove();
+    goBtn.remove();
 
     sceneTownSquare();
   });
@@ -7789,6 +7849,382 @@ async function scenePool() {
     } else {
       userControlsContainer.appendChild(townSquareBtn); 
     }
+  });
+
+  talkNoraBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Change background image
+    gameContainer.style.backgroundImage = "url(img/12-little-girl.png)";
+    gameContainer.style.transition = "background-image 4s ease-in-out";
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    talkNoraBtn.remove();
+    townSquareBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>Hi Nora, still playing here by yourself?</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>All the other children in town left with their parents.<br><br>But mommy said it's too dangerous for me, and that I should stay here with grandma and grandpa and Auntie Ingrid.</p>",
+      applyGlassStylingBlue
+    )
+
+    // append new button
+    if (INN_INGRID_MET == false && SWIMMING_POOL_ONE == false) {
+      userControlsContainer.appendChild(whereAuntBtn);
+    }
+    if (SWIMMING_POOL_TWO == false) {
+      userControlsContainer.appendChild(whereParentsBtn);
+    }
+    if (INN_ADVICE == true && SWIMMING_POOL_THREE == false) {
+      userControlsContainer.appendChild(resistanceBtn);
+    }
+    if (CLINIC_KEY == true && SWIMMING_POOL_FOUR == false) {
+      userControlsContainer.appendChild(doctorBtn);
+    }
+    if (FOREST_ROAD_BLOCK == true && SWIMMING_POOL_FIVE == false) {
+      userControlsContainer.appendChild(roadBlockBtn);
+    }
+    userControlsContainer.appendChild(townSquareBtn)
+  });
+
+  whereAuntBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    SWIMMING_POOL_ONE = true;
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    whereAuntBtn.remove();
+    whereParentsBtn.remove();
+    resistanceBtn.remove();
+    doctorBtn.remove();
+    roadBlockBtn.remove();
+    goBtn.remove();
+    townSquareBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>Nora silently points towards the Inn while looking down and kicking her ball.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    if (SWIMMING_POOL_TWO == false) {
+      userControlsContainer.appendChild(whereParentsBtn);
+    }
+    if (INN_ADVICE == true && SWIMMING_POOL_THREE == false) {
+      userControlsContainer.appendChild(resistanceBtn);
+    }
+    if (CLINIC_KEY == true && SWIMMING_POOL_FOUR == false) {
+      userControlsContainer.appendChild(doctorBtn);
+    }
+    if (FOREST_ROAD_BLOCK == true && SWIMMING_POOL_FIVE == false) {
+      userControlsContainer.appendChild(roadBlockBtn);
+    }
+    userControlsContainer.appendChild(townSquareBtn)
+  });
+
+  whereParentsBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    SWIMMING_POOL_TWO = true;
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    whereAuntBtn.remove();
+    whereParentsBtn.remove();
+    resistanceBtn.remove();
+    doctorBtn.remove();
+    roadBlockBtn.remove();
+    goBtn.remove();
+    townSquareBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>You said your parents left you with your grandparents and they left. Did they tell you where they were going?</p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Nora looks sad as she speaks,</p>",
+      applyGlassStylingRed
+    )
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>They just said they have to go help their friends, and they would be back before I even missed them.<br><br>But I do miss them and they aren't back yet</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>She says while wiping at her eyes.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Do you know who their friends are that they went to help?</p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+
+    await typeText(
+      textContainer,
+      "<p>No I don't know mister, but I wish they didn't have to help them.</p",
+      applyGlassStylingBlue
+    )
+
+    await sleep(1500);
+
+    // append new button
+    if (INN_INGRID_MET == false && SWIMMING_POOL_ONE == false) {
+      userControlsContainer.appendChild(whereAuntBtn);
+    }
+    if (INN_ADVICE == true && SWIMMING_POOL_THREE == false) {
+      userControlsContainer.appendChild(resistanceBtn);
+    }
+    if (CLINIC_KEY == true && SWIMMING_POOL_FOUR == false) {
+      userControlsContainer.appendChild(doctorBtn);
+    }
+    if (FOREST_ROAD_BLOCK == true && SWIMMING_POOL_FIVE == false) {
+      userControlsContainer.appendChild(roadBlockBtn);
+    }
+    userControlsContainer.appendChild(townSquareBtn)
+  });
+
+  resistanceBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    SWIMMING_POOL_THREE = true;
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    whereAuntBtn.remove();
+    whereParentsBtn.remove();
+    resistanceBtn.remove();
+    doctorBtn.remove();
+    roadBlockBtn.remove();
+    townSquareBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>Tell me Nora, do you know anything about The Resistance?<br>Did your parents mention anything about it to you?</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>In school I learnt that Resistance equals voltage divided by current in a closed circuit.<br><br>Mommy said we have to study hard at school, and that it's the only way we will be able to make the world a better place for people who will come after us.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      "<p>While you are stunned by this little girl's science knowledge, unfortunately it doesn't answer your question.</p>",
+      applyGlassStylingRed
+    )
+
+    await sleep(1500);
+
+    // append new button
+    if (INN_INGRID_MET == false && SWIMMING_POOL_ONE == false) {
+      userControlsContainer.appendChild(whereAuntBtn);
+    }
+    if (SWIMMING_POOL_TWO == false) {
+      userControlsContainer.appendChild(whereParentsBtn);
+    }
+    if (CLINIC_KEY == true && SWIMMING_POOL_FOUR == false) {
+      userControlsContainer.appendChild(doctorBtn);
+    }
+    if (FOREST_ROAD_BLOCK == true && SWIMMING_POOL_FIVE == false) {
+      userControlsContainer.appendChild(roadBlockBtn);
+    }
+    userControlsContainer.appendChild(townSquareBtn)
+
+  });
+
+  doctorBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    SWIMMING_POOL_FOUR = true;
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    whereAuntBtn.remove();
+    whereParentsBtn.remove();
+    resistanceBtn.remove();
+    doctorBtn.remove();
+    roadBlockBtn.remove();
+    townSquareBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>Do you know the doctors that work in the Clinic?<br>Did they also leave with the rest of the town folk?</p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Doctor Erik always looks in my throat and listens to my heart when I get sick.<br>I like doctor Erik.<br>I don't like Doctor Hedda... she scares me.<br><br>I don't think she likes children. I wish they didn't go away though, I hurt my knee when I fell down, and Auntie Ingrid put some smelly leaves on it.<br><br>Doctor Erik would have given me a lollipop.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    textContainer.innerHTML = ""
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Did they go with your parents?</p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+    textContainer.innerHTML = ""
+
+    await typeText(
+      textContainer,
+      "<p>No they left before mommy and daddy.<br>Daddy said it's wrong for doctors to leave their patients to look after themselves.<br><br>I wish they told me where they went, then Auntie Ingrid and I could go and visit them.</p>",
+      applyGlassStylingBlue
+    );
+
+    // append new button
+    if (INN_INGRID_MET == false && SWIMMING_POOL_ONE == false) {
+      userControlsContainer.appendChild(whereAuntBtn);
+    }
+    if (SWIMMING_POOL_TWO == false) {
+      userControlsContainer.appendChild(whereParentsBtn);
+    }
+    if (INN_ADVICE == true && SWIMMING_POOL_THREE == false) {
+      userControlsContainer.appendChild(resistanceBtn);
+    }
+    if (FOREST_ROAD_BLOCK == true && SWIMMING_POOL_FIVE == false) {
+      userControlsContainer.appendChild(roadBlockBtn);
+    }
+    userControlsContainer.appendChild(townSquareBtn)
+  });
+
+  roadBlockBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    SWIMMING_POOL_FIVE = true;
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    whereAuntBtn.remove();
+    whereParentsBtn.remove();
+    resistanceBtn.remove();
+    doctorBtn.remove();
+    roadBlockBtn.remove();
+    townSquareBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>I saw there is a blocked road outside of town, it looks like something bad might have happened there. Do you know what happened?</p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>I don't know what happened, but there was a loud noise and lots of smoke coming over the hill.<br><br>Mommy told me to stay inside. People were running around and shouting.<br><br>A few days after that mommy and daddy left.</p>",
+      applyGlassStylingBlue
+    );
+
+    // append new button
+    if (INN_INGRID_MET == false && SWIMMING_POOL_ONE == false) {
+      userControlsContainer.appendChild(whereAuntBtn);
+    }
+    if (SWIMMING_POOL_TWO == false) {
+      userControlsContainer.appendChild(whereParentsBtn);
+    }
+    if (INN_ADVICE == true && SWIMMING_POOL_THREE == false) {
+      userControlsContainer.appendChild(resistanceBtn);
+    }
+    if (CLINIC_KEY == true && SWIMMING_POOL_FOUR == false) {
+      userControlsContainer.appendChild(doctorBtn);
+    }
+    userControlsContainer.appendChild(townSquareBtn)
   });
 }
 
