@@ -22,25 +22,32 @@
 }
 
 * {
-    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+  -webkit-tap-highlight-color: rgba(
+    0,
+    0,
+    0,
+    0
+  ); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
 }
 
 body {
-    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
-    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
-    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
-    background-color:#000;
-    font-family: system-ui, -apple-system, -apple-system-font, 'Segoe UI', 'Roboto', sans-serif;
-    margin:0px;
-    padding:0px;
-    /* Padding to avoid the "unsafe" areas behind notches in the screen */
-    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
-    /* text-transform:uppercase; */
-    width:100%;
-    /*Overflows - Chrome, Safari, Opera*/
-    /*Overflows - IE, Firefox*/
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  -webkit-touch-callout: none; /* prevent callout to copy image, etc when tap to hold */
+  -webkit-text-size-adjust: none; /* prevent webkit from resizing text to fit */
+  -webkit-user-select: none; /* prevent copy paste, to allow, change 'none' to 'text' */
+  background-color: #000;
+  font-family: system-ui, -apple-system, -apple-system-font, "Segoe UI",
+    "Roboto", sans-serif;
+  margin: 0px;
+  padding: 0px;
+  /* Padding to avoid the "unsafe" areas behind notches in the screen */
+  padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px)
+    env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+  /* text-transform:uppercase; */
+  width: 100%;
+  /*Overflows - Chrome, Safari, Opera*/
+  /*Overflows - IE, Firefox*/
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 body::-webkit-scrollbar {
@@ -133,7 +140,7 @@ body::-webkit-scrollbar {
   left: 0;
   width: 100%; /* Full width of the container */
   height: 100%; /* Full height of the container */
-  background-color: rgba(0,0,0,0.8);
+  background-color: rgba(0, 0, 0, 0.8);
   z-index: 15; /* make sure it's above the game content but below the button*/
   flex-direction: column;
   justify-content: flex-start;
@@ -150,7 +157,7 @@ body::-webkit-scrollbar {
   left: 0;
   width: 100%; /* Full width of the container */
   height: 100%; /* Full height of the container */
-  background-color: rgba(0,0,0,0.8);
+  background-color: rgba(0, 0, 0, 0.8);
   z-index: 15; /* make sure it's above the game content but below the button*/
   flex-direction: column;
   justify-content: flex-start;
@@ -231,9 +238,15 @@ body::-webkit-scrollbar {
 
 /*ANIMATIONS*/
 @keyframes jitter {
-  0% { transform: translateX(0); }
-  50% { transform: translateX(2px); }
-  100% { transform: translateX(-2px); }
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+  100% {
+    transform: translateX(-2px);
+  }
 }
 
 .jitter-text {
@@ -241,108 +254,146 @@ body::-webkit-scrollbar {
 }
 
 @keyframes glitch {
-  0% {transform: skewX(-45deg); text-shadow: 2px 2px rgba(57, 201, 233, 0.8);}
-  15% {transform: skewX(-1deg); text-shadow: -2px -2px rgba(253, 25, 74, 0.8);}
-  30% {transform: skewX(-89deg);}
-  45% {transform: skewX(-1deg);}
-  60% {transform: skewX(-45deg);}
-  75% {transform: skewX(-80deg);}
-  100% {transform: skewX(0deg); text-shadow: -2px -2px rgba(255, 196, 0, 0.8);}
+  0% {
+    transform: skewX(-45deg);
+    text-shadow: 2px 2px rgba(57, 201, 233, 0.8);
+  }
+  15% {
+    transform: skewX(-1deg);
+    text-shadow: -2px -2px rgba(253, 25, 74, 0.8);
+  }
+  30% {
+    transform: skewX(-89deg);
+  }
+  45% {
+    transform: skewX(-1deg);
+  }
+  60% {
+    transform: skewX(-45deg);
+  }
+  75% {
+    transform: skewX(-80deg);
+  }
+  100% {
+    transform: skewX(0deg);
+    text-shadow: -2px -2px rgba(255, 196, 0, 0.8);
+  }
 }
 
 .glitch-text {
-    animation: glitch 0.6s infinite;
+  animation: glitch 0.6s infinite;
 }
 
-p.flicker-frame{
+p.flicker-frame {
   animation: flicker 0.15s infinite;
 }
 
 @keyframes flicker {
   0% {
-  text-shadow: 0.4389924193300864px 0 1px rgba(0,30,255,1), -0.4389924193300864px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(359deg);
+    text-shadow: 0.4389924193300864px 0 1px rgba(0, 30, 255, 1),
+      -0.4389924193300864px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(359deg);
   }
   5% {
-  text-shadow: 2.7928974010788217px 0 1px rgba(0,30,255,1), -2.7928974010788217px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(1deg);
+    text-shadow: 2.7928974010788217px 0 1px rgba(0, 30, 255, 1),
+      -2.7928974010788217px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(1deg);
   }
   10% {
-  text-shadow: 0.02956275843481219px 0 1px rgba(0,30,255,1), -0.02956275843481219px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(1deg);
+    text-shadow: 0.02956275843481219px 0 1px rgba(0, 30, 255, 1),
+      -0.02956275843481219px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(1deg);
   }
   15% {
-  text-shadow: 0.40218538552878136px 0 1px rgba(0,30,255,1), -0.40218538552878136px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(1deg);
+    text-shadow: 0.40218538552878136px 0 1px rgba(0, 30, 255, 1),
+      -0.40218538552878136px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(1deg);
   }
   20% {
-  opacity: 0.18128;
-  text-shadow: 3.4794037899852017px 0 1px rgba(0,30,255,1), -3.4794037899852017px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(1deg);
+    opacity: 0.18128;
+    text-shadow: 3.4794037899852017px 0 1px rgba(0, 30, 255, 1),
+      -3.4794037899852017px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(1deg);
   }
   25% {
-  text-shadow: 1.6125630401149584px 0 1px rgba(0,30,255,1), -1.6125630401149584px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(1deg);
+    text-shadow: 1.6125630401149584px 0 1px rgba(0, 30, 255, 1),
+      -1.6125630401149584px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(1deg);
   }
   30% {
-  text-shadow: 0.7015590085143956px 0 1px rgba(0,30,255,1), -0.7015590085143956px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(359deg);
+    text-shadow: 0.7015590085143956px 0 1px rgba(0, 30, 255, 1),
+      -0.7015590085143956px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(359deg);
   }
   35% {
-  text-shadow: 3.896914047650351px 0 1px rgba(0,30,255,1), -3.896914047650351px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(1deg);
+    text-shadow: 3.896914047650351px 0 1px rgba(0, 30, 255, 1),
+      -3.896914047650351px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(1deg);
   }
   40% {
-  text-shadow: 3.870905614848819px 0 1px rgba(0,30,255,1), -3.870905614848819px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(1deg);
+    text-shadow: 3.870905614848819px 0 1px rgba(0, 30, 255, 1),
+      -3.870905614848819px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(1deg);
   }
   45% {
-  text-shadow: 2.231056963361899px 0 1px rgba(0,30,255,1), -2.231056963361899px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(1deg);
+    text-shadow: 2.231056963361899px 0 1px rgba(0, 30, 255, 1),
+      -2.231056963361899px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(1deg);
   }
   50% {
-  text-shadow: 0.08084290417898504px 0 1px rgba(0,30,255,1), -0.08084290417898504px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(1deg);
+    text-shadow: 0.08084290417898504px 0 1px rgba(0, 30, 255, 1),
+      -0.08084290417898504px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(1deg);
   }
   55% {
-  text-shadow: 2.3758461067427543px 0 1px rgba(0,30,255,1), -2.3758461067427543px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(1deg);
+    text-shadow: 2.3758461067427543px 0 1px rgba(0, 30, 255, 1),
+      -2.3758461067427543px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(1deg);
   }
   60% {
-  text-shadow: 2.202193051050636px 0 1px rgba(0,30,255,1), -2.202193051050636px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(359deg);
+    text-shadow: 2.202193051050636px 0 1px rgba(0, 30, 255, 1),
+      -2.202193051050636px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(359deg);
   }
   65% {
-  text-shadow: 2.8638780614874975px 0 1px rgba(0,30,255,1), -2.8638780614874975px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(1deg);
+    text-shadow: 2.8638780614874975px 0 1px rgba(0, 30, 255, 1),
+      -2.8638780614874975px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(1deg);
   }
   70% {
-  text-shadow: 0.48874025155497314px 0 1px rgba(0,30,255,1), -0.48874025155497314px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(1deg);
+    text-shadow: 0.48874025155497314px 0 1px rgba(0, 30, 255, 1),
+      -0.48874025155497314px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(1deg);
   }
   75% {
-  text-shadow: 1.8948491305757957px 0 1px rgba(0,30,255,1), -1.8948491305757957px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(1deg);
+    text-shadow: 1.8948491305757957px 0 1px rgba(0, 30, 255, 1),
+      -1.8948491305757957px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(1deg);
   }
   80% {
-  text-shadow: 0.0833037308038857px 0 1px rgba(0,30,255,1), -0.0833037308038857px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(1deg);
+    text-shadow: 0.0833037308038857px 0 1px rgba(0, 30, 255, 1),
+      -0.0833037308038857px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(1deg);
   }
   85% {
-  text-shadow: 0.09769827255241735px 0 1px rgba(0,30,255,1), -0.09769827255241735px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(1deg);
+    text-shadow: 0.09769827255241735px 0 1px rgba(0, 30, 255, 1),
+      -0.09769827255241735px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(1deg);
   }
   90% {
-  text-shadow: 3.443339761481782px 0 1px rgba(0,30,255,1), -3.443339761481782px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(359deg);
+    text-shadow: 3.443339761481782px 0 1px rgba(0, 30, 255, 1),
+      -3.443339761481782px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(359deg);
   }
   95% {
-  text-shadow: 2.1841838852799786px 0 1px rgba(0,30,255,1), -2.1841838852799786px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(1deg);
+    text-shadow: 2.1841838852799786px 0 1px rgba(0, 30, 255, 1),
+      -2.1841838852799786px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(1deg);
   }
   100% {
-  text-shadow: 2.6208764473832513px 0 1px rgba(0,30,255,1), -2.6208764473832513px 0 1px rgba(255,0,80,1), 0 0 3px;
-  transform: skewX(1deg);
+    text-shadow: 2.6208764473832513px 0 1px rgba(0, 30, 255, 1),
+      -2.6208764473832513px 0 1px rgba(255, 0, 80, 1), 0 0 3px;
+    transform: skewX(1deg);
   }
 }
 

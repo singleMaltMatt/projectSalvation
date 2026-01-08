@@ -31,10 +31,10 @@ import { sceneHouseOvergrown } from "./sceneHouseOvergrown.js";
 import { sceneHouseRundown } from "./sceneHouseRundown.js";
 import { sceneHouseWhite } from "./sceneHouseWhite.js";
 // TYPING
-import { isUserInterrupted } from "./index.js"
-import { interruptionIndex } from "./index.js"
-import { btnRecentlyClicked } from "./index.js"
-import { isTyping } from "./index.js"
+import { isUserInterrupted } from "./index.js";
+import { interruptionIndex } from "./index.js";
+import { btnRecentlyClicked } from "./index.js";
+import { isTyping } from "./index.js";
 import { currentSceneTitle } from "./index.js";
 // STYLING
 import { typeText } from "./index.js";
@@ -50,10 +50,10 @@ import { saveGame } from "./index.js";
 import { loadGame } from "./index.js";
 import { toggleSaveButton } from "./index.js";
 // INVENTORY AND JOURNAL
-import  { INVENTORY } from "./index.js"
-import  { JOURNAL } from "./index.js"
-import  { journalVisible } from "./index.js"
-import  { journalBtn } from "./index.js"
+import { INVENTORY } from "./index.js";
+import { JOURNAL } from "./index.js";
+import { journalVisible } from "./index.js";
+import { journalBtn } from "./index.js";
 
 export async function scenePool() {
   let gameContainer = document.querySelector(".container");
@@ -164,10 +164,10 @@ export async function scenePool() {
       textContainer,
       "<p>Without turning to face you, little girl responds...</p>",
       applyGlassStylingRed
-    )
+    );
 
     await sleep(1500);
-    
+
     await typeTextItalic(
       textContainer,
       "<p>Hello mister, my name is Nora...</p>",
@@ -220,7 +220,7 @@ export async function scenePool() {
     );
 
     await sleep(1500);
-    
+
     await typeTextItalic(
       textContainer,
       "<p>I'm visiting Auntie Ingrid. She owns the Inn. She's busy now and can't come out to play with me...</p>",
@@ -281,21 +281,20 @@ export async function scenePool() {
     );
 
     await sleep(1500);
-    
+
     if (COTTAGE_DEAD_BODY == true) {
       textContainer.innerHTML = "";
       await typeTextItalic(
         textContainer,
         "<p>I wonder if she knows about her grandfather?<br><br>I should speak to her aunt, Ingrid.</p>",
         applyGlassStylingGreen
-      )
+      );
 
       await sleep(1500);
 
       userControlsContainer.append(townSquareBtn);
     } else {
-      userControlsContainer.appendChild(townSquareBtn); 
+      userControlsContainer.appendChild(townSquareBtn);
     }
-
   });
 }

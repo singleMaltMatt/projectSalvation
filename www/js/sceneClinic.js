@@ -31,10 +31,10 @@ import { sceneHouseOvergrown } from "./sceneHouseOvergrown.js";
 import { sceneHouseRundown } from "./sceneHouseRundown.js";
 import { sceneHouseWhite } from "./sceneHouseWhite.js";
 // TYPING
-import { isUserInterrupted } from "./index.js"
-import { interruptionIndex } from "./index.js"
-import { btnRecentlyClicked } from "./index.js"
-import { isTyping } from "./index.js"
+import { isUserInterrupted } from "./index.js";
+import { interruptionIndex } from "./index.js";
+import { btnRecentlyClicked } from "./index.js";
+import { isTyping } from "./index.js";
 import { currentSceneTitle } from "./index.js";
 // STYLING
 import { typeText } from "./index.js";
@@ -50,17 +50,19 @@ import { saveGame } from "./index.js";
 import { loadGame } from "./index.js";
 import { toggleSaveButton } from "./index.js";
 // INVENTORY AND JOURNAL
-import  { INVENTORY } from "./index.js"
-import  { JOURNAL } from "./index.js"
-import  { journalVisible } from "./index.js"
-import  { journalBtn } from "./index.js"
+import { INVENTORY } from "./index.js";
+import { JOURNAL } from "./index.js";
+import { journalVisible } from "./index.js";
+import { journalBtn } from "./index.js";
 
 export async function sceneClinic() {
   let gameContainer = document.querySelector(".container");
   gameContainer.style.backgroundImage = "url(img/clinic.jpg)";
   gameContainer.style.transition = "background-image 4s ease-in-out";
 
-  let userControlsContainer = document.querySelector(".user-controls-container");
+  let userControlsContainer = document.querySelector(
+    ".user-controls-container"
+  );
   let textContainer = document.querySelector(".text-container");
   applyTypingCss(textContainer);
 
@@ -135,7 +137,8 @@ export async function sceneClinic() {
   returnBtn.textContent = "Return to the entrance of the Clinic";
   investigatePlateBtn.textContent = "Investigate the metal plate";
   openHatchBtn.textContent = "Open the hatch";
-  seekHelpLeaveBtn.textContent = "This could be dangerous, better to leave and get help";
+  seekHelpLeaveBtn.textContent =
+    "This could be dangerous, better to leave and get help";
   climbHatchBtn.textContent = "Climb down the hatch";
   callBtn.textContent = "Call out for someone";
   investigateRoomBtn.textContent = "Investigate the room";
@@ -159,7 +162,6 @@ export async function sceneClinic() {
   walkBtn.textContent = "Walk around the snake";
   scareBtn.textContent = "Try and scare the snake away";
   runBtn.textContent = "Run past the snake!";
-  
 
   // add styling for button
   applyGlassStylingGreyBtn(townSquareBtn);
@@ -214,9 +216,9 @@ export async function sceneClinic() {
       "<p>The doors to the clinic are chained shut, a heavy silver padlock glistens in the sunlight<br><br>You try looking through the glass but the inside is dark, you can't see anything.</p>",
       applyGlassStylingRed
     );
-  
+
     await sleep(1500);
-  
+
     // append button to user controls container
     if (CLINIC_KEY == true) {
       userControlsContainer.appendChild(keyBtn);
@@ -235,7 +237,6 @@ export async function sceneClinic() {
 
     userControlsContainer.appendChild(enterBtn);
   }
-    
 
   keyBtn.addEventListener("pointerup", async function () {
     // Button click check
@@ -350,10 +351,8 @@ export async function sceneClinic() {
 
     userControlsContainer.appendChild(hallwayBtn);
     userControlsContainer.appendChild(leaveBtn);
-
   });
 
-  
   hallwayBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
@@ -384,7 +383,6 @@ export async function sceneClinic() {
       userControlsContainer.appendChild(continueBtn);
     }
   });
-
 
   flickBtn.addEventListener("pointerup", async function () {
     // Button click check
@@ -424,7 +422,6 @@ export async function sceneClinic() {
     userControlsContainer.appendChild(continueBtn);
   });
 
-  
   continueBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
@@ -455,9 +452,7 @@ export async function sceneClinic() {
       userControlsContainer.appendChild(doorRightBtn);
     }
     userControlsContainer.appendChild(continueFurtherBtn);
-
   });
-
 
   doorLeftBtn.addEventListener("pointerup", async function () {
     // Button click check
@@ -492,7 +487,6 @@ export async function sceneClinic() {
       userControlsContainer.appendChild(doorRightBtn);
     }
     userControlsContainer.appendChild(continueFurtherBtn);
-
   });
 
   doorRightBtn.addEventListener("pointerup", async function () {
@@ -528,7 +522,6 @@ export async function sceneClinic() {
       userControlsContainer.appendChild(doorRightBtn);
     }
     userControlsContainer.appendChild(continueFurtherBtn);
-
   });
 
   continueFurtherBtn.addEventListener("pointerup", async function () {
@@ -573,10 +566,8 @@ export async function sceneClinic() {
 
     userControlsContainer.appendChild(continueCornerBtn);
     userControlsContainer.appendChild(locateBtn);
-    
   });
 
-  
   locateBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
@@ -605,7 +596,7 @@ export async function sceneClinic() {
       textContainer,
       "<p>You pace around and suddenly the fridge catches your attention.<br><br>Of course, it's the old refrigerator, they were much loader than modern refrigerators, and it must have been running all this time in the empty clinic.<br><br>What ever was kept in there must be rotten by now.</p>",
       applyGlassStylingRed
-    )
+    );
 
     await sleep(1500);
 
@@ -669,7 +660,10 @@ export async function sceneClinic() {
 
     CLINIC_STEROIDS = true;
 
-    INVENTORY.push({ name: "Syringe", description: "A syringe you found at the clinic" });
+    INVENTORY.push({
+      name: "Syringe",
+      description: "A syringe you found at the clinic",
+    });
 
     // Clear text container
     textContainer.innerHTML = "";
@@ -762,7 +756,7 @@ export async function sceneClinic() {
     openDoorBtn.remove(); // remove relevant buttons
 
     if (CLINIC_LIGHT == false) {
-        // write new text
+      // write new text
       await typeText(
         textContainer,
         "<p>You turn the handle and surprisingly the door is unlocked.<br>The door opens into a dark room. You see no windows, but is there is some light coming from outside the clinic through the service window.<br>There are medicine boxes and bottles lining the walls of the room, but you can't make out any of the names or labels. You notice the pain in your ankle again.</p>",
@@ -773,27 +767,26 @@ export async function sceneClinic() {
 
       // append new button
       userControlsContainer.appendChild(findBtn); // append relevant buttons
-      } else {
-        await typeText(
-          textContainer,
-          "<p>You turn the handle and surprisingly the door is unlocked.<br>The door opens into the brightly lit dispensary. On this side of the service window you can see the room is old fashioned with wooden furniture and thick carpeting .<br><br>You also see a pharmacist's station with a chair, an old computer, printer and a dried and dead plant.</p>",
-          applyGlassStylingRed
-        );
-    
+    } else {
+      await typeText(
+        textContainer,
+        "<p>You turn the handle and surprisingly the door is unlocked.<br>The door opens into the brightly lit dispensary. On this side of the service window you can see the room is old fashioned with wooden furniture and thick carpeting .<br><br>You also see a pharmacist's station with a chair, an old computer, printer and a dried and dead plant.</p>",
+        applyGlassStylingRed
+      );
+
       await pause();
 
       textContainer.innerHTML = "";
-      
+
       await typeText(
         textContainer,
         "<p>There are medicine boxes and bottles lining the walls . You notice the pain in your ankle again.</p>",
         applyGlassStylingRed
       );
-    
-        // append new button
-        userControlsContainer.appendChild(findBtn); // append relevant buttons
-    };
-    
+
+      // append new button
+      userControlsContainer.appendChild(findBtn); // append relevant buttons
+    }
   });
 
   findBtn.addEventListener("pointerup", async function () {
@@ -811,16 +804,16 @@ export async function sceneClinic() {
     findBtn.remove(); // remove relevant buttons
 
     if (CLINIC_LIGHT == false) {
-    // write new text
-    await typeText(
-      textContainer,
-      "<p>You grab some bottles from the shelf in front of you and try to read the tiny label but you can't read it in this light... maybe you should try finding a light switch first.</p>",
-      applyGlassStylingRed
-    );
+      // write new text
+      await typeText(
+        textContainer,
+        "<p>You grab some bottles from the shelf in front of you and try to read the tiny label but you can't read it in this light... maybe you should try finding a light switch first.</p>",
+        applyGlassStylingRed
+      );
 
-    await sleep(1500);
+      await sleep(1500);
 
-    // append new button
+      // append new button
       userControlsContainer.appendChild(returnBtn); // append relevant buttons
     } else {
       // write new text
@@ -829,7 +822,7 @@ export async function sceneClinic() {
         "<p>You scan the shelves looking for anything that indicates pain medication. Suddenly some words stand out to you, paracetamol; ibuprofen, naproxen, phenazone... you don't know how you know this, but these are painkillers.</p>",
         applyGlassStylingRed
       );
-  
+
       await pause();
 
       textContainer.innerHTML = "";
@@ -839,7 +832,7 @@ export async function sceneClinic() {
         "<p>You take a few pills from a bottle labeled Mendaxil and swallow them. Hopefully this will do the trick.<br><br>You put the bottle back on the shelf but you put it too close to the edge and it falls. You instinctively reach out to grab it but you are too late and you hear it strike the floor with a metallic clang...",
         applyGlassStylingRed
       );
-  
+
       await pause();
 
       textContainer.innerHTML = "";
@@ -849,9 +842,9 @@ export async function sceneClinic() {
         "<p>You are startled by the sound... the whole floor is soft carpet?<br><br>Looking down you see that the bottle struck the edge of metal-looking plate, just sticking out from under a low coffee table stacked with files and magazines.</p>",
         applyGlassStylingRed
       );
-  
+
       await sleep(1500);
-  
+
       // append new button
       userControlsContainer.appendChild(investigatePlateBtn); // append relevant buttons
     }
@@ -959,7 +952,7 @@ export async function sceneClinic() {
     userControlsContainer.appendChild(seekHelpLeaveBtn); // append relevant buttons
     userControlsContainer.appendChild(climbHatchBtn);
   });
-  
+
   seekHelpLeaveBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
@@ -977,7 +970,7 @@ export async function sceneClinic() {
 
     sceneTownSquare();
   });
-  
+
   climbHatchBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
@@ -1016,7 +1009,7 @@ export async function sceneClinic() {
     userControlsContainer.appendChild(callBtn); // append relevant buttons
     userControlsContainer.appendChild(investigateRoomBtn); // append relevant buttons
   });
-  
+
   callBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
@@ -1054,7 +1047,7 @@ export async function sceneClinic() {
     // append new button
     userControlsContainer.appendChild(investigateRoomBtn); // append relevant buttons
   });
-  
+
   investigateRoomBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
@@ -1114,7 +1107,7 @@ export async function sceneClinic() {
     userControlsContainer.appendChild(investigateTableBtn);
     userControlsContainer.appendChild(enoughLeaveBtn);
   });
-  
+
   investigateCounterBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
@@ -1194,7 +1187,7 @@ export async function sceneClinic() {
     userControlsContainer.appendChild(investigateTableBtn);
     userControlsContainer.appendChild(enoughLeaveBtn);
   });
-  
+
   investigateDeskBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
@@ -1239,7 +1232,7 @@ export async function sceneClinic() {
     userControlsContainer.appendChild(investigateTableBtn);
     userControlsContainer.appendChild(enoughLeaveBtn);
   });
-  
+
   computerBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
@@ -1291,7 +1284,7 @@ export async function sceneClinic() {
     // append new button
     userControlsContainer.appendChild(computerOffBtn); // append relevant buttons
   });
-  
+
   computerOffBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
@@ -1331,7 +1324,7 @@ export async function sceneClinic() {
     // append new button
     userControlsContainer.appendChild(openFolderBtn); // append relevant buttons
   });
-  
+
   openFolderBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
@@ -1364,7 +1357,7 @@ export async function sceneClinic() {
     userControlsContainer.appendChild(openDocBtn); // append relevant buttons
     userControlsContainer.appendChild(openImageBtn);
   });
-  
+
   openDocBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
@@ -1416,8 +1409,12 @@ export async function sceneClinic() {
 
     await sleep(1500);
 
-    INVENTORY.push({ name: "USB Drive", description: "A USB drive you found at the lab containing documents and images about 'Project Salvation'." });
-    
+    INVENTORY.push({
+      name: "USB Drive",
+      description:
+        "A USB drive you found at the lab containing documents and images about 'Project Salvation'.",
+    });
+
     // append new button
     userControlsContainer.appendChild(openImageBtn); // append relevant buttons
   });
@@ -1486,11 +1483,11 @@ export async function sceneClinic() {
 
     if (CLINIC_RESEARCH_SAVED == true) {
       userControlsContainer.appendChild(computerOffBtn);
-    }    
+    }
   });
 
   computerOffBtn.addEventListener("pointerup", async function () {
-  // Button click check
+    // Button click check
     if (isTyping || btnRecentlyClicked) return;
     btnRecentlyClicked = true;
     setTimeout(() => {
@@ -1673,14 +1670,14 @@ export async function sceneClinic() {
     await sleep(1500);
 
     if (CLINIC_RESEARCH_SAVED == true) {
-          await typeTextItalic(
-            textContainer,
-            "<p>This is the same woman I saw in the pictures on the computer, what were they doing to her? Is human experimentation part of Project Salvation?</p>",
-            applyGlassStylingGreen
-          );
+      await typeTextItalic(
+        textContainer,
+        "<p>This is the same woman I saw in the pictures on the computer, what were they doing to her? Is human experimentation part of Project Salvation?</p>",
+        applyGlassStylingGreen
+      );
 
       await sleep(1500);
-      
+
       userControlsContainer.appendChild(investigateBodyBtn); // append relevant buttons
     } else {
       // append new button
@@ -1804,7 +1801,7 @@ export async function sceneClinic() {
         "<p>You head back down the hallway towards the ladder leading up to the hatch door. You reach the ladder and look up at the dark tunnel, remembering that the door slammed shut behind you. You start making your way up the ladder and try to push open the hatch above you... but it doesn't budge.<br><br>You look above you, trying to find the handle to rotate, but there is no handle on this side.  Instead you see the small blue light of an LCD screen, with a keypad beneath it.  The hatch door needs a security code.</p>",
         applyGlassStylingRed
       );
-  
+
       await pause();
 
       textContainer.innerHTML = "";
@@ -1822,7 +1819,7 @@ export async function sceneClinic() {
         "<p>You start pushing the number keys and after 4 numbers you hear a soft beep, with the word ERROR displayed on the screen. You try again; ERROR. Almost frantically you start pressing the buttons... ERROR.<br><br>You start to panic but you get a hold of yourself and climb back down the ladder.</p>",
         applyGlassStylingRed
       );
-  
+
       await pause();
 
       await typeTextItalic(
@@ -1832,7 +1829,7 @@ export async function sceneClinic() {
       );
 
       await pause();
-      
+
       CLINIC_LOCKED_IN = true;
 
       // append new button
@@ -1842,7 +1839,7 @@ export async function sceneClinic() {
           "<p>Your head suddenly snaps up as you remember the picture you saw on the computer...<br><br>There was another door! You remember seeing it in the corner behind the operating table.<br><br>You walk to the corner of the room but you only see the wall paneling. Your eyes drift along the seams of the panel, and then you see it! There is an almost indiscernible gap between the corner panels, if you weren't looking for it, you would never have seen it.</p>",
           applyGlassStylingRed
         );
-  
+
         await sleep(1500);
 
         userControlsContainer.appendChild(openSecretDoorBtn);
@@ -1860,7 +1857,7 @@ export async function sceneClinic() {
         "<p>I still need to find a way to open the hatch or find another way out of this place.</p>",
         applyGlassStylingGreen
       );
-  
+
       await sleep(1500);
 
       if (CLINIC_SECRET_DOOR == true) {
@@ -1869,7 +1866,7 @@ export async function sceneClinic() {
           "<p>Your head suddenly snaps up as you remember the picture you saw on the computer...<br><br>There was another door! You remember seeing it in the corner behind the operating table.<br><br>You walk to the corner of the room but you only see the wall paneling. Your eyes drift along the seams of the panel, and then you see it! There is an almost indiscernible gap between the corner panels, if you weren't looking for it, you would never have seen it.</p>",
           applyGlassStylingRed
         );
-  
+
         await sleep(1500);
 
         userControlsContainer.appendChild(openSecretDoorBtn);
@@ -2148,7 +2145,7 @@ export async function sceneClinic() {
         "<p>This is the same spot where you encountered that nasty snake that bit you! Luckily you don't see any sign of it anymore.</p>",
         applyGlassStylingRed
       );
-  
+
       await pause();
 
       textContainer.innerHTML = "";
@@ -2161,9 +2158,9 @@ export async function sceneClinic() {
         "<p>As you turn around on the path to walk back to the main road, your breath catches in your throat... A large snake is looking straight at you, its head reared up from the gravel. You can see a twitching rabbit off to the side of the path, you must have interrupted a fresh kill.</p>",
         applyGlassStylingRed
       );
-  
+
       await sleep(1500);
-  
+
       // append new button
       userControlsContainer.appendChild(walkBtn); // append relevant buttons
       userControlsContainer.appendChild(scareBtn);
@@ -2286,7 +2283,7 @@ export async function sceneClinic() {
 
     sceneResidential();
   });
-  
+
   leaveBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
@@ -2346,7 +2343,6 @@ export async function sceneClinic() {
     runBtn.remove();
 
     sceneTownSquare();
-
   });
 
   townSquareBtn.addEventListener("pointerup", async function () {
@@ -2408,8 +2404,5 @@ export async function sceneClinic() {
     runBtn.remove();
 
     sceneTownSquare();
-
   });
-
-  
 }

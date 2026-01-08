@@ -20,59 +20,59 @@ export class SlidingPuzzle {
 
   init() {
     // Basic container setup remains the same
-    const container = document.createElement('div');
-    container.className = 'sliding-puzzle';
-    
+    const container = document.createElement("div");
+    container.className = "sliding-puzzle";
+
     // Create puzzle board
-    this.board = document.createElement('div');
-    this.board.className = 'puzzle-board';
+    this.board = document.createElement("div");
+    this.board.className = "puzzle-board";
     this.board.style.gridTemplateColumns = `repeat(${this.size}, ${this.tileSize}px)`;
     // Optional: Add some styling to make it look like a picture frame
-    // this.board.style.border = '2px solid #333'; 
+    // this.board.style.border = '2px solid #333';
     // this.board.style.padding = '5px';
     // this.board.style.background = 'rgba(0, 0, 0, 0.7)'; // Dark background
-    
+
     // Check if image source is provided
     if (!this.imageSrc) {
-        console.error("SlidingPuzzle: No image source provided.");
-        // Fallback to numbered tiles or show an error
-        // For now, let's just return an error message in the container
-        container.textContent = "Error: No image provided for puzzle.";
-        const controls = document.createElement('div');
-        controls.className = 'puzzle-controls';
-        const cancelBtn = document.createElement('button');
-        cancelBtn.textContent = 'Give Up';
-        cancelBtn.addEventListener('click', () => this.onCancel());
-        applyGlassStylingGreyBtn(cancelBtn);
-        controls.appendChild(cancelBtn);
-        container.appendChild(controls);
-        return { container: container, cancelButton: cancelBtn };
+      console.error("SlidingPuzzle: No image source provided.");
+      // Fallback to numbered tiles or show an error
+      // For now, let's just return an error message in the container
+      container.textContent = "Error: No image provided for puzzle.";
+      const controls = document.createElement("div");
+      controls.className = "puzzle-controls";
+      const cancelBtn = document.createElement("button");
+      cancelBtn.textContent = "Give Up";
+      cancelBtn.addEventListener("click", () => this.onCancel());
+      applyGlassStylingGreyBtn(cancelBtn);
+      controls.appendChild(cancelBtn);
+      container.appendChild(controls);
+      return { container: container, cancelButton: cancelBtn };
     }
 
     // Initialize tiles with image pieces
     this._generateTiles();
     this._shuffleTiles();
     this._renderTiles(); // This will now use images
-    
+
     // Add controls (same as before)
-    const controls = document.createElement('div');
-    controls.className = 'puzzle-controls';
-    
-    const cancelBtn = document.createElement('button');
-    cancelBtn.textContent = 'Give Up';
-    cancelBtn.addEventListener('click', () => {
-        // Call the onCancel callback provided when the puzzle was created
-        if (this.onCancel) { 
-            this.onCancel(); 
-        }
+    const controls = document.createElement("div");
+    controls.className = "puzzle-controls";
+
+    const cancelBtn = document.createElement("button");
+    cancelBtn.textContent = "Give Up";
+    cancelBtn.addEventListener("click", () => {
+      // Call the onCancel callback provided when the puzzle was created
+      if (this.onCancel) {
+        this.onCancel();
+      }
     });
     applyGlassStylingGreyBtn(cancelBtn);
-    
+
     container.appendChild(this.board);
     controls.appendChild(cancelBtn);
     container.appendChild(controls);
-    
-    return { container: container, cancelButton: cancelBtn }; 
+
+    return { container: container, cancelButton: cancelBtn };
   }
 
   _generateTiles() {
@@ -83,12 +83,12 @@ export class SlidingPuzzle {
     for (let i = 0; i < tileCount; i++) {
       const tile = {
         // Store the original index for reference/checking
-        originalIndex: i, 
+        originalIndex: i,
         // Calculate initial grid positions (like before)
         x: i % this.size,
         y: Math.floor(i / this.size),
         // We will set the background image part later in _renderTiles
-        element: null // Will hold the DOM element reference
+        element: null, // Will hold the DOM element reference
       };
       this.tiles.push(tile);
       this.correctOrder.push(i); // Store correct index order
@@ -110,7 +110,7 @@ export class SlidingPuzzle {
       }
       shuffled = this._isSolvable();
     } while (!shuffled);
-    
+
     // Update positions after shuffle (this part is now handled by the swap above)
     // The x,y coordinates on the tile objects are already updated by the swap loop
     // No need for the separate loop that was here before.
@@ -120,49 +120,51 @@ export class SlidingPuzzle {
     // Implementation of solvability check for sliding puzzles (remains the same)
     // Use the originalIndex to determine inversions
     let inversions = 0;
-    const flatIndices = this.tiles.map(t => t.originalIndex);
-    
+    const flatIndices = this.tiles.map((t) => t.originalIndex);
+
     for (let i = 0; i < flatIndices.length; i++) {
       for (let j = i + 1; j < flatIndices.length; j++) {
         if (flatIndices[i] > flatIndices[j]) inversions++;
       }
     }
-    
+
     return inversions % 2 === 0;
   }
 
   _renderTiles() {
     // Clear the board
-    this.board.innerHTML = '';
-    
+    this.board.innerHTML = "";
+
     // Loop through the tiles and create elements with background images
-    this.tiles.forEach(tile => {
-      const tileElement = document.createElement('div');
-      tileElement.className = 'puzzle-tile';
+    this.tiles.forEach((tile) => {
+      const tileElement = document.createElement("div");
+      tileElement.className = "puzzle-tile";
       // Set size
       tileElement.style.width = `${this.tileSize}px`;
       tileElement.style.height = `${this.tileSize}px`;
-      
+
       // --- KEY CHANGE: Use background image ---
       tileElement.style.backgroundImage = `url('${this.imageSrc}')`;
       // Calculate the background position to show the correct piece
       // Background position is negative because we are shifting the view
-      const bgX = - (tile.originalIndex % this.size) * this.tileSize;
-      const bgY = - Math.floor(tile.originalIndex / this.size) * this.tileSize;
+      const bgX = -(tile.originalIndex % this.size) * this.tileSize;
+      const bgY = -Math.floor(tile.originalIndex / this.size) * this.tileSize;
       tileElement.style.backgroundPosition = `${bgX}px ${bgY}px`;
-      tileElement.style.backgroundSize = `${this.size * this.tileSize}px ${this.size * this.tileSize}px`; // Scale the full image to fit the grid
+      tileElement.style.backgroundSize = `${this.size * this.tileSize}px ${
+        this.size * this.tileSize
+      }px`; // Scale the full image to fit the grid
       // --- END KEY CHANGE ---
-      
+
       // Set grid position
       tileElement.style.gridColumn = tile.x + 1;
       tileElement.style.gridRow = tile.y + 1;
-      
+
       // Add click listener
-      tileElement.addEventListener('click', () => this._moveTile(tile));
-      
+      tileElement.addEventListener("click", () => this._moveTile(tile));
+
       // Store reference to the element on the tile object (useful for potential future styling)
       tile.element = tileElement;
-      
+
       this.board.appendChild(tileElement);
     });
     // The empty space is just the gap in the grid, no element needed for it.
@@ -172,15 +174,15 @@ export class SlidingPuzzle {
     // Check if adjacent to empty space (logic remains the same)
     const dx = Math.abs(tile.x - this.emptyPos.x);
     const dy = Math.abs(tile.y - this.emptyPos.y);
-    
+
     if ((dx === 1 && dy === 0) || (dx === 0 && dy === 1)) {
       // Swap positions in the grid logic
       [tile.x, this.emptyPos.x] = [this.emptyPos.x, tile.x];
       [tile.y, this.emptyPos.y] = [this.emptyPos.y, tile.y];
-      
+
       this.moves++;
       this._renderTiles(); // Re-render to update positions
-      
+
       if (this._isSolved()) {
         setTimeout(() => this.onComplete(), 500); // Delay success callback slightly
       }
@@ -191,12 +193,12 @@ export class SlidingPuzzle {
     // Check if all tiles are in their original positions
     // Compare current tile positions (x,y) with their original index positions
     for (let i = 0; i < this.tiles.length; i++) {
-        const tile = this.tiles[i];
-        const targetX = tile.originalIndex % this.size;
-        const targetY = Math.floor(tile.originalIndex / this.size);
-        if (tile.x !== targetX || tile.y !== targetY) {
-            return false; // Found a tile out of place
-        }
+      const tile = this.tiles[i];
+      const targetX = tile.originalIndex % this.size;
+      const targetY = Math.floor(tile.originalIndex / this.size);
+      if (tile.x !== targetX || tile.y !== targetY) {
+        return false; // Found a tile out of place
+      }
     }
     return true; // All tiles are in the correct position
   }

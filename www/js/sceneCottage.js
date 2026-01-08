@@ -31,10 +31,10 @@ import { sceneHouseOvergrown } from "./sceneHouseOvergrown.js";
 import { sceneHouseRundown } from "./sceneHouseRundown.js";
 import { sceneHouseWhite } from "./sceneHouseWhite.js";
 // TYPING
-import { isUserInterrupted } from "./index.js"
-import { interruptionIndex } from "./index.js"
-import { btnRecentlyClicked } from "./index.js"
-import { isTyping } from "./index.js"
+import { isUserInterrupted } from "./index.js";
+import { interruptionIndex } from "./index.js";
+import { btnRecentlyClicked } from "./index.js";
+import { isTyping } from "./index.js";
 import { currentSceneTitle } from "./index.js";
 // STYLING
 import { typeText } from "./index.js";
@@ -50,10 +50,10 @@ import { saveGame } from "./index.js";
 import { loadGame } from "./index.js";
 import { toggleSaveButton } from "./index.js";
 // INVENTORY AND JOURNAL
-import  { INVENTORY } from "./index.js"
-import  { JOURNAL } from "./index.js"
-import  { journalVisible } from "./index.js"
-import  { journalBtn } from "./index.js"
+import { INVENTORY } from "./index.js";
+import { JOURNAL } from "./index.js";
+import { journalVisible } from "./index.js";
+import { journalBtn } from "./index.js";
 
 //|SCENE COTTAGE
 export async function sceneCottage() {
@@ -79,7 +79,7 @@ export async function sceneCottage() {
   let nextRoomBtn = document.createElement("button");
   let takeLetterBtn = document.createElement("button");
   let leaveRoomBtn = document.createElement("button");
-  
+
   // set button text
   enterBtn.textContent = "Enter cottage";
   townBtn.textContent = "Continue to town";
@@ -151,16 +151,15 @@ export async function sceneCottage() {
         applyGlassStylingRed
       );
     }
-    
+
     if (COTTAGE_ROOM == false) {
       userControlsContainer.appendChild(nextRoomBtn);
     }
     if (COTTAGE_LETTER == false) {
       userControlsContainer.appendChild(readLetterBtn);
-    };
+    }
     userControlsContainer.appendChild(exitBtn);
-
-  })
+  });
 
   readLetterBtn.addEventListener("pointerup", async function () {
     //Button click check
@@ -194,7 +193,7 @@ export async function sceneCottage() {
       "<p>Astrid, My Love <br><br> Today was a long day, I am very tired. I just sat down to write you this letter while having my dinner, oh how I miss your cooking, and how excited I am for you to get back. It's only been a week now, so I have another while to wait, but hopefully by the time you receive this letter it will be a week closer. <br> How is your sister? I hope she has recovered from her fall by now. With you there I am sure she will heal much faster. <br> The strangest thing happened today. Cartloads of people started leaving Gammelstad, some even running into the forest. I saw it as I was taking a walk by the old road. A young man even came shouting for me to 'leave if you are wise' mumbling something about the military and the end of the world or some nonsense. These town folk are getting too much city influence these days. <br> Send my regards to your sister and the children. I will take a walk into town tomorrow to post this letter, but for now I don't feel very well, think I will have a lie down. Missing you every day. <br><br> x x Filip</p>",
       applyGlassStylingRed
     );
-    
+
     await sleep(4000);
 
     userControlsContainer.appendChild(takeLetterBtn);
@@ -229,8 +228,14 @@ export async function sceneCottage() {
 
     COTTAGE_LETTER = true;
 
-    INVENTORY.push({ name: "Letter", description: "A letter you found at the cottage" });
-    JOURNAL.push({ title: "The Cottage", text: "While wandering to town I stumbled upon a cottage and found a letter addressed 'Astrid'. I took it with me. I should find someone in Gammelstad who could post it for Filip." });
+    INVENTORY.push({
+      name: "Letter",
+      description: "A letter you found at the cottage",
+    });
+    JOURNAL.push({
+      title: "The Cottage",
+      text: "While wandering to town I stumbled upon a cottage and found a letter addressed 'Astrid'. I took it with me. I should find someone in Gammelstad who could post it for Filip.",
+    });
 
     await sleep(1500);
 
@@ -249,7 +254,8 @@ export async function sceneCottage() {
     }, 1000);
 
     // change bg
-    gameContainer.style.backgroundImage = "url(img/07-cottage-dead-old-man.png)";
+    gameContainer.style.backgroundImage =
+      "url(img/07-cottage-dead-old-man.png)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // clear text container
@@ -341,24 +347,27 @@ export async function sceneCottage() {
     // write new text
     if (COTTAGE_DEAD_BODY == true) {
       await typeText(
-      textContainer,
-      "<p>As you step outside the cottage, you pause to catch your breath. You feel a little dazed and shaken. You just stare at the ground in front of you.</p>",
-      applyGlassStylingRed
-    );
+        textContainer,
+        "<p>As you step outside the cottage, you pause to catch your breath. You feel a little dazed and shaken. You just stare at the ground in front of you.</p>",
+        applyGlassStylingRed
+      );
 
-    await sleep(1500);
+      await sleep(1500);
 
-    await typeTextItalic(
-      textContainer,
-      "<p>I only woke up an hour ago, not knowing where I am...<br>or even WHO I am...<br>And already I've seen a dead body...<br>This feels like a dream...<br>or a nightmare...<br>I suppose it can only get better from here. Gods forbid it gets worse...</p>",
-      applyGlassStylingGreen
-    );
+      await typeTextItalic(
+        textContainer,
+        "<p>I only woke up an hour ago, not knowing where I am...<br>or even WHO I am...<br>And already I've seen a dead body...<br>This feels like a dream...<br>or a nightmare...<br>I suppose it can only get better from here. Gods forbid it gets worse...</p>",
+        applyGlassStylingGreen
+      );
 
-    await pause();
+      await pause();
 
-    textContainer.innerHTML = "";
-      
-    JOURNAL.push({ title: "The Cottage", text: "I saw the dead body of an old man. He must have been the write of the letter I found. I should report this to someone in Gammelstad..." });
+      textContainer.innerHTML = "";
+
+      JOURNAL.push({
+        title: "The Cottage",
+        text: "I saw the dead body of an old man. He must have been the write of the letter I found. I should report this to someone in Gammelstad...",
+      });
 
       sceneThree();
     } else {
@@ -384,5 +393,4 @@ export async function sceneCottage() {
 
     sceneThree();
   });
-
 }

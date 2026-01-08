@@ -43,8 +43,9 @@ function applyGlitchCss() {
     `,
       style.sheet.cssRules.length
     );
-    
-    style.sheet.insertRule(`
+
+    style.sheet.insertRule(
+      `
     @keyframes glitch-1 {
   0% {
     clip: rect(132px, 350px, 101px, 30px);
@@ -109,9 +110,12 @@ function applyGlitchCss() {
   100% {
     clip: rect(14px, 350px, 100px, 30px);
   }
-}`, style.sheet.cssRules.length);
-      
-      style.sheet.insertRule(`
+}`,
+      style.sheet.cssRules.length
+    );
+
+    style.sheet.insertRule(
+      `
       @keyframes glitch-2 {
   0% {
     clip: rect(129px, 350px, 36px, 30px);
@@ -176,7 +180,9 @@ function applyGlitchCss() {
   100% {
     clip: rect(83px, 350px, 40px, 30px);
   }
-}`, style.sheet.cssRules.length);
+}`,
+      style.sheet.cssRules.length
+    );
   }
 }
 

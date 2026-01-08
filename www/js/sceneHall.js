@@ -31,10 +31,10 @@ import { sceneHouseOvergrown } from "./sceneHouseOvergrown.js";
 import { sceneHouseRundown } from "./sceneHouseRundown.js";
 import { sceneHouseWhite } from "./sceneHouseWhite.js";
 // TYPING
-import { isUserInterrupted } from "./index.js"
-import { interruptionIndex } from "./index.js"
-import { btnRecentlyClicked } from "./index.js"
-import { isTyping } from "./index.js"
+import { isUserInterrupted } from "./index.js";
+import { interruptionIndex } from "./index.js";
+import { btnRecentlyClicked } from "./index.js";
+import { isTyping } from "./index.js";
 import { currentSceneTitle } from "./index.js";
 // STYLING
 import { typeText } from "./index.js";
@@ -50,10 +50,10 @@ import { saveGame } from "./index.js";
 import { loadGame } from "./index.js";
 import { toggleSaveButton } from "./index.js";
 // INVENTORY AND JOURNAL
-import  { INVENTORY } from "./index.js"
-import  { JOURNAL } from "./index.js"
-import  { journalVisible } from "./index.js"
-import  { journalBtn } from "./index.js"
+import { INVENTORY } from "./index.js";
+import { JOURNAL } from "./index.js";
+import { journalVisible } from "./index.js";
+import { journalBtn } from "./index.js";
 
 //| SCENE TOWN HALL
 export async function sceneHall() {
@@ -73,7 +73,7 @@ export async function sceneHall() {
 
   // create button
   let townSquareBtn = document.createElement("button"); // create buttons for scene
-  let oldKeyBtn = document.createElement("button")
+  let oldKeyBtn = document.createElement("button");
   let enterHallBtn = document.createElement("button");
   let upstairsBtn = document.createElement("button");
   let openDoorBtn = document.createElement("button");
@@ -302,8 +302,8 @@ export async function sceneHall() {
     await typeText(
       textContainer,
       "<p>In the middle of the office is the Mayor's large and shiny solid wood desk, but lining the walls, and stacked on top of each other, covering the windows, are large metal crates, at least 50 of them you guess, varying in length and size.</p>",
-    applyGlassStylingRed
-    )
+      applyGlassStylingRed
+    );
 
     await sleep(1500);
 
@@ -368,7 +368,7 @@ export async function sceneHall() {
       textContainer,
       "<p>Why does the mayor have all this fertilizer locked away in his office?</p>",
       applyGlassStylingGreen
-    )
+    );
 
     await sleep(1500);
 

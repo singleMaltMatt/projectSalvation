@@ -31,10 +31,10 @@ import { sceneHouseOvergrown } from "./sceneHouseOvergrown.js";
 import { sceneHouseRundown } from "./sceneHouseRundown.js";
 import { sceneHouseWhite } from "./sceneHouseWhite.js";
 // TYPING
-import { isUserInterrupted } from "./index.js"
-import { interruptionIndex } from "./index.js"
-import { btnRecentlyClicked } from "./index.js"
-import { isTyping } from "./index.js"
+import { isUserInterrupted } from "./index.js";
+import { interruptionIndex } from "./index.js";
+import { btnRecentlyClicked } from "./index.js";
+import { isTyping } from "./index.js";
 import { currentSceneTitle } from "./index.js";
 // STYLING
 import { typeText } from "./index.js";
@@ -50,10 +50,10 @@ import { saveGame } from "./index.js";
 import { loadGame } from "./index.js";
 import { toggleSaveButton } from "./index.js";
 // INVENTORY AND JOURNAL
-import  { INVENTORY } from "./index.js"
-import  { JOURNAL } from "./index.js"
-import  { journalVisible } from "./index.js"
-import  { journalBtn } from "./index.js"
+import { INVENTORY } from "./index.js";
+import { JOURNAL } from "./index.js";
+import { journalVisible } from "./index.js";
+import { journalBtn } from "./index.js";
 
 //| SCENE INN
 export async function sceneInn() {
@@ -185,17 +185,17 @@ export async function sceneInn() {
         "<p>As you approach the Matriarch, she stands and wipes her soot covered hands on a cloth. She offers a wary smile.</p>",
         applyGlassStylingRed
       );
-  
+
       await sleep(1500);
-  
+
       await typeTextItalic(
         textContainer,
         "<p>You look a bit worse for wear...<br>May I offer you some Glogg?<br>Stew?</p>",
         applyGlassStylingBlue
       );
-  
+
       await sleep(1500);
-  
+
       userControlsContainer.appendChild(moneyBtn);
     } else {
       await typeTextItalic(
@@ -205,7 +205,7 @@ export async function sceneInn() {
       );
 
       await sleep(1500);
-      
+
       if (CHURCH_STORY == true) {
         userControlsContainer.appendChild(spokeToBtn);
       }
@@ -217,7 +217,6 @@ export async function sceneInn() {
       }
       userControlsContainer.appendChild(townSquareBtn); //| just check this later
     }
-
   });
 
   moneyBtn.addEventListener("pointerup", async function () {
@@ -306,10 +305,18 @@ export async function sceneInn() {
 
     // append new button
     userControlsContainer.appendChild(rememberBtn);
-    if (INN_LETTER_PICKED == false && COTTAGE_LETTER == true && SWIMMING_POOL_GIRL == true) {
+    if (
+      INN_LETTER_PICKED == false &&
+      COTTAGE_LETTER == true &&
+      SWIMMING_POOL_GIRL == true
+    ) {
       userControlsContainer.appendChild(letterBtn);
     }
-    if (INN_LETTER_PICKED == false && INN_FILIP_PICKED == false && INFORMATION == true) {
+    if (
+      INN_LETTER_PICKED == false &&
+      INN_FILIP_PICKED == false &&
+      INFORMATION == true
+    ) {
       userControlsContainer.appendChild(filipBtn);
     }
   });
@@ -362,7 +369,7 @@ export async function sceneInn() {
       userControlsContainer.appendChild(surviveBtn);
     }
     if (INN_WHERE && INN_SURVIVE == true) {
-    userControlsContainer.appendChild(townSquareBtn)
+      userControlsContainer.appendChild(townSquareBtn);
     }
   });
 
@@ -387,36 +394,37 @@ export async function sceneInn() {
     // write new text
     if (INN_SURVIVE == false) {
       await typeTextItalic(
-      textContainer,
-      "<p>Since you are not from around here; I think it would be wise to start from the beginning before I answer any more of your questions.</p>",
-      applyGlassStylingBlue
-    );
+        textContainer,
+        "<p>Since you are not from around here; I think it would be wise to start from the beginning before I answer any more of your questions.</p>",
+        applyGlassStylingBlue
+      );
 
-    await sleep(1500);
+      await sleep(1500);
 
-    await typeTextItalic(
-      textContainer,
-      "<p>While I am not as clued up about this entire situation as others that are left in the town might be, I can tell you that a little over a week ago the news started arriving from the City that our government is completely unhinged and that they plan to kill us all. No one is safe.</p>",
-      applyGlassStylingBlue
-    );
+      await typeTextItalic(
+        textContainer,
+        "<p>While I am not as clued up about this entire situation as others that are left in the town might be, I can tell you that a little over a week ago the news started arriving from the City that our government is completely unhinged and that they plan to kill us all. No one is safe.</p>",
+        applyGlassStylingBlue
+      );
 
-    await pause();
+      await pause();
 
-    textContainer.innerHTML = "";
+      textContainer.innerHTML = "";
 
-    await typeTextItalic(
-      textContainer,
-      "<p>Now I am not one who blindly believes in these rumors, but the rest of the people in the town were clearly fearing for their lives.</p>",
-      applyGlassStylingBlue
-    );
+      await typeTextItalic(
+        textContainer,
+        "<p>Now I am not one who blindly believes in these rumors, but the rest of the people in the town were clearly fearing for their lives.</p>",
+        applyGlassStylingBlue
+      );
 
-    await sleep(1500);
+      await sleep(1500);
 
-    await typeTextItalic(
-      textContainer,
-      "<p>A while after that, another rumor spread like wildfire that a sort of 'resistance' has formed and any abled body willing to fight may join them.</p>",
-      applyGlassStylingBlue
-    );}
+      await typeTextItalic(
+        textContainer,
+        "<p>A while after that, another rumor spread like wildfire that a sort of 'resistance' has formed and any abled body willing to fight may join them.</p>",
+        applyGlassStylingBlue
+      );
+    }
 
     await pause();
 
@@ -429,7 +437,7 @@ export async function sceneInn() {
     );
 
     await sleep(1500);
-    
+
     await typeTextItalic(
       textContainer,
       "<p>I assume they all ran to the Resistance with their tails tucked between their legs.<br><br>I have no doubt that they would pick up a weapon when the time comes. But, as you may have guessed from my tone...<br>I harbor some resentment that they did not even hesitate for a single moment before they fled this beautiful town of ours.</p>",
@@ -447,11 +455,10 @@ export async function sceneInn() {
       userControlsContainer.appendChild(resistanceBtn);
     }
     if (INN_SURVIVE == true && INN_WHERE == true) {
-      
       await pause();
 
       textContainer.innerHTML = "";
-      
+
       await typeTextItalic(
         textContainer,
         "<p>Well, is there anything else I can do for you?</p>",
@@ -488,35 +495,35 @@ export async function sceneInn() {
     // write new text
     if (INN_WHERE == false) {
       await typeTextItalic(
-      textContainer,
-      "<p>Since you are not from around here; I think it would be wise to start from the beginning before I answer any more of your questions.</p>",
-      applyGlassStylingBlue
-    );
+        textContainer,
+        "<p>Since you are not from around here; I think it would be wise to start from the beginning before I answer any more of your questions.</p>",
+        applyGlassStylingBlue
+      );
 
-    await sleep(1500);
+      await sleep(1500);
 
-    await typeTextItalic(
-      textContainer,
-      "<p>While I am not as clued up about this entire situation as others that are left in the town might be, I can tell you that a little over a week ago the news started arriving from the City that our government is completely unhinged and that they plan to kill us all. No one is safe.</p>",
-      applyGlassStylingBlue
-    );
+      await typeTextItalic(
+        textContainer,
+        "<p>While I am not as clued up about this entire situation as others that are left in the town might be, I can tell you that a little over a week ago the news started arriving from the City that our government is completely unhinged and that they plan to kill us all. No one is safe.</p>",
+        applyGlassStylingBlue
+      );
 
-    await pause();
+      await pause();
 
-    textContainer.innerHTML = "";
+      textContainer.innerHTML = "";
 
-    await typeTextItalic(
-      textContainer,
-      "<p>Now I am not one who blindly believes in these rumors, but the rest of the people in the town were clearly fearing for their lives.</p>",
-      applyGlassStylingBlue
-    );
+      await typeTextItalic(
+        textContainer,
+        "<p>Now I am not one who blindly believes in these rumors, but the rest of the people in the town were clearly fearing for their lives.</p>",
+        applyGlassStylingBlue
+      );
 
-    await sleep(1500);
+      await sleep(1500);
 
-    await typeTextItalic(
-      textContainer,
-      "<p>A while after that, another rumor spread like wildfire that a sort of 'resistance' has formed and any abled body willing to fight may join them.</p>",
-      applyGlassStylingBlue
+      await typeTextItalic(
+        textContainer,
+        "<p>A while after that, another rumor spread like wildfire that a sort of 'resistance' has formed and any abled body willing to fight may join them.</p>",
+        applyGlassStylingBlue
       );
     }
 
@@ -559,7 +566,6 @@ export async function sceneInn() {
       userControlsContainer.appendChild(resistanceBtn);
     }
     if (INN_SURVIVE == true && INN_WHERE == true) {
-
       await pause();
 
       textContainer.innerHTML = "";
@@ -752,7 +758,7 @@ export async function sceneInn() {
       "<p>As she walks back towards the hearth she turns to you looking thoughtful...</p>",
       applyGlassStylingRed
     );
-  
+
     await sleep(1500);
 
     await typeTextItalic(
@@ -770,7 +776,6 @@ export async function sceneInn() {
       "<p>She flashes a quick smile and returns to her chores.</p>",
       applyGlassStylingRed
     );
-    
 
     // append new button
     userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
@@ -807,8 +812,8 @@ export async function sceneInn() {
       textContainer,
       "<p>Ingrid frowns and takes the letter from you.<br><br>When she is done reading she says...</p>",
       applyGlassStylingRed
-    )
-    
+    );
+
     await sleep(1500);
 
     await typeTextItalic(
@@ -850,7 +855,7 @@ export async function sceneInn() {
     );
 
     await pause();
-    
+
     textContainer.innerHTML = "";
 
     await typeText(
@@ -860,7 +865,7 @@ export async function sceneInn() {
     );
 
     await pause();
-    
+
     textContainer.innerHTML = "";
 
     await typeText(
@@ -901,7 +906,7 @@ export async function sceneInn() {
     );
 
     await pause();
-    
+
     textContainer.innerHTML = "";
 
     await typeText(
@@ -966,7 +971,7 @@ export async function sceneInn() {
     );
 
     await pause();
-    
+
     textContainer.innerHTML = "";
 
     await typeTextItalic(
@@ -997,7 +1002,7 @@ export async function sceneInn() {
     // append new button
     userControlsContainer.appendChild(rememberBtn);
   });
-  
+
   spokeToBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
@@ -1022,7 +1027,7 @@ export async function sceneInn() {
     );
 
     await pause();
-    
+
     textContainer.innerHTML = "";
 
     await typeTextItalic(
@@ -1040,7 +1045,7 @@ export async function sceneInn() {
       "<p>She smiles warmly at you and hands you the clinic key.</p>",
       applyGlassStylingRed
     );
-    
+
     // append new button
     userControlsContainer.appendChild(townSquareBtn);
   });

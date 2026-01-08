@@ -50,13 +50,13 @@ import { saveGame } from "./index.js";
 import { loadGame } from "./index.js";
 import { toggleSaveButton } from "./index.js";
 // INVENTORY AND JOURNAL
-import  { INVENTORY } from "./index.js"
-import  { JOURNAL } from "./index.js"
-import  { journalVisible } from "./index.js"
-import { journalBtn } from "./index.js"
+import { INVENTORY } from "./index.js";
+import { JOURNAL } from "./index.js";
+import { journalVisible } from "./index.js";
+import { journalBtn } from "./index.js";
 // GLOBALS
-import { FOREST_LEG } from "./index.js"
-import { FOREST_LOOK } from "./index.js"
+import { FOREST_LEG } from "./index.js";
+import { FOREST_LOOK } from "./index.js";
 
 let isUserInterrupted = false;
 let interruptionIndex = 0;
@@ -71,7 +71,9 @@ export async function sceneOne() {
   // headerBtn.style.display = "block";
   showHeaderButtons();
 
-  let userControlsContainer = document.querySelector(".user-controls-container");
+  let userControlsContainer = document.querySelector(
+    ".user-controls-container"
+  );
   let textContainer = document.querySelector(".text-container");
   applyTypingCss(textContainer);
 
@@ -96,7 +98,7 @@ export async function sceneOne() {
   await typeTextItalic(
     textContainer,
     "<p>Cold... drops on my face... dew? Morning. It's morning.</p>",
-    applyGlassStylingGreen,
+    applyGlassStylingGreen
   );
 
   await sleep(1500);
@@ -104,11 +106,11 @@ export async function sceneOne() {
   await typeText(
     textContainer,
     "<p>You open your eyes and stare up at the sky, you find yourself laying on your back in the forest. You push your hands against the damp earth and lift yourself into a sitting position.</p>",
-    applyGlassStylingRed,
+    applyGlassStylingRed
   );
 
   await sleep(1500);
-  
+
   textContainer.innerHTML = "";
 
   gameContainer.style.backgroundImage = "url(img/04-forest-path.png)";
@@ -117,7 +119,7 @@ export async function sceneOne() {
   await typeTextItalic(
     textContainer,
     "<p>How did I get here? Last thing I remember...</p>",
-    applyGlassStylingGreen,
+    applyGlassStylingGreen
   );
 
   await sleep(1500);
@@ -127,8 +129,8 @@ export async function sceneOne() {
   await typeTextItalic(
     textContainer,
     "<p>Bright lights...</p>",
-    applyGlassStylingGreen,
-  )
+    applyGlassStylingGreen
+  );
 
   await sleep(1500);
 
@@ -137,8 +139,8 @@ export async function sceneOne() {
   await typeTextItalic(
     textContainer,
     "<p>Someone... speaking to me...</p>",
-    applyGlassStylingGreen,
-  )
+    applyGlassStylingGreen
+  );
 
   await sleep(1500);
 
@@ -147,7 +149,7 @@ export async function sceneOne() {
   await typeText(
     textContainer,
     "<p>As you lift yourself to your feet you cry out as a sharp pain in your right leg causes you to fall over.</p>",
-    applyGlassStylingRed,
+    applyGlassStylingRed
   );
 
   // append button to user controls container
@@ -157,7 +159,7 @@ export async function sceneOne() {
   inspectBtn.addEventListener("pointerup", async function () {
     // Button click check
     if (isTyping || btnRecentlyClicked) return;
-    btnRecentlyClicked = true
+    btnRecentlyClicked = true;
     setTimeout(() => {
       btnRecentlyClicked = false;
     }, 1000);
@@ -191,7 +193,7 @@ export async function sceneOne() {
       userControlsContainer.appendChild(helpBtn);
     }
     if (FOREST_LOOK == false) {
-          userControlsContainer.appendChild(lookBtn);
+      userControlsContainer.appendChild(lookBtn);
     }
   });
 

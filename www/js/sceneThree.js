@@ -31,10 +31,10 @@ import { sceneHouseOvergrown } from "./sceneHouseOvergrown.js";
 import { sceneHouseRundown } from "./sceneHouseRundown.js";
 import { sceneHouseWhite } from "./sceneHouseWhite.js";
 // TYPING
-import { isUserInterrupted } from "./index.js"
-import { interruptionIndex } from "./index.js"
-import { btnRecentlyClicked } from "./index.js"
-import { isTyping } from "./index.js"
+import { isUserInterrupted } from "./index.js";
+import { interruptionIndex } from "./index.js";
+import { btnRecentlyClicked } from "./index.js";
+import { isTyping } from "./index.js";
 import { currentSceneTitle } from "./index.js";
 // STYLING
 import { typeText } from "./index.js";
@@ -50,10 +50,10 @@ import { saveGame } from "./index.js";
 import { loadGame } from "./index.js";
 import { toggleSaveButton } from "./index.js";
 // INVENTORY AND JOURNAL
-import  { INVENTORY } from "./index.js"
-import  { JOURNAL } from "./index.js"
-import  { journalVisible } from "./index.js"
-import  { journalBtn } from "./index.js"
+import { INVENTORY } from "./index.js";
+import { JOURNAL } from "./index.js";
+import { journalVisible } from "./index.js";
+import { journalBtn } from "./index.js";
 
 //|SCENE THREE
 export async function sceneThree() {
@@ -208,7 +208,8 @@ export async function sceneThree() {
     }, 1000);
 
     //BG
-    gameContainer.style.backgroundImage = "url(img/forest-path-tyre-tracks.jpg)";
+    gameContainer.style.backgroundImage =
+      "url(img/forest-path-tyre-tracks.jpg)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // Clear text container
@@ -244,7 +245,8 @@ export async function sceneThree() {
       btnRecentlyClicked = false;
     }, 1000);
 
-    gameContainer.style.backgroundImage = "url(img/forest-path-tyre-tracks.jpg)";
+    gameContainer.style.backgroundImage =
+      "url(img/forest-path-tyre-tracks.jpg)";
     gameContainer.style.transition = "background-image 4s ease-in-out";
 
     // Clear text container
