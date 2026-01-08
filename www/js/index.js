@@ -865,6 +865,8 @@ window.HALL_KEY = false;
 window.HALL_WEAPONS = false;
 //sceneStore
 window.STORE_VISITED = false;
+window.STORE_AGENT = false;
+window.STORE_ENDGAME = false;
 
 //|SLEEPER
 function sleep(ms) {
@@ -996,6 +998,8 @@ function getGameState() {
       HALL_WEAPONS,
       //sceneStore
       STORE_VISITED,
+      STORE_AGENT,
+      STORE_ENDGAME,
     },
     inventory: INVENTORY,
     journal: JOURNAL,
@@ -8452,6 +8456,17 @@ async function sceneStore() {
   let projectBtn = document.createElement("button");
   let lifeBtn = document.createElement("button");
   let fightBtn = document.createElement("button");
+  let metIngridBtn = document.createElement("button");
+  let foundCoordsBtn = document.createElement("button");
+  let drawnMapBtn = document.createElement("button");
+  let whereResistanceBtn = document.createElement("button");
+  let deadMayorBtn = document.createElement("button");
+  let weaponsBtn = document.createElement("button");
+  let deadBodyBtn = document.createElement("button");
+  let clinicKeyBtn = document.createElement("button");
+  let mapAndCoordsBtn = document.createElement("button");
+  let roadBlockBtn = document.createElement("button");
+  let iKnowNowBtn = document.createElement("button");
 
   // set button text
   townSquareBtn.textContent = "Go to town square";
@@ -8464,6 +8479,17 @@ async function sceneStore() {
   projectBtn.textContent = "He told me about Project Salvation";
   lifeBtn.textContent = "I'm hoping to escape with my life intact";
   fightBtn.textContent = "Fighting seems like the only answer";
+  metIngridBtn.textContent = "I've met Ingrid";
+  foundCoordsBtn.textContent = "I found coordinates";
+  drawnMapBtn.textContent = "I found a hand drawn map";
+  whereResistanceBtn.textContent = "I found out where the Resistance is";
+  deadMayorBtn.textContent = "The Mayor is dead";
+  weaponsBtn.textContent = "There are weapons in the Town Hall";
+  deadBodyBtn.textContent = "I found a dead body";
+  clinicKeyBtn.textContent = "I have a key to the clinic";
+  mapAndCoordsBtn.textContent = "I have a key to the clinic";
+  roadBlockBtn.textContent = "There's a blocked road outside of town";
+  iKnowNowBtn.textContent = "I know what I have to do now";
 
   // add styling for button
   applyGlassStylingGreyBtn(townSquareBtn);
@@ -8476,6 +8502,17 @@ async function sceneStore() {
   applyGlassStylingGreyBtn(projectBtn);
   applyGlassStylingGreyBtn(lifeBtn);
   applyGlassStylingGreyBtn(fightBtn);
+  applyGlassStylingGreyBtn(metIngridBtn);
+  applyGlassStylingGreyBtn(foundCoordsBtn);
+  applyGlassStylingGreyBtn(drawnMapBtn);
+  applyGlassStylingGreyBtn(whereResistanceBtn);
+  applyGlassStylingGreyBtn(deadMayorBtn);
+  applyGlassStylingGreyBtn(weaponsBtn);
+  applyGlassStylingGreyBtn(deadBodyBtn);
+  applyGlassStylingGreyBtn(clinicKeyBtn);
+  applyGlassStylingGreyBtn(mapAndCoordsBtn);
+  applyGlassStylingGreyBtn(roadBlockBtn);
+  applyGlassStylingGreyBtn(iKnowNowBtn);
 
   await typeText(
     textContainer,
@@ -8772,32 +8809,943 @@ async function sceneStore() {
     userControlsContainer.appendChild(fightBtn);
   });
 
-  // buttonNameBtn.addEventListener("pointerup", async function () {
-  //   // Button click check
-  //   if (isTyping || btnRecentlyClicked) return;
-  //   btnRecentlyClicked = true;
-  //   setTimeout(() => {
-  //     btnRecentlyClicked = false;
-  //   }, 1000);
+  lifeBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
 
-  //   // Clear text container
-  //   textContainer.innerHTML = "";
+    // Clear text container
+    textContainer.innerHTML = "";
 
-  //   // remove button from user controls container
-  //   buttonNameBtn.remove(); // remove relevant buttons
+    // remove button from user controls container
+    lifeBtn.remove(); // remove relevant buttons
+    fightBtn.remove();
 
-  //   // write new text
-  //   await typeText(
-  //     textContainer,
-  //     "<p>NEW TEXT HERE. REMEMBER RELEVANT STYLING (NORMAL OR ITALIC) AND REMEMBER CSS</p>",
-  //     applyGlassStylingRed
-  //   );
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>I see, then you should do so while you still can.<br><br>Things are getting more dangerous by the day here in Gammelstad.<br><br>See you around...<br><br>or not...</p>",
+      applyGlassStylingBlue
+    );
 
-  //   await sleep(1500);
+    await sleep(1500);
 
-  //   // append new button
-  //   userControlsContainer.appendChild(buttonNameBtn); // append relevant buttons
-  // });
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
+  });
+
+  fightBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    fightBtn.remove(); // remove relevant buttons
+    lifeBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>Sven looks at you sternly, before an almost imperceptible smile flashes across his face.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>I'm really glad to hear you say that, because I agree.<br>Fighting really is the only answer, and the only hope we have against our corrupt military and their twisted idea of 'Salvation'.<br><br> Come back to me after you've been around town some more. You may find some information that I... may.. be able to help you with.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>And who knows? Perhaps you end up helping this 'Resistance' in the end.<br><br>But for now I'm afraid that's all I can tell you.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    STORE_AGENT = true;
+
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
+  });
+
+  aroundBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    yesBtn.remove(); // remove relevant buttons
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>Is that so?<br><br>See anything interesting?</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1000);
+
+    await typeText(
+      textContainer,
+      "<p>He says with a sly smile, almost like he knows what you are going to tell him.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    if (STORE_VISITED == true) {
+      await typeTextItalic(
+        textContainer,
+        "<p>No, not really. Maybe I should look around some more.</p>",
+        applyGlassStylingGreen
+      );
+
+      await pause();
+      textContainer.innerHTML = "";
+
+      await typeText(
+        textContainer,
+        "<p>Well then I'm sure I'll see you again later...</p>",
+        applyGlassStylingBlue
+      );
+
+      userControlsContainer.appendChild(townSquareBtn);
+    } else if (INN_ADVICE == true) {
+      userControlsContainer.appendChild(metIngridBtn);
+      userControlsContainer.appendChild(townSquareBtn);
+    } else if (HOUSE_FLAG_COORDINATES == true && CHURCH_DESTINATION == false) {
+      userControlsContainer.appendChild(foundCoordsBtn);
+      userControlsContainer.appendChild(townSquareBtn);
+    } else if (LARGE_HOUSE_MAP == true && CHURCH_DESTINATION == false) {
+      userControlsContainer.appendChild(drawnMapBtn);
+      userControlsContainer.appendChild(townSquareBtn);
+    } else if (CHURCH_DESTINATION == true && CLINIC_RESEARCH_SAVED == false) {
+      userControlsContainer.appendChild(whereResistanceBtn);
+      userControlsContainer.appendChild(townSquareBtn);
+    } else if (HALL_KEY == true) {
+      userControlsContainer.appendChild(deadMayorBtn);
+      userControlsContainer.appendChild(townSquareBtn);
+    } else if (HALL_WEAPONS == true) {
+      userControlsContainer.appendChild(weaponsBtn);
+      userControlsContainer.appendChild(townSquareBtn);
+    } else if (
+      CLINIC_RESEARCH_SAVED == true &&
+      CHURCH_DESTINATION == true &&
+      STORE_AGENT == true
+    ) {
+      userControlsContainer.appendChild(iKnowNowBtn);
+      userControlsContainer.appendChild(townSquareBtn);
+    } else if (COTTAGE_DEAD_BODY == true) {
+      userControlsContainer.appendChild(deadBodyBtn);
+      userControlsContainer.appendChild(townSquareBtn);
+    } else if (CLINIC_KEY == true) {
+      userControlsContainer.appendChild(clinicKeyBtn);
+      userControlsContainer.appendChild(townSquareBtn);
+    } else if (LARGE_HOUSE_MAP == true && HOUSE_FLAG_COORDINATES == true) {
+      userControlsContainer.appendChild(mapAndCoordsBtn);
+      userControlsContainer.appendChild(townSquareBtn);
+    } else if (FOREST_ROAD_BLOCK == true) {
+      userControlsContainer.appendChild(roadBlockBtn);
+      userControlsContainer.appendChild(townSquareBtn);
+    } else {
+      await typeTextItalic(
+        textContainer,
+        "<p>No, not really... this town is rather empty...</p>",
+        applyGlassStylingGreen
+      );
+
+      await pause();
+      textContainer.innerHTML = "";
+
+      await typeText(
+        textContainer,
+        "<p>He smirks and says,</p>",
+        applyGlassStylingRed
+      );
+
+      await sleep(1000);
+
+      await typeText(
+        textContainer,
+        "<p>People got spooked. All this talk of Government conspiracies and 'resistances' have people losing their minds.<br><br>And that damned priest isn't helping matters with his fear mongering, telling folk to repent and what not.</p>",
+        applyGlassStylingBlue
+      );
+
+      await sleep(1500);
+
+      // append new button
+      if (CHURCH_STORY == true) {
+        userControlsContainer.appendChild(projectBtn);
+      }
+      userControlsContainer.appendChild(buyBtn);
+    }
+  });
+
+  metIngridBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    metIngridBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>I've met Ingrid...<br><br>She seems to know more about what's going on here than she lets on...</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(2000);
+
+    await typeText(
+      textContainer,
+      "<p>What makes you so sure about that?</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Well, it seemed that she could tell me more than she wanted to, and seemed to dismiss my questions.</p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Well you should expect more of that!</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1000);
+
+    await typeText(
+      textContainer,
+      "<p>Sven says with a dry chuckle.</p>",
+      applyGlassStylingRed
+    );
+
+    await typeText(
+      textContainer,
+      "<p>You're a stranger to these town people. Then again, maybe there is less going on than you think...</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1000);
+
+    await typeText(
+      textContainer,
+      "<p>He says with a shrug.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Thanks, but I think I will keep trying to get to the bottom of what's happening here.</p>",
+      applyGlassStylingGreen
+    );
+
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
+  });
+
+  foundCoordsBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    foundCoordsBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>I found these coordinates being broadcast on an AM radio...<br><br>Do you perhaps know where this?</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(2000);
+
+    await typeText(
+      textContainer,
+      "<p>You relay the coordinates from the radio broadcast to Sven.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Hmmm... if I were you, I would find a map...<br><br>Then perhaps someone might be able to point out this location to you.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
+  });
+
+  drawnMapBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    drawnMapBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>I found this map. It looks like someone took some time and great detail to draw it...<br><br>Does it mean anything to you?</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(2000);
+
+    await typeText(
+      textContainer,
+      "<p>Hmmm well yes that is a map of the surrounding areas around Gammelstad.<br><br>It doesn't look like this map is showing anything in particular though.<br><br>Maybe hold on to it until you find a use for it.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
+  });
+
+  whereResistanceBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    whereResistanceBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>I spoke to Father Jakob, and he was able to help me find the coordinates on the map I found.<br><br>I know where the resistance is based</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(2000);
+
+    await typeText(
+      textContainer,
+      "<p>Sven raises his eyebrows and gives you a calculating look.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>And what do you intend to do with that information now that you have acquired it?</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>I intend to help them against the threat of Project Salvation, in any way I can.</p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>And what if the best way to help them is just staying out of their way? What do you know about Project Salvation? How do you know you aren't in way over your head?</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1000);
+
+    await typeText(
+      textContainer,
+      "<p>Sven's expression softens to a sly smile.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1000);
+
+    await typeText(
+      textContainer,
+      "<p>But then again, what do I know?<br><br>These are all rumors anyway. Nevertheless, going on a potential suicide mission is completely your own choice of course</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1000);
+
+    await typeText(
+      textContainer,
+      "<p>He says as he gives a dramatic shrug</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>I... should probably think this through some more...</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
+  });
+
+  deadMayorBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    deadMayorBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>I found a dead body in the mansion... I think the Mayor has been killed...</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(2000);
+
+    await typeText(
+      textContainer,
+      "<p>You notice that Sven does not seem to be shocked in the least by this news, although his face darkens as he frowns.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>I see you have taken to snooping around...<br><br>Well, maybe the rumors are true that old Dennis was dealing in things he shouldn't have.<br><br>These are dangerous times young man.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Could you share some of the rumors?<br><br>What was he involved with?</p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Sven cracks a faint smile.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1000);
+
+    await typeText(
+      textContainer,
+      "<p>No I couldn't. Lest I be spreading rumors myself.<br><br>B>ut hopefully his sacrifice won't be in vain.</p>",
+      applyGlassStylingBlue
+    );
+
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
+  });
+
+  weaponsBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    weaponsBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove();
+
+    // write new text
+    await typeText(
+      textContainer,
+      "<p>Sven's eyes widen and he seems genuinely surprised for the first time since you've been speaking with him.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1000);
+
+    await typeText(
+      textContainer,
+      "<p>How would you know something like that?<br><br>This town might be up to shit but breaking and entering is still a crime...<br><br>Especially in government buildings...</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>I realise that, but that's where the trail I have been following led me.<br><br>Do you have any idea why the mayor might have been storing weapons?<br><br>It seems like that's why he got killed...</p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Sven's face returns to his regular stoic and disinterested self.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1000);
+
+    await typeText(
+      textContainer,
+      "<p>You know, I never liked politics.<br><br>That's why I went into the retail business.<br><br>I have no idea why he would hide weapons, but I think it's clear they were meant for someone...<br><br>Who that could be, we can only speculate.</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
+  });
+
+  deadBodyBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    deadBodyBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>I found the corpse of an old man in a small cottage outside of town.<br><br>That was an unpleasant way to start my morning.</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(2000);
+
+    await typeText(
+      textContainer,
+      "<p>Sven's stoney demeanor belies the fact that this news has shocked him.<br><br>You notice the almost imperceptible widening of his eyes.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>My God, but these are trying times indeed.<br><br>Poor Ingrid, she will be devastated.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    if (CHURCH_INFORMATION == true && INN_SAD == false) {
+      await typeTextItalic(
+        textContainer,
+        "<p>I've already told Father Jakob about this.<br><br>He said he would talk to Ingrid.</p>",
+        applyGlassStylingGreen
+      );
+
+      await sleep(2000);
+
+      await typeText(
+        textContainer,
+        "<p>Ah well then that's it I suppose.<br><br>Kind thing you have done.<br><br>She will remember it.</p>",
+        applyGlassStylingBlue
+      );
+
+      await sleep(1500);
+
+      userControlsContainer.appendChild(townSquareBtn);
+    } else if (INN_SAD == true) {
+      await typeTextItalic(
+        textContainer,
+        "<p>I've spoken to Father Jakob and Ingrid.<br><br>She seems very strong, but saddened by the news.</p>",
+        applyGlassStylingGreen
+      );
+
+      await sleep(2000);
+
+      await typeText(
+        textContainer,
+        "<p>Ah well then that's it I suppose.<br><br>Kind thing you have done.<br><br>She will remember it.</p>",
+        applyGlassStylingBlue
+      );
+
+      await sleep(1500);
+
+      userControlsContainer.appendChild(townSquareBtn);
+    } else {
+      await typeText(
+        textContainer,
+        "<p>The Innkeeper at the Norrsund Inn.<br><br>If you want to convey the news to her, I would suggest speaking to Father Jakob at the church.<br><br>He often deals with these matters.</p>",
+        applyGlassStylingBlue
+      );
+
+      await sleep(1500);
+
+      userControlsContainer.appendChild(townSquareBtn);
+    }
+  });
+
+  clinicKeyBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    clinicKeyBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>Ingrid gave me the key to the clinic to treat my injuries.<br><br>Do you think I might find anything useful in there if I were to look around?</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(2000);
+
+    await typeText(
+      textContainer,
+      "<p>Sven looks at his newspaper and sounds quite disinterested.</p>",
+      applyGlassStylingRed
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>I doubt you would find anything in there, apart from some medicine that is.<br><br>It's just a doctors practice after all...<br><br>Just take what you need and leave the place in tact.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Sven may be right.<br><br>You might not find anything interesting in the clinic, but at least you might find some pain killers.<br><br>It wouldn't hurt to investigate.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
+  });
+
+  mapAndCoordsBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    mapAndCoordsBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>I found these coordinates on a radio broadcast, and I also found this hand drawn map of the area... could you show me where the coordinates point to?</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(2000);
+
+    await typeText(
+      textContainer,
+      "<p>Let's have a look...<br><br>Ah.....<br><br>Well....<br><br>No.<br><br>But maybe there is someone else who could.<br><br>Someone with some military or intelligence experience?</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
+  });
+
+  roadBlockBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    roadBlockBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>I saw a road outside of town that seemed to be blocked by burnt trees...<br><br>Do you know what happened there?</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(2000);
+
+    await typeText(
+      textContainer,
+      "<p>Some big commotion a few days ago, when all this madness started.<br><br>People were running and screaming that there are machines attacking.<br><br>Didn't see anything myself of course, so who knows what really happened...</p>",
+      applyGlassStylingBlue
+    );
+
+    await sleep(1500);
+
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
+  });
+
+  iKnowNowBtn.addEventListener("pointerup", async function () {
+    // Button click check
+    if (isTyping || btnRecentlyClicked) return;
+    btnRecentlyClicked = true;
+    setTimeout(() => {
+      btnRecentlyClicked = false;
+    }, 1000);
+
+    // Clear text container
+    textContainer.innerHTML = "";
+
+    // remove button from user controls container
+    iKnowNowBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove();
+
+    // write new text
+    await typeTextItalic(
+      textContainer,
+      "<p>Sven...<br><br>I think I finally found out all I needed to know, and what to do next.</p>",
+      applyGlassStylingGreen
+    );
+
+    await sleep(2000);
+
+    await typeText(
+      textContainer,
+      "<p>Sven raises one eyebrow and gives you a sly smile.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    await typeText(
+      textContainer,
+      "<p>So...<br><br>You think you've gotten to the bottom of what's been going on here?<br><br>Please, enlighten me.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Well, when I woke up this morning, I didn't know where, or who I even was.<br><br>Now I know my name is Xander Ignis...<br><br>I must have some connection to Dr. Ignis... who I learned is instrumental in Project Salvation...<br><br>And that's what's got this town deserted isn't it?<br><br>Why everyone is so scared for their lives.<br><br>Everyone, except for the Resistance, whose location I found through clues they left behind, and help from Father Jakob.</p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>I also found out that the mayor has been storing weapons in his office.<br><br>Whether that is to help the military or the resistance I don't know.<br><br>I found some research on the doctors' computer.<br><br>The doctors were doing experiments with androids, so I am sure they are working with the military and that's why they fled town as well.<br><br>I'm sure the resistance would find their research insightful, if not helpful.<br><br>I intend to go to the resistance to try and help them.</p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Sven stares at you unblinking, and then smiles and starts to slowly clap his hands</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(2000);
+
+    await typeText(
+      textContainer,
+      "<p>Well done.<br><br>I think you have the truth of it, at least as far as I am aware.<br><br>And yes, we could really use your help, you seem to have a gift for being in the right place at the right time.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>We? You mean...<br><br>You are also part of the resistance?</p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>We need eyes and ears wherever we can.<br><br>I manned my shop here and reported anything that was worth HQ's attention.<br><br>Naturally, they already know you have been here, snooping around.<br><br>They are expecting an introduction soon.</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeTextItalic(
+      textContainer,
+      "<p>Well, I know where they are located, but it seems like a long walk, which could be dangerous.<br><br>Could you help me reach their base?</p>",
+      applyGlassStylingGreen
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>Sven let's out a small chuckle.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1000);
+
+    await typeText(
+      textContainer,
+      "<p>There's an old dirt road outside of town that leads north, it's mostly unknown and the only way in or out other than the blocked road.<br><br>Meet me there when you are ready, and I'll give you a ride</p>",
+      applyGlassStylingBlue
+    );
+
+    await pause();
+    textContainer.innerHTML = "";
+
+    await typeText(
+      textContainer,
+      "<p>You feel a mix of feelings all at once: relief, excitement, anxiety, fear.<br><br>You don't know what to expect when you reach the resistance, but you do know that you are looking forward to leaving this town.</p>",
+      applyGlassStylingRed
+    );
+
+    await sleep(1500);
+
+    STORE_ENDGAME = true;
+
+    // append new button
+    userControlsContainer.appendChild(townSquareBtn); // append relevant buttons
+  });
 
   townSquareBtn.addEventListener("pointerup", async function () {
     // Button click check
@@ -8811,7 +9759,7 @@ async function sceneStore() {
     textContainer.innerHTML = "";
 
     // remove button from user controls container
-    townSquareBtn.remove(); // remove relevant buttons
+    townSquareBtn.remove();
     enterBtn.remove();
     speakBtn.remove();
     yesBtn.remove();
@@ -8821,7 +9769,18 @@ async function sceneStore() {
     projectBtn.remove();
     lifeBtn.remove();
     fightBtn.remove();
-
+    metIngridBtn.remove();
+    foundCoordsBtn.remove();
+    drawnMapBtn.remove();
+    whereResistanceBtn.remove();
+    deadMayorBtn.remove();
+    weaponsBtn.remove();
+    deadBodyBtn.remove();
+    clinicKeyBtn.remove();
+    mapAndCoordsBtn.remove();
+    roadBlockBtn.remove();
+    iKnowNowBtn.remove();
+    // REMEMBER TO ADD ALL THE ADDITIONAL BUTTONS HERE!!! ***********
     sceneTownSquare();
   });
 }
